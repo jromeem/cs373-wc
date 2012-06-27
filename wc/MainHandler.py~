@@ -24,7 +24,7 @@ class ImportPage(webapp.RequestHandler):
                     <form action="form-handler.php" method="post" enctype="multipart/form-data">
                         <div>
                             <input id="myfile" name="myfile" type="file">
-                            <input value="Upload" type="submit">
+                            <input value="Upload ►" type="submit">
                         </div>
                     </form>
                 </body>
