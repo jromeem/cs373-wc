@@ -4,6 +4,8 @@ from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
 import cgi, os
 import cgitb; cgitb.enable()
+from xml.etree.ElementTree import Element, SubElement, dump
+
 
 class MainPage(webapp.RequestHandler):
     def get(self):
@@ -34,30 +36,27 @@ class ImportPage(webapp.RequestHandler):
             
             
 class ImportHandler(webapp.RequestHandler):
-    def post(self):
-        
+    def post(self): 
         form = cgi.FieldStorage()
         fileitem = form['myfile']
         
         
         # Test if the file was uploaded
         if fileitem.filename:
-
-            # strip leading path from file name to avoid directory traversal attacks
             fn = os.path.basename(fileitem.filename)
-            #open('files/' + fn, 'rb').write(fileitem.file.read())
-            message = 'The file "' + fn + '" was uploaded successfully'
-            lines = fileitem.file.readlines()
+            f = fileitem.file
+            message = 'The file "' + fn + '" was uploaded successfully...'
+            tree = ElementTree.parse(f)
+            
 
         else:
             message = 'No file was uploaded'
-        print message + '<br/>'
-        i=1
-        for line in lines:
-            #print 'LINE ' + str(i)+ ': '
-            print line
-            print '<br/>'
-            i+=1
+        print message + '<br/><br/><br/>'
+       
+        
+       
+        dump(tree)
+        
 
 
 application = webapp.WSGIApplication(
@@ -66,6 +65,6 @@ application = webapp.WSGIApplication(
 
 def main():
     run_wsgi_app(application)
-
+            
 if __name__ == "__main__":
     main()
