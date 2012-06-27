@@ -2,6 +2,8 @@ import os
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
+import cgi, os
+import cgitb; cgitb.enable()
 
 class MainPage(webapp.RequestHandler):
     def get(self):
@@ -21,19 +23,45 @@ class ImportPage(webapp.RequestHandler):
         self.response.out.write("""
             <html>
                 <body>
-                    <form action="form-handler.php" method="post" enctype="multipart/form-data">
+                    <form action="/handle" method="post" enctype="multipart/form-data">
                         <div>
                             <input id="myfile" name="myfile" type="file">
-                            <input value="Upload ►" type="submit">
+                            <input value="Upload" type="submit">
                         </div>
                     </form>
                 </body>
             </html>""")
+            
+            
+class ImportHandler(webapp.RequestHandler):
+    def post(self):
+        
+        form = cgi.FieldStorage()
+        fileitem = form['myfile']
+        
+        
+        # Test if the file was uploaded
+        if fileitem.filename:
 
+            # strip leading path from file name to avoid directory traversal attacks
+            fn = os.path.basename(fileitem.filename)
+            #open('files/' + fn, 'rb').write(fileitem.file.read())
+            message = 'The file "' + fn + '" was uploaded successfully'
+            lines = fileitem.file.readlines()
+
+        else:
+            message = 'No file was uploaded'
+        print message + '<br/>'
+        i=1
+        for line in lines:
+            #print 'LINE ' + str(i)+ ': '
+            print line
+            print '<br/>'
+            i+=1
 
 
 application = webapp.WSGIApplication(
-                                     [('/', MainPage), ('/import', ImportPage)],
+                                     [('/', MainPage), ('/import', ImportPage),('/handle', ImportHandler)],
                                      debug=True)
 
 def main():
