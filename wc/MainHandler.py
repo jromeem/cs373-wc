@@ -2,6 +2,7 @@ import os
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
+from google.appengine.ext import db
 import cgi, os
 import cgitb; cgitb.enable()
 from xml.etree import ElementTree
@@ -25,19 +26,17 @@ class ImportPage(webapp.RequestHandler):
     def get(self):
         self.response.out.write("""
             <html>
-                <body>
-                    <form action="/handle" method="post" enctype="multipart/form-data">
-                        <div>
-                            <input id="myfile" name="myfile" type="file">
-                            <input value="Upload" type="submit">
-                        </div>
-                    </form>
-                </body>
+            <body>
+            <form action="/import" method="post" enctype="multipart/form-data">
+            <div>
+            <input id="myfile" name="myfile" type="file">
+            <input value="Upload" type="submit">
+            </div>
+            </form>
+            </body>
             </html>""")
             
-            
-class ImportHandler(webapp.RequestHandler):
-    def post(self): 
+    def post(self):
         form = cgi.FieldStorage()
         fileitem = form['myfile']
         
@@ -47,29 +46,47 @@ class ImportHandler(webapp.RequestHandler):
             fn = os.path.basename(fileitem.filename)
             f = fileitem.file
             message = 'The file "' + fn + '" was uploaded successfully...'
-            tree = ElementTree.parse(f)
+            
+            f = f.read()
+            
+            parser = ElementTree.XMLParser(encoding="utf-8")
+            
+            tree = ElementTree.fromstring(f, parser)
             
 
         else:
             message = 'No file was uploaded'
         print message + '<br/><br/><br/>'
-       
+         
+        crises = tree.findall(".//crisis")
         
+        people = tree.findall(".//person")
         
+        orgs = tree.findall(".//organization")
         
-        #for elem in tree.iter() :
-        #    print("%s - %s<br />" % (elem.tag, elem.text))
-        # 
-        # print '<br /><br /><br /><br /><br /><br /><br />'
-        #c = tree.getroot().findall('.//crisis')
-        #for a in c :
-        #    dump(a)
-        #    print '<br />'
-        #print '<br /><br /><br /><br /><br /><br /><br />'
-        
+        for crisis in crises:
+            print crisis.items()
+            print "</br>"
+            
+        for person in people:
+            print person.items()
+            print "</br>"
+            
+        for org in orgs:
+            print org.items()
+            print "</br>"   
+            
+            
+            
+            
+class Organization(db.Model):
+
+    name = db.StringProperty()
+    #info = db.ReferenceProperty(Info)
+
 
 application = webapp.WSGIApplication(
-                                     [('/', MainPage), ('/import', ImportPage),('/handle', ImportHandler)],
+                                     [('/', MainPage), ('/import', ImportPage)],
                                      debug=True)
 
 def main():
