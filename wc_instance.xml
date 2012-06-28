@@ -34,7 +34,7 @@
                 <economic>
                     <amount>2300000000</amount>
                     <currency>USD</currency>
-                    <misc>misc0</misc>
+                    <misc></misc>
                 </economic>
             </impact>
         </info>
@@ -259,20 +259,20 @@
             <history>http://en.wikipedia.org/wiki/Red_Crescent#History_of_Movement
 </history>
             <contact>
-                <phone>phone0</phone>
-                <email>email0</email>
+                <phone>(1) 800 RED CROSS</phone>
+                <email>secretariat@ifrc.org</email>
                 <mail>
-                    <address>address0</address>
-                    <city>city4</city>
-                    <state>state0</state>
-                    <country>country4</country>
-                    <zip></zip>
+                    <address>National Headquarters 2025 E Street N.W.</address>
+                    <city>Washington D.C</city>
+                    <state></state>
+                    <country>USA</country>
+                    <zip>20006</zip>
                 </mail>
             </contact>
             <loc>
-                <city>city5</city>
-                <region>region4</region>
-                <country>country5</country>
+                <city>Washington D.C</city>
+                <region></region>
+                <country>USA</country>
             </loc>
         </info>
         <ref>
@@ -307,20 +307,20 @@
             <type>International Aid Organization</type>
             <history>Founded Oxford, 1942 with mission of providing food aid to occupied Greece</history>
             <contact>
-                <phone>phone1</phone>
-                <email>email1</email>
+                <phone>1-800-77-OXFAM</phone>
+                <email>info@oxfamamerica.org</email>
                 <mail>
-                    <address>address1</address>
-                    <city>city6</city>
-                    <state>state1</state>
-                    <country>country6</country>
-                    <zip></zip>
+                    <address>226 Causeway Street 5th Floor</address>
+                    <city>Boston</city>
+                    <state>MA</state>
+                    <country>USA</country>
+                    <zip>02114-2206</zip>
                 </mail>
             </contact>
             <loc>
-                <city>city7</city>
-                <region>region5</region>
-                <country>country7</country>
+                <city>Boston</city>
+                <region></region>
+                <country>MA</country>
             </loc>
         </info>
         <ref>
@@ -359,7 +359,7 @@
                 <description>description70</description>
             </ext>
             </ref>
-        <misc>misc9</misc>
+        <misc></misc>
         <crisis idref="wafrica"/>
         <people idref="roffenheiser"/>
     </organizations>
@@ -369,19 +369,19 @@
             <type>Humanitarian</type>
             <history>The WFP was first established in 1961 after the 1960 Food and Agricultural Organization (FAO) Conference, when George McGovern, director of the US Food for Peace Programmes, proposed establishing a multilateral food aid programme. WFP was formally established in 1963 by the FAO and the United Nations General Assembly on a three-year experimental basis. In 1965, the programme was extended to a continuing basis.</history>
             <contact>
-                <phone>phone2</phone>
-                <email>email2</email>
+                <phone>+39-06-65131</phone>
+                <email>hotline@wfp.org</email>
                 <mail>
-                    <address>address2</address>
-                    <city>city8</city>
-                    <state>state2</state>
-                    <country>country8</country>
-                    <zip></zip>
+                    <address>Via C.G.Viola 68 Parco dei Medici</address>
+                    <city>Rome</city>
+                    <state></state>
+                    <country>Italy</country>
+                    <zip>00148</zip>
                 </mail>
             </contact>
             <loc>
                 <city>Rome</city>
-                <region>region6</region>
+                <region></region>
                 <country>Italy</country>
             </loc>
         </info>
@@ -389,17 +389,17 @@
             <image>
                 <title>WFP logo</title>
                 <url>http://upload.wikimedia.org/wikipedia/commons/9/9e/Official_WFP_logo.gif</url>
-                <description>description72</description>
+                <description></description>
             </image>
             <video>
                 <site>Youtube</site>
-                <title>title100</title>
+                <title>Haiti Earthquake: WFP Food Distribution</title>
                 <url>http://www.youtube.com/embed/u-orDpbq3N4</url>
-                <description>description76</description>
+                <description></description>
             </video>
             <social>
-                <title>title107</title>
-                <url>url107</url>
+                <title>Twitter</title>
+                <url>http://twitter.com/wfp?utm_source=WFPorgGlobalFooter&amp;utm_medium=WFPorgGlobalFooter&amp;utm_campaign=WFPorgGlobalFooter</url>
             </social>
             <ext>
                 <title>WFP Official Website</title>
@@ -412,7 +412,7 @@
                 <description>description81</description>
             </ext>
         </ref>
-        <misc>misc10</misc>
+        <misc></misc>
         <crisis idref="haiti"/>
         <people idref="jsheeran"/>
     </organizations>
@@ -423,7 +423,7 @@
             <history>Founded in Ireland in 1991 by Adi Roche in response to an appeal from Ukrainian and Belarusian doctors for aid.</history>
             <contact>
                 <phone>+353 21 431 2999</phone>
-                <email>email3</email>
+                <email></email>
                 <mail>
                     <address>490 Main Street</address>
                     <city>Northport</city>
@@ -445,10 +445,10 @@
                 <description>description84</description>
             </image>
             <video>
-                <site>site28</site>
-                <title>title116</title>
-                <url>url116</url>
-                <description>description88</description>
+                <site>YouTube</site>
+                <title>Chernobyl: CCPI Volunteers Bring Hope</title>
+                <url>http://www.youtube.com/watch?v=HhDgHddDE3g</url>
+                <description>This video depicts Chernobyl Children's Project International in Chernobyl affected regions of Belarus this past winter.</description>
             </video>
             <social>
                 <title>Facebook</title>
@@ -464,7 +464,7 @@
                 <description>description92</description>
             </ext>
         </ref>
-        <misc>misc11</misc>
+        <misc></misc>
         <crisis idref="chernobyl"/>
         <people idref="aroche"/>
     </organizations>
@@ -630,9 +630,9 @@
             </image>
             <video>
                 <site>Youtube</site>
-                <title>title187</title>
+                <title></title>
                 <url>http://www.youtube.com/embed/U_qufZf9iKo</url>
-                <description>description139</description>
+                <description></description>
             </video>
             <social>
                 <title>title191</title>
