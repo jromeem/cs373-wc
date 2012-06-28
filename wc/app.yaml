@@ -4,10 +4,13 @@ runtime: python
 api_version: 1
 
 handlers:
+- url: /test.*
+  script: gaeunit.py  
+
 - url: /(.*\.html)
   mime_type: text/html
   static_files: static/\1
   upload: static/(.*\.html)
-  
+
 - url: /.*
   script: MainHandler.py

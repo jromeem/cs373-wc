@@ -19,22 +19,29 @@ Group Member Point Adjustment:
 
 Group Member First Name: Harrison
 Group Member Last Name: He
-Group Member EID: 
+Group Member EID: hh7735 
 Group Member E-mail: harrisonhe824@gmail.com
 Group Member Rating:
 Group Member Point Adjustment:
 
 Group Member First Name: Andy
 Group Member Last Name: Hsu
-Group Member EID: 
+Group Member EID: ah28348
 Group Member E-mail: andyhsu@utexas.edu
 Group Member Rating:
 Group Member Point Adjustment:
 
 Group Member First Name: Joe
 Group Member Last Name: Peacock
-Group Member EID:
+Group Member EID: jhp667
 Group Member E-mail: j.peacock@utexas.edu
+Group Member Rating:
+Group Member Point Adjustment:
+
+Group Member First Name: Justin
+Group Member Last Name: Salazar
+Group Member EID: jrs3597
+Group Member E-mail: jrsalazar89@gmail.com
 Group Member Rating:
 Group Member Point Adjustment:
 
