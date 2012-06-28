@@ -24,20 +24,20 @@ class MainPage(webapp.RequestHandler):
 class ImportPage(webapp.RequestHandler):
     def get(self):
         self.response.out.write("""
-            <html>
-                <body>
-                    <form action="/handle" method="post" enctype="multipart/form-data">
-                        <div>
-                            <input id="myfile" name="myfile" type="file">
-                            <input value="Upload" type="submit">
-                        </div>
-                    </form>
-                </body>
-            </html>""")
+<html>
+<body>
+<form action="/handle" method="post" enctype="multipart/form-data">
+<div>
+<input id="myfile" name="myfile" type="file">
+<input value="Upload" type="submit">
+</div>
+</form>
+</body>
+</html>""")
             
             
 class ImportHandler(webapp.RequestHandler):
-    def post(self): 
+    def post(self):
         form = cgi.FieldStorage()
         fileitem = form['myfile']
         
@@ -47,7 +47,12 @@ class ImportHandler(webapp.RequestHandler):
             fn = os.path.basename(fileitem.filename)
             f = fileitem.file
             message = 'The file "' + fn + '" was uploaded successfully...'
-            tree = ElementTree.parse(f)
+            
+            f = f.read()
+            
+            parser = ElementTree.XMLParser(encoding="utf-8")
+            
+            tree = ElementTree.fromstring(f, parser)
             
 
         else:
@@ -56,22 +61,26 @@ class ImportHandler(webapp.RequestHandler):
        
         
        
-        #dump(tree)
-        
-        iterate = tree.iter()
-        
-        enum = 0
-        for i in iterate:
-            enum +=1
+        #for e in tree.iter() :
+            #print("%s - %s<br />" % (e.tag, e.text))
             
-            print str(enum)
-            
-            print i.tag 
-            print ": "
-            print i.text
-            print "</br>"
             
         
+        
+        crises = tree.findall(".//crisis")
+        
+        people = tree.findall(".//person")
+        
+        orgs = tree.findall(".//organization")
+        
+        for crisis in crises:
+            print crisis.items()
+        
+        for person in people:
+            print person.items()
+            
+        for org in orgs:
+            print org.items()
 
 
 application = webapp.WSGIApplication(
