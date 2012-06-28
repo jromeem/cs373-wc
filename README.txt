@@ -38,6 +38,13 @@ Group Member E-mail: j.peacock@utexas.edu
 Group Member Rating:
 Group Member Point Adjustment:
 
+Group Member First Name: Justin
+Group Member Last Name: Salazar
+Group Member EID: jrs3597
+Group Member E-mail: jrsalazar89@gmail.com
+Group Member Rating:
+Group Member Point Adjustment:
+
 Comments:
 
 --------------------
