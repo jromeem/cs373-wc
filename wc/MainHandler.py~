@@ -4,6 +4,7 @@ from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
 import cgi, os
 import cgitb; cgitb.enable()
+from xml.etree import ElementTree
 from xml.etree.ElementTree import Element, SubElement, dump
 
 
@@ -55,7 +56,21 @@ class ImportHandler(webapp.RequestHandler):
        
         
        
-        dump(tree)
+        #dump(tree)
+        
+        iterate = tree.iter()
+        
+        enum = 0
+        for i in iterate:
+            enum +=1
+            
+            print str(enum)
+            
+            print i.tag 
+            print ": "
+            print i.text
+            print "</br>"
+            
         
 
 

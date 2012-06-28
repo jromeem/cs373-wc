@@ -56,7 +56,21 @@ class ImportHandler(webapp.RequestHandler):
        
         
        
-        dump(tree)
+        #dump(tree)
+        
+        iterate = tree.iter()
+        
+        enum = 0
+        for i in iterate:
+            enum +=1
+            
+            #print str(enum)
+            
+            print i.tag 
+            print ": "
+            print i.text
+            print "</br>"
+            
         
 
 
