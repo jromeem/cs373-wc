@@ -45,37 +45,50 @@ class ImportPage(webapp.RequestHandler):
         if fileitem.filename:
             fn = os.path.basename(fileitem.filename)
             f = fileitem.file
-            message = 'The file "' + fn + '" was uploaded successfully...'
+            message = 'The file "' + fn + '" was uploaded successfully... </br>'
             
             f = f.read()
             
-            parser = ElementTree.XMLParser(encoding="utf-8")
+            parser = ElementTree.XMLParser()
             
             tree = ElementTree.fromstring(f, parser)
+            
+            crises = tree.findall(".//crisis")
+        
+            people = tree.findall(".//person")
+        
+            orgs = tree.findall(".//organization")
+        
+            for crisis in crises:
+                print crisis.items()
+                print "</br>"
+                
+            for person in people:
+                print person.items()
+                print "</br>"
+                
+            for org in orgs:
+                print org.items()
+                print "</br>"
             
 
         else:
             message = 'No file was uploaded'
-        print message + '<br/><br/><br/>'
-         
-        crises = tree.findall(".//crisis")
         
-        people = tree.findall(".//person")
-        
-        orgs = tree.findall(".//organization")
-        
-        for crisis in crises:
-            print crisis.items()
-            print "</br>"
-            
-        for person in people:
-            print person.items()
-            print "</br>"
-            
-        for org in orgs:
-            print org.items()
-            print "</br>"   
-            
+        self.response.out.write("""
+            <html>
+            <body>
+            <form action="/import" method="post" enctype="multipart/form-data">
+            <div>
+            <input id="myfile" name="myfile" type="file">
+            <input value="Upload" type="submit">
+            </div>
+            </form>
+            <a href="/">Home</a></br>
+            </body>
+            </html>""")
+           
+        print message
             
             
             
