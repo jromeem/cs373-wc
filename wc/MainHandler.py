@@ -45,7 +45,7 @@ class ImportPage(webapp.RequestHandler):
         if fileitem.filename:
             fn = os.path.basename(fileitem.filename)
             f = fileitem.file
-            message = 'The file "' + fn + '" was uploaded successfully... </br>'
+            message = 'The file "' + fn + '" was uploaded successfully.  Upload another? </br>'
             
             f = f.read()
             
@@ -73,7 +73,7 @@ class ImportPage(webapp.RequestHandler):
             
 
         else:
-            message = 'No file was uploaded'
+            message = 'No file was uploaded. Try again? </br>'
         
         self.response.out.write("""
             <html>
@@ -84,11 +84,12 @@ class ImportPage(webapp.RequestHandler):
             <input value="Upload" type="submit">
             </div>
             </form>
+            <p>%s</p>
             <a href="/">Home</a></br>
             </body>
-            </html>""")
+            </html>""" % message)
            
-        print message
+        # print message
             
             
             
