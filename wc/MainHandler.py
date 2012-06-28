@@ -55,11 +55,16 @@ class ImportHandler(webapp.RequestHandler):
         print message + '<br/><br/><br/>'
        
         
-       
         for e in tree.iter() :
-            print("%s - %s<br />" % (e.tag, e.text))
+            if (isinstance(e.tag, basestring)) :
+                print("%s - %s<br />" % (e.tag, e.text.encode("utf8","ignore")))
         
-
+        print '<br /><br /><br /><br /><br /><br /><br />'
+        c = tree.getroot().findall('.//name')
+        for a in c :
+            print a.text
+            print '<br />'
+        print '<br /><br /><br /><br /><br /><br /><br />'
 
 application = webapp.WSGIApplication(
                                      [('/', MainPage), ('/import', ImportPage),('/handle', ImportHandler)],
