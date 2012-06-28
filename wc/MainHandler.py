@@ -56,7 +56,8 @@ class ImportHandler(webapp.RequestHandler):
        
         
        
-        dump(tree)
+        for e in tree.iter() :
+            print("%s - %s<br />" % (e.tag, e.text))
         
 
 
