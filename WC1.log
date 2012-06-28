@@ -1,3 +1,179 @@
+commit 2278bf51faf2ed7ec0b05a9277bade5d30e9c25b
+Merge: 3e1e172 fedcba6
+Author: Jerome Martinez <jerome.e.martinez@gmail.com>
+Date:   Thu Jun 28 15:58:21 2012 -0500
+
+    Merge branch 'master' of github.com:jromeem/cs373-wc
+
+commit 3e1e17265169bf3a6263c109b5703210bbef03d4
+Author: Jerome Martinez <jerome.e.martinez@gmail.com>
+Date:   Thu Jun 28 15:57:57 2012 -0500
+
+    added gaeunit
+
+commit fedcba6077fe0d13e683c286841b9f2a2b785541
+Author: Michael Pace <mpace1027@gmail.com>
+Date:   Thu Jun 28 15:57:09 2012 -0500
+
+    xml import update
+
+commit 7054af36a0724c6bc29b5c6b892bfcb8595eb378
+Author: Michael Pace <mpace1027@gmail.com>
+Date:   Thu Jun 28 15:26:31 2012 -0500
+
+    updated wafrica
+
+commit 0ab8ff80eb8e9d02be41542125656c158d1d54bc
+Author: Michael Pace <mpace1027@gmail.com>
+Date:   Thu Jun 28 15:25:37 2012 -0500
+
+    fixed error in head of html files
+
+commit 20280be6abb9a525bfe294ff2a9971c8900eb4a3
+Author: Jerome Martinez <jerome.e.martinez@gmail.com>
+Date:   Thu Jun 28 15:10:08 2012 -0500
+
+    added gaeunit
+
+commit f8eda6cdba72ea72d0d7acb28de1e20b8cd55cd5
+Author: joe <joe@joe-K53U.(none)>
+Date:   Wed Jun 27 17:44:12 2012 -0500
+
+    parses xml file to elementtree
+
+commit bcfedaf0201bb18cc822d21ea698a2786a6647de
+Author: joe <joe@joe-K53U.(none)>
+Date:   Wed Jun 27 16:03:08 2012 -0500
+
+    uploads file as fieldstorage and prints it back
+
+commit 081cee23110764f0575a5415a7b075146edc40a9
+Author: joe <joe@joe-K53U.(none)>
+Date:   Wed Jun 27 12:13:17 2012 -0500
+
+    adds import form
+
+commit 9fd1cba3fee753350d089a7e6cad9b9da5624c34
+Author: Jerome Martinez <jerome.e.martinez@gmail.com>
+Date:   Wed Jun 27 02:06:02 2012 -0500
+
+    fixed dead links/typos
+
+commit affdef7694a8f7478b21d1fdb0eaa5732ae9fb18
+Author: Jerome Martinez <jerome.e.martinez@gmail.com>
+Date:   Tue Jun 26 21:47:14 2012 -0500
+
+    deleted misc files
+
+commit 74926f5810c41b0d881980b04c9e64be3cf76b76
+Author: Jerome Martinez <jerome.e.martinez@gmail.com>
+Date:   Tue Jun 26 21:20:25 2012 -0500
+
+    index.html
+
+commit 1ed5c0a1283cae727c34bb993af909c2736e1db1
+Author: andyhsu <andyhsu@andyhsu.(none)>
+Date:   Tue Jun 26 21:00:14 2012 -0500
+
+    DOne formatting html files to template
+
+commit f7f965fe87585693e2afea3514efe59d89dd1aad
+Author: andyhsu <andyhsu@andyhsu.(none)>
+Date:   Tue Jun 26 20:22:32 2012 -0500
+
+    Added template, corrected data mistake, half done formatting
+
+commit d8727cc42a69300def5f927d4d592b021039bac6
+Author: Michael Pace <mpace1027@gmail.com>
+Date:   Tue Jun 26 19:46:44 2012 -0500
+
+    updated haiti
+
+commit 26a1ac49402ec796d179747759831d72049bced1
+Author: Michael Pace <mpace1027@gmail.com>
+Date:   Tue Jun 26 18:46:18 2012 -0500
+
+    updated haiti page. we can use that as a template
+
+commit 066eaecfd518b82c664ef08a73cafd400f966628
+Author: Jerome Martinez <jerome.e.martinez@gmail.com>
+Date:   Tue Jun 26 17:44:38 2012 -0500
+
+    added html static files
+
+commit cc315c3d9895be983b63cc4d8c66a4415025fcbd
+Author: Michael Pace <mpace1027@gmail.com>
+Date:   Tue Jun 26 17:33:01 2012 -0500
+
+    added static folder
+
+commit 69d937f1f7ceb0dd49738c420fc969d4e41dbd9e
+Author: Michael Pace <mpace1027@gmail.com>
+Date:   Tue Jun 26 17:32:32 2012 -0500
+
+    added static folder
+
+commit a1395bda028817153a8aff0ac7c6851756985e74
+Merge: 1731faf 577d5b3
+Author: joe <joe@joe-K53U.(none)>
+Date:   Tue Jun 26 17:22:51 2012 -0500
+
+    Merge branch 'master' of https://github.com/jromeem/cs373-wc
+
+commit 1731fafcbd3ca5c3422869937173e9bc5e3003af
+Author: joe <joe@joe-K53U.(none)>
+Date:   Tue Jun 26 17:22:14 2012 -0500
+
+    updates research data
+
+commit 577d5b32e24181ead7672e62dd2a604903923b39
+Author: harrisonhe <harrisonhe824@gmail.com>
+Date:   Tue Jun 26 17:00:23 2012 -0500
+
+    Update master
+
+commit 667eff6f40638862814a6aa16f90072d6e51a776
+Author: harrisonhe <harrisonhe824@gmail.com>
+Date:   Tue Jun 26 16:59:12 2012 -0500
+
+    Update master
+
+commit 174c38bdac18849da2c0d7019bc8263e71e06fd6
+Author: harrisonhe <harrisonhe824@gmail.com>
+Date:   Tue Jun 26 16:57:03 2012 -0500
+
+    Update master
+
+commit a87157c5b01c0b8b0759098857d6316d94045541
+Author: Michael Pace <mpace1027@gmail.com>
+Date:   Tue Jun 26 16:53:31 2012 -0500
+
+    updated request handler
+
+commit 6a124ff6f06e2153882c9b130fd5dd2fb9ef0339
+Author: Michael Pace <mpace1027@gmail.com>
+Date:   Tue Jun 26 15:51:11 2012 -0500
+
+    added ws directory
+
+commit a4ee831b1e558b18b882f00d54e350278aeb72b4
+Author: Jerome Martinez <jerome.e.martinez@gmail.com>
+Date:   Tue Jun 26 14:25:27 2012 -0500
+
+    added research
+
+commit 21584ad3e73ec8c3e295883fd3dc7b70e480f2d5
+Author: Jerome Martinez <jerome.e.martinez@gmail.com>
+Date:   Mon Jun 25 23:38:10 2012 -0500
+
+    changed repo name; updated readme
+
+commit c6fafdce237793ae2352565b278f6c64bdb27f7f
+Author: Jerome Martinez <jerome.e.martinez@gmail.com>
+Date:   Mon Jun 25 01:28:13 2012 -0500
+
+    added a few files
+
 commit 10e439321f29cff6023e207657b1926c02a2aceb
 Author: Jerome Martinez <jerome.e.martinez@gmail.com>
 Date:   Sun Jun 24 19:03:41 2012 -0500
