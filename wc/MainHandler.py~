@@ -161,8 +161,10 @@ class Crisis(db.Model):
     personrefs = db.ListProperty(db.StringProperty())
     
 class Organization(db.Model):
-
+    orgid = db.StringProperty()
+    
     name = db.StringProperty()
+    
     info_type = db.StringProperty()
     info_history = db.TextProperty()
     info_contacts_phone = db.StringProperty()
@@ -172,13 +174,13 @@ class Organization(db.Model):
     info_contacts_state = db.StringProperty()
     info_contacts_country = db.StringProperty()
     info_contacts_zip = db.StringProperty()
+    
     links = db.ListProperty(db.ReferenceProperty(Link))
-    misc = db.StringProperty()
     
     crisisrefs = db.ListProperty(db.StringProperty())
     personrefs = db.ListProperty(db.StringProperty())
     
-    orgid = db.StringProperty()
+    misc = db.StringProperty()
     
 
 

@@ -175,7 +175,7 @@ class Organization(db.Model):
     info_contacts_country = db.StringProperty()
     info_contacts_zip = db.StringProperty()
     
-    links = db.ListProperty(db.ReferenceProperty(Link))
+    links = db.ListProperty(db.Key())
     
     crisisrefs = db.ListProperty(db.StringProperty())
     personrefs = db.ListProperty(db.StringProperty())
