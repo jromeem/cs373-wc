@@ -69,7 +69,7 @@
         </ref>
         <misc></misc>
         <org idref="wfp"/>
-        <people idref="jsheeran"/>
+        <person idref="jsheeran"/>
     </crisis>
     <crisis id="iraq">
         <name>Iraqi Refugee Crisis</name>
@@ -129,7 +129,7 @@
         </ref>
         <misc></misc>
         <org idref="redcrescent"/>
-        <people idref="mbarzani"/>
+        <person idref="mbarzani"/>
     </crisis>
     <crisis id="chernobyl">
         <name>Chernobyl Disaster</name>
@@ -190,7 +190,7 @@
         </ref>
         <misc></misc>
         <org idref="ccpi"/>
-        <people idref="aroche"/>
+        <person idref="aroche"/>
     </crisis>
     <crisis id="wafrica">
         <name>West Africa Food Crisis</name>
@@ -250,9 +250,9 @@
         </ref>
         <misc></misc>
         <org idref="oxfam"/>
-        <people idref="roffenheiser"/>
+        <person idref="roffenheiser"/>
     </crisis>
-    <organizations id="redcrescent">
+    <organization id="redcrescent">
         <name>Red Crescent</name>
         <info>
             <type>Non-governmental, Humanitarian</type>
@@ -299,9 +299,9 @@
         </ref>
         <misc>misc8</misc>
         <crisis idref="iraq"/>
-        <people idref="mbarzani"/>
-    </organizations>
-    <organizations id="oxfam">
+        <person idref="mbarzani"/>
+    </organization>
+    <organization id="oxfam">
         <name>OxFam</name>
         <info>
             <type>International Aid Organization</type>
@@ -361,9 +361,9 @@
             </ref>
         <misc></misc>
         <crisis idref="wafrica"/>
-        <people idref="roffenheiser"/>
-    </organizations>
-    <organizations id="wfp">
+        <person idref="roffenheiser"/>
+    </organization>
+    <organization id="wfp">
         <name>World Food Programme</name>
         <info>
             <type>Humanitarian</type>
@@ -414,9 +414,9 @@
         </ref>
         <misc></misc>
         <crisis idref="haiti"/>
-        <people idref="jsheeran"/>
-    </organizations>
-    <organizations id="ccpi">
+        <person idref="jsheeran"/>
+    </organization>
+    <organization id="ccpi">
         <name>Chernobyl Children’s Project International</name>
         <info>
             <type>Humanitarian</type>
@@ -466,9 +466,9 @@
         </ref>
         <misc></misc>
         <crisis idref="chernobyl"/>
-        <people idref="aroche"/>
-    </organizations>
-    <people id="mbarzani">
+        <person idref="aroche"/>
+    </organization>
+    <person id="mbarzani">
         <name>
             <title>Mustafa Barzani</title>
             <first>Mustafa</first>
@@ -512,8 +512,8 @@
         <misc>misc12</misc>
         <crisis idref="iraq"/>
         <org idref="redcrescent"/>
-    </people>
-    <people id="jsheeran">
+    </person>
+    <person id="jsheeran">
         <name>
             <title>Josette Sheeran</title>
             <first>Josette</first>
@@ -557,8 +557,8 @@
         <misc>misc13</misc>
         <crisis idref="haiti"/>
         <org idref="wfp"/>
-    </people>
-    <people id="aroche">
+    </person>
+    <person id="aroche">
         <name>
             <title>Adi Roche</title>
             <first>Adi</first>
@@ -602,8 +602,8 @@
         <misc>misc14</misc>
         <crisis idref="chernobyl"/>
         <org idref="ccpi"/>
-    </people>
-    <people id="roffenheiser">
+    </person>
+    <person id="roffenheiser">
         <name>
             <title>Raymond C. Offenheiser</title>
             <first>Raymond</first>
@@ -647,5 +647,5 @@
         <misc></misc>
         <crisis idref="wafrica"/>
         <org idref="oxfam"/>
-    </people>
+    </person>
 </worldCrises>
