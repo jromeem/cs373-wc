@@ -115,10 +115,10 @@ class Person(db.Model):
     info_nat = db.StringProperty()
     into_bio = db.TextProperty()
     
-    links = db.ListProperty(db.Key())
+    links = db.ListProperty(db.Key)
     
-    orgrefs = db.ListProperty(db.StringProperty())
-    crisisrefs = db.ListProperty(db.StringProperty())
+    orgrefs = db.ListProperty(str)
+    crisisrefs = db.ListProperty(str)
     
     misc = db.StringProperty()
 
@@ -155,10 +155,10 @@ class Crisis(db.Model):
     impact_economic_currency = db.StringProperty()
     impact_economic_misc = db.StringProperty()
     
-    links = db.ListProperty(db.Key())
+    links = db.ListProperty(db.Key)
     
-    orgrefs = db.ListProperty(db.StringProperty())
-    personrefs = db.ListProperty(db.StringProperty())
+    orgrefs = db.ListProperty(str)
+    personrefs = db.ListProperty(str)
     
 class Organization(db.Model):
     orgid = db.StringProperty()
@@ -175,10 +175,10 @@ class Organization(db.Model):
     info_contacts_country = db.StringProperty()
     info_contacts_zip = db.StringProperty()
     
-    links = db.ListProperty(db.Key())
+    links = db.ListProperty(db.Key)
     
-    crisisrefs = db.ListProperty(db.StringProperty())
-    personrefs = db.ListProperty(db.StringProperty())
+    crisisrefs = db.ListProperty(str)
+    personrefs = db.ListProperty(str)
     
     misc = db.StringProperty()
     
