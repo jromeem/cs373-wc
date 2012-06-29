@@ -91,7 +91,7 @@ class ImportPage(webapp.RequestHandler):
            
         # print message
 
-class Links(db.Model):
+class Link(db.Model):
     img_title = db.StringProperty()
     img_url = db.StringProperty()
     img_description = db.StringProperty()
@@ -112,7 +112,7 @@ class Crisis(db.Model):
     name = db.StringProperty()
     misc = db.StringProperty()
     
-    links = db.ReferenceProperty(Links)
+    links = db.ListProperty(db.ReferenceProperty(Link))
     org = db.ReferenceProperty(Organization)
     person = db.ReferenceProperty(Person)
     
