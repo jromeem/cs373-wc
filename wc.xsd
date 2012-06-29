@@ -5,8 +5,8 @@
 	<xsd:complexType>
 		<xsd:sequence>
 			<xsd:element name="crisis" type="crisisType"  maxOccurs="unbounded"/>
-			<xsd:element name="organizations" type="organizationType"  maxOccurs="unbounded"/>
-			<xsd:element name="people" type="personType"  maxOccurs="unbounded"/>
+			<xsd:element name="organization" type="organizationType"  maxOccurs="unbounded"/>
+			<xsd:element name="person" type="personType"  maxOccurs="unbounded"/>
 	    </xsd:sequence>
 	</xsd:complexType>
 </xsd:element>
@@ -18,7 +18,7 @@
 		<xsd:element name="ref" type="extLinkType"/>
 		<xsd:element name="misc" type="xsd:string"/>
 		<xsd:element name="org" type="referenceType" maxOccurs="unbounded"/>
-		<xsd:element name="people" type="referenceType" maxOccurs="unbounded"/>
+		<xsd:element name="person" type="referenceType" maxOccurs="unbounded"/>
 	</xsd:sequence>
 	<xsd:attribute name="id" type="xsd:ID" use="required"/>
 </xsd:complexType>
@@ -30,7 +30,7 @@
 		<xsd:element name="ref" type="extLinkType"/>
 		<xsd:element name="misc" type="xsd:string"/>
 		<xsd:element name="crisis" type="referenceType" maxOccurs="unbounded"/>
-		<xsd:element name="people" type="referenceType" maxOccurs="unbounded"/>
+		<xsd:element name="person" type="referenceType" maxOccurs="unbounded"/>
 	</xsd:sequence>
 	<xsd:attribute name="id" type="xsd:ID" use="required"/>
 </xsd:complexType>
