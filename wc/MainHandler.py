@@ -90,9 +90,58 @@ class ImportPage(webapp.RequestHandler):
             </html>""" % message)
            
         # print message
+
+class Links(db.Model):
+    img_title = db.StringProperty()
+    img_url = db.StringProperty()
+    img_description = db.StringProperty()
+    
+    vid_site = db.StringProperty()
+    vid_title = db.StringProperty()
+    vid_url = db.StringProperty()
+    vid_description = db.StringProperty()
+    
+    soc_title = db.StringProperty()
+    soc_url = db.StringProperty()
+    
+    ext_title = db.StringProperty()
+    ext_url = db.StringProperty()
+    ext_description = db.StringProperty()
             
-            
-            
+class Crisis(db.Model):
+    name = db.StringProperty()
+    misc = db.StringProperty()
+    
+    links = db.ReferenceProperty(Links)
+    org = db.ReferenceProperty(Organization)
+    person = db.ReferenceProperty(Person)
+    
+    info_history = db.TextProperty()
+    info_help = db.StringProperty()
+    info_resources = db.StringProperty()
+    info_type = db.StringProperty()
+    info_loc = db.ReferenceProperty()
+    
+    date_time = db.StringProperty()
+    date_day = db.IntegerProperty()
+    date_month = db.IntegerProperty()
+    date_year = db.IntegerProperty()
+    date_misc = db.StringProperty()
+    
+    location_city = db.StringProperty()
+    location_region = db.StringProperty()
+    location_country = db.StringProperty()
+    
+    impact_human_deaths = db.IntegerProperty()
+    impact_human_displaced = db.IntegerProperty()
+    impact_human_injured = db.IntegerProperty()
+    impact_human_missing = db.IntegerProperty()
+    impact_human_misc = db.StringProperty()
+    
+    impact_economic_amount = db.IntegerProperty()
+    impact_economic_currency = db.StringProperty()
+    impact_economic_misc = db.StringProperty()
+    
 class Organization(db.Model):
 
     name = db.StringProperty()
