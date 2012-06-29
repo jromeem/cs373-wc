@@ -99,11 +99,12 @@ class Link(db.Model):
     vid_site = db.StringProperty()
 
 class Person(db.Model):
+    personid = db.StringProperty()
     
     name_title = db.StringProperty()
     name_first = db.StringProperty()
     name_last = db.StringProperty()
-    namt_middle = db.StringProperty()
+    name_middle = db.StringProperty()
     
     info_type = db.StringProperty()
     info_birthdate_time = db.IntegerProperty()
@@ -114,19 +115,19 @@ class Person(db.Model):
     info_nat = db.StringProperty()
     into_bio = db.TextProperty()
     
-    link = db.ListProperty(db.ReferenceProperty(Link))
-    crisis = db.ReferenceProperty(Crisis)
-    org = db.ReferenceProperty(Organization)
+    links = db.ListProperty(db.Key())
+    
+    orgrefs = db.ListProperty(db.StringProperty())
+    crisisrefs = db.ListProperty(db.StringProperty())
+    
     misc = db.StringProperty()
 
             
 class Crisis(db.Model):
+    crisisid = db.StringProperty()
+
     name = db.StringProperty()
     misc = db.StringProperty()
-    
-    links = db.ListProperty(db.ReferenceProperty(Link))
-    org = db.ReferenceProperty(Organization)
-    person = db.ReferenceProperty(Person)
     
     info_history = db.TextProperty()
     info_help = db.StringProperty()
@@ -154,9 +155,16 @@ class Crisis(db.Model):
     impact_economic_currency = db.StringProperty()
     impact_economic_misc = db.StringProperty()
     
+    links = db.ListProperty(db.Key())
+    
+    orgrefs = db.ListProperty(db.StringProperty())
+    personrefs = db.ListProperty(db.StringProperty())
+    
 class Organization(db.Model):
-
+    orgid = db.StringProperty()
+    
     name = db.StringProperty()
+    
     info_type = db.StringProperty()
     info_history = db.TextProperty()
     info_contacts_phone = db.StringProperty()
@@ -166,11 +174,13 @@ class Organization(db.Model):
     info_contacts_state = db.StringProperty()
     info_contacts_country = db.StringProperty()
     info_contacts_zip = db.StringProperty()
+    
     links = db.ListProperty(db.ReferenceProperty(Link))
+    
+    crisisrefs = db.ListProperty(db.StringProperty())
+    personrefs = db.ListProperty(db.StringProperty())
+    
     misc = db.StringProperty()
-    crisis = db.StringProperty()
-    person = db.StringProperty()
-    orgid = db.StringProperty()
     
 
 
