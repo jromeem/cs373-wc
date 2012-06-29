@@ -91,6 +91,27 @@ class ImportPage(webapp.RequestHandler):
            
         # print message
 
+class Person(db.Model):
+    
+    name_title = db.StringProperty()
+    name_first = db.StringProperty()
+    name_last = db.StringProperty()
+    namt_middle = db.StringProperty()
+    
+    info_type = db.StringProperty()
+    info_birthdate_time = db.IntegerProperty()
+    info_birthdate_day = db.IntegerProperty()
+    info_birthdate_month = db.IntegerProperty()
+    info_birthdate_year = db.IntegerProperty()
+    info_birthdate_misc = db.StringProperty()
+    info_nat = db.StringProperty()
+    into_bio = db.TextProperty()
+    
+    link = db.ListProperty(db.ReferenceProperty(Link))
+    crisis = db.ReferenceProperty(Crisis)
+    org = db.ReferenceProperty(Organization)
+    misc = db.StringProperty()
+
 class Link(db.Model):
     img_title = db.StringProperty()
     img_url = db.StringProperty()
