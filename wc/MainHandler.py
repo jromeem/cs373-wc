@@ -49,9 +49,9 @@ class ImportPage(webapp.RequestHandler):
             
             f = f.read()
             
-            parser = ElementTree.XMLParser()
+            #parser = ElementTree.XMLParser()
             
-            tree = ElementTree.fromstring(f, parser)
+            tree = ElementTree.parse(f)
             
             crises = tree.findall(".//crisis")
         

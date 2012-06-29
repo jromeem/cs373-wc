@@ -51,7 +51,7 @@ class ImportPage(webapp.RequestHandler):
             
             parser = ElementTree.XMLParser()
             
-            tree = ElementTree.fromstring(f, parser)
+            tree = ElementTree.parse(f)
             
             crises = tree.findall(".//crisis")
         
@@ -117,8 +117,8 @@ class Person(db.Model):
     
     links = db.ListProperty(db.Key)
     
-    orgrefs = db.ListProperty(db.StringProperty)
-    crisisrefs = db.ListProperty(db.StringProperty)
+    orgrefs = db.ListProperty(str)
+    crisisrefs = db.ListProperty(str)
     
     misc = db.StringProperty()
 
@@ -155,10 +155,10 @@ class Crisis(db.Model):
     impact_economic_currency = db.StringProperty()
     impact_economic_misc = db.StringProperty()
     
-    links = db.ListProperty(db.Key())
+    links = db.ListProperty(db.Key)
     
-    orgrefs = db.ListProperty(db.StringProperty)
-    personrefs = db.ListProperty(db.StringProperty)
+    orgrefs = db.ListProperty(str)
+    personrefs = db.ListProperty(str)
     
 class Organization(db.Model):
     orgid = db.StringProperty()
@@ -177,8 +177,8 @@ class Organization(db.Model):
     
     links = db.ListProperty(db.Key)
     
-    crisisrefs = db.ListProperty(db.StringProperty)
-    personrefs = db.ListProperty(db.StringProperty)
+    crisisrefs = db.ListProperty(str)
+    personrefs = db.ListProperty(str)
     
     misc = db.StringProperty()
     
