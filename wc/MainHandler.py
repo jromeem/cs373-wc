@@ -96,7 +96,17 @@ class ImportPage(webapp.RequestHandler):
 class Organization(db.Model):
 
     name = db.StringProperty()
-    #info = db.ReferenceProperty(Info)
+    info_type = db.StringProperty()
+    info_history = db.TextProperty()
+    info_contacts_phone = db.StringProperty()
+    info_contacts_email = db.StringProperty()
+    info_contacts_address = db.StringProperty()
+    info_contacts_city = db.StringProperty()
+    info_contacts_state = db.StringProperty()
+    info_contacts_country = db.StringProperty()
+    info_contacts_zip = db.StringProperty()
+    links = db.ReferenceProperty(Links)
+    
 
 
 application = webapp.WSGIApplication(

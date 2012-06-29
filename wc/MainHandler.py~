@@ -78,7 +78,6 @@ class ImportPage(webapp.RequestHandler):
         self.response.out.write("""
             <html>
             <body>
-            </br>
             <form action="/import" method="post" enctype="multipart/form-data">
             <div>
             <input id="myfile" name="myfile" type="file">
