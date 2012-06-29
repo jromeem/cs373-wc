@@ -47,7 +47,7 @@ class ImportPage(webapp.RequestHandler):
             f = fileitem.file
             message = 'The file "' + fn + '" was uploaded successfully.  Upload another? </br>'
             
-            f = f.read()
+            #f = f.read()
             
             #parser = ElementTree.XMLParser()
             
