@@ -91,12 +91,34 @@ class ImportPage(webapp.RequestHandler):
            
         # print message
 
+
 class Link(db.Model):
     title = db.StringProperty()
     url = db.StringProperty()
     description = db.StringProperty()
-    
     vid_site = db.StringProperty()
+
+class Person(db.Model):
+    
+    name_title = db.StringProperty()
+    name_first = db.StringProperty()
+    name_last = db.StringProperty()
+    namt_middle = db.StringProperty()
+    
+    info_type = db.StringProperty()
+    info_birthdate_time = db.IntegerProperty()
+    info_birthdate_day = db.IntegerProperty()
+    info_birthdate_month = db.IntegerProperty()
+    info_birthdate_year = db.IntegerProperty()
+    info_birthdate_misc = db.StringProperty()
+    info_nat = db.StringProperty()
+    into_bio = db.TextProperty()
+    
+    link = db.ListProperty(db.ReferenceProperty(Link))
+    crisis = db.ReferenceProperty(Crisis)
+    org = db.ReferenceProperty(Organization)
+    misc = db.StringProperty()
+
             
 class Crisis(db.Model):
     name = db.StringProperty()
@@ -146,8 +168,8 @@ class Organization(db.Model):
     info_contacts_zip = db.StringProperty()
     links = db.ListProperty(db.ReferenceProperty(Link))
     misc = db.StringProperty()
-    crisis = db.ReferenceProperty(Crisis)
-    person = db.ReferenceProperty(Person)
+    crisis = db.StringProperty()
+    person = db.StringProperty()
     orgid = db.StringProperty()
     
 
