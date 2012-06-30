@@ -81,7 +81,7 @@ class ImportPage(webapp.RequestHandler):
     def post(self):
         form = cgi.FieldStorage()
         fileitem = form['myfile']
-        
+        content = form.getvalue('myfile')
         
         # Test if the file was uploaded
         if fileitem.filename:
@@ -96,7 +96,7 @@ class ImportPage(webapp.RequestHandler):
             tree = ElementTree.parse(f)
             
             try:
-                etw = xsv.parseAndValidateXmlInput(fn,'wc.xsd',xmlIfClass=xsv.XMLIF_ELEMENTTREE)
+                etw = xsv.parseAndValidateXmlInput(content,'wc.xsd',xmlIfClass=xsv.XMLIF_ELEMENTTREE)
                 et = etw.getTree()
                 root = et.getroot()
                 print "XML Validates!"
