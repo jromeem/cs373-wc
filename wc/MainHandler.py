@@ -7,6 +7,7 @@ import cgi, os
 import cgitb; cgitb.enable()
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element, SubElement, dump
+from minixsv import pyxsval as xsv
 
 
 class MainPage(webapp.RequestHandler):
@@ -50,26 +51,32 @@ class ImportPage(webapp.RequestHandler):
             #f = f.read()
             
             #parser = ElementTree.XMLParser()
-            
-            tree = ElementTree.parse(f)
-            
-            crises = tree.findall(".//crisis")
-        
-            people = tree.findall(".//person")
-        
-            orgs = tree.findall(".//organization")
-        
-            for crisis in crises:
-                print crisis.items()
-                print "</br>"
-                
-            for person in people:
-                print person.items()
-                print "</br>"
-                
-            for org in orgs:
-                print org.items()
-                print "</br>"
+            try:
+            	etw = xsv.parseAndValidateXmlInput(fn,'wc.xsd',xmlIfClass=xsv.XMLIF_ELEMENTTREE)
+            	et = etw.getTree()
+            	root = et.getroot()
+            	print "XML Validates!"
+            	
+            	tree = ElementTree.parse(f)
+            	crises = tree.findall(".//crisis")
+            	people = tree.findall(".//person")
+            	orgs = tree.findall(".//organization")
+            	for crisis in crises:
+            		print crisis.items()
+            		print "</br>"
+            	for person in people:
+            		print person.items()
+            		print "</br>"
+            	for org in orgs:
+            		print org.items()
+            		print "</br>"
+            	
+            except xsv.XsvalError,errstr:
+            	print errstr
+            	print "XML Does not Validate"
+            	
+            	
+
             
 
         else:
