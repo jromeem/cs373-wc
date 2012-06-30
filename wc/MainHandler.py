@@ -147,7 +147,7 @@ class ImportPage(webapp.RequestHandler):
 
             for person in people:
                 if (person.find('.//info')):
-                    list_of_links = grabLinks(crisis)
+                    list_of_links = grabLinks(person)
                     p = Person(
                                personid = person.attrib['id'],
                                name_title = person.find('.//name').find('.//title').text,
