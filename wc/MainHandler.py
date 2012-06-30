@@ -87,52 +87,55 @@ class ImportPage(webapp.RequestHandler):
         
             for crisis in crises:
                 if (crisis.find('.//info')):
+                    
+                    list_of_links = []
+                    for l in crisis.findall('.//ref'):
+                        new_link = Link(
+                                 type = l.tag,
+                                 title = l.find('.//title').text,
+                                 link_url = db.Link(l.find('.//url').text),
+                                 description = l.find('.//description').text,
+                                 vid_site = l.find('.//site').text
+                                 )
+                        new_link.put()
+                        list_of_links.append(new_link.key())
+                    
+                    info = crisis.find('.//info')
                     c = Crisis(
                                crisisid = crisis.attrib['id'],
                                name = crisis.find('.//name').text,
                                misc = crisis.find('.//misc').text,
-                               info_history = crisis.find('.//info').find('.//history').text
+                               
+                               info_history = info.find('.//history').text,
+                               info_help = info.find('.//help').text,
+                               info_resources = info.find('.//resources').text,
+                               info_type = info.find('.//type').text,
+                               
+                               date_time = info.find('.//time').find('.//time').text,
+                               date_day = int(info.find('.//time').find('.//day').text),
+                               date_month = int(info.find('.//time').find('.//month').text),
+                               date_year = int(info.find('.//time').find('.//year').text),
+                               date_misc = info.find('.//time').find('.//misc').text,
+                               
+                               location_city = info.find('.//loc').find('.//city').text,
+                               location_region = info.find('.//loc').find('.//region').text,
+                               location_country = info.find('.//loc').find('.//country').text,
+                               
+                               impact_human_deaths = int(info.find('.//impact').find('.//human').find('.//deaths').text),
+                               impact_human_displaced = int(info.find('.//impact').find('.//human').find('.//displaced').text),
+                               impact_human_injured = int(info.find('.//impact').find('.//human').find('.//injured').text),
+                               impact_human_missing = int(info.find('.//impact').find('.//human').find('.//missing').text),
+                               impact_human_misc = info.find('.//impact').find('.//human').find('.//deaths').text,
+                               
+                               impact_economic_amount = int(info.find('.//impact').find('.//economic').find('.//amount').text),
+                               impact_economic_currency = info.find('.//impact').find('.//economic').find('.//currency').text,
+                               impact_economic_misc = info.find('.//impact').find('.//economic').find('.//misc').text,
+                               
+                               links = list_of_links,
+                               orgrefs = [x for x in crisis.find('.//org').attrib['idref']],
+                               personrefs = [x for x in crisis.find('.//person').attrib['idref']]
                                )
                     c.put()
-            
-            """
-            crisisid = db.StringProperty()
-
-            name = db.StringProperty()
-            misc = db.StringProperty()
-            
-            info_history = db.TextProperty()
-            info_help = db.StringProperty()
-            info_resources = db.StringProperty()
-            info_type = db.StringProperty()
-            info_loc = db.ReferenceProperty()
-            
-            date_time = db.StringProperty()
-            date_day = db.IntegerProperty()
-            date_month = db.IntegerProperty()
-            date_year = db.IntegerProperty()
-            date_misc = db.StringProperty()
-            
-            location_city = db.StringProperty()
-            location_region = db.StringProperty()
-            location_country = db.StringProperty()
-            
-            impact_human_deaths = db.IntegerProperty()
-            impact_human_displaced = db.IntegerProperty()
-            impact_human_injured = db.IntegerProperty()
-            impact_human_missing = db.IntegerProperty()
-            impact_human_misc = db.StringProperty()
-            
-            impact_economic_amount = db.IntegerProperty()
-            impact_economic_currency = db.StringProperty()
-            impact_economic_misc = db.StringProperty()
-            
-            links = db.ListProperty(db.Key)
-            
-            orgrefs = db.ListProperty(str)
-            personrefs = db.ListProperty(str)
-            """
-            
 
         else:
             message = 'No file was uploaded. Try again? </br>'
@@ -155,8 +158,9 @@ class ImportPage(webapp.RequestHandler):
 
 
 class Link(db.Model):
+    type = db.StringProperty()
     title = db.StringProperty()
-    url = db.StringProperty()
+    link_url = db.LinkProperty()
     description = db.StringProperty()
     vid_site = db.StringProperty()
 
@@ -195,7 +199,6 @@ class Crisis(db.Model):
     info_help = db.StringProperty()
     info_resources = db.StringProperty()
     info_type = db.StringProperty()
-    info_loc = db.ReferenceProperty()
     
     date_time = db.StringProperty()
     date_day = db.IntegerProperty()
