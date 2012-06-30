@@ -145,6 +145,29 @@ class ImportPage(webapp.RequestHandler):
                                )
                     c.put()
 
+            for person in people:
+                if (person.find('.//info')):
+                    list_of_links = grabLinks(crisis)
+                    p = Person(
+                               personid = person.attrib['id'],
+                               name_title = person.find('.//name').find('.//title').text,
+                               name_first = person.find('.//name').find('.//first').text,
+                               name_last = person.find('.//name').find('.//last').text,
+                               name_middle = person.find('.//name').find('.//middle').text,
+                               info_type = person.find('.//info').find('.//type').text,
+                               info_birthdate_time = person.find('.//info').find('.//birthdate').find('.//time').text,
+                               info_birthdate_day = person.find('.//info').find('.//birthdate').find('.//day').text,
+                               info_birthdate_month = person.find('.//info').find('.//birthdate').find('.//month').text,
+                               info_birthdate_year = person.find('.//info').find('.//birthdate').find('.//year').text,
+                               info_birthdate_misc = person.find('.//info').find('.//birthdate').find('.//misc').text,
+                               info_nationality = person.find('.//info').find('.//nationality').text,
+                               info_biography = person.find('.//info').find('.//biography').text,
+                               
+                               links = list_of_links,
+                               orgrefs = [x for x in person.find('.//org').attrib['idref']],
+                               crisisrefs = [x for x in person.find('.//crisis').attrib['idref']]
+                               )
+                    p.put()
 
             for org in orgs:
                 if org.find('.//info'):
