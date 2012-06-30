@@ -21,7 +21,25 @@ class MainPage(webapp.RequestHandler):
         path = os.path.join(os.path.dirname(__file__), "index.html")
         self.response.out.write(template.render(path, template_values))
         
-        
+def grabLinks(crisis):
+    list_of_links = []
+    for ref in crisis.findall('.//ref'):
+        for l in ref:
+            new_link = Link()
+            if (l.tag):
+                new_link.type = l.tag
+            if (l.find('./title') != None):
+                new_link.title = l.find('./title').text
+            if (l.find('./url') != None):
+                new_link.link_url = db.Link(l.find('./url').text)
+            if (l.find('./description') != None):
+                new_link.description = l.find('./description').text
+            if (l.find('./site') != None):
+                new_link.vid_site = l.find('./site').text
+            new_link.put()
+            list_of_links.append(new_link.key())
+            
+        return list_of_links
         
 class ImportPage(webapp.RequestHandler):
     def get(self):
@@ -88,17 +106,7 @@ class ImportPage(webapp.RequestHandler):
             for crisis in crises:
                 if (crisis.find('.//info')):
                     
-                    list_of_links = []
-                    for l in crisis.findall('.//ref'):
-                        new_link = Link(
-                                 type = l.tag,
-                                 title = l.find('.//title').text,
-                                 link_url = db.Link(l.find('.//url').text),
-                                 description = l.find('.//description').text,
-                                 vid_site = l.find('.//site').text
-                                 )
-                        new_link.put()
-                        list_of_links.append(new_link.key())
+                    list_of_links = grabLinks(crisis)
                     
                     info = crisis.find('.//info')
                     c = Crisis(
