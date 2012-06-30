@@ -152,7 +152,7 @@
 	<xsd:sequence>
 		<xsd:element name="title" type="xsd:string"/>
 		<xsd:element name="url" type="xsd:string"/>
-		<xsd:element name="description" type="xsd:string"/>
+		<xsd:element name="description" type="xsd:normalizedString"/>
 	</xsd:sequence>
 </xsd:complexType>
 
@@ -161,7 +161,7 @@
 		<xsd:element name="site" type="xsd:string"/>
 		<xsd:element name="title" type="xsd:string"/>
 		<xsd:element name="url" type="xsd:string"/>
-		<xsd:element name="description" type="xsd:string"/>
+		<xsd:element name="description" type="xsd:normalizedString"/>
 	</xsd:sequence>
 </xsd:complexType>
 
