@@ -156,9 +156,9 @@ class ImportPage(webapp.RequestHandler):
                                name_middle = person.find('.//name').find('.//middle').text,
                                info_type = person.find('.//info').find('.//type').text,
                                info_birthdate_time = person.find('.//info').find('.//birthdate').find('.//time').text,
-                               info_birthdate_day = person.find('.//info').find('.//birthdate').find('.//day').text,
-                               info_birthdate_month = person.find('.//info').find('.//birthdate').find('.//month').text,
-                               info_birthdate_year = person.find('.//info').find('.//birthdate').find('.//year').text,
+                               info_birthdate_day = int(person.find('.//info').find('.//birthdate').find('.//day').text),
+                               info_birthdate_month = int(person.find('.//info').find('.//birthdate').find('.//month').text),
+                               info_birthdate_year = int(person.find('.//info').find('.//birthdate').find('.//year').text),
                                info_birthdate_misc = person.find('.//info').find('.//birthdate').find('.//misc').text,
                                info_nationality = person.find('.//info').find('.//nationality').text,
                                info_biography = person.find('.//info').find('.//biography').text,
@@ -231,7 +231,7 @@ class Person(db.Model):
     name_middle = db.StringProperty()
     
     info_type = db.StringProperty()
-    info_birthdate_time = db.IntegerProperty()
+    info_birthdate_time = db.StringProperty()
     info_birthdate_day = db.IntegerProperty()
     info_birthdate_month = db.IntegerProperty()
     info_birthdate_year = db.IntegerProperty()
