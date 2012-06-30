@@ -145,6 +145,33 @@ class ImportPage(webapp.RequestHandler):
                                )
                     c.put()
 
+
+            for org in orgs:
+                if org.find('.//info'):
+                    info = org.find('.//info')
+                    contact = info.find('.//contact')
+                    mail = contact.find('.//mail')
+                    loc = info.find('.//loc')
+                    o = Organization(orgid = org.attrib['id'],
+                                     name = org.find('.//name').text,
+                                     misc = org.find('.//misc').text,
+                                     
+                                     info_type = info.find('.//type').text,
+                                     info_history = info.find('.//history').text,
+
+                                     info_contacts_phone = contact.find('.//phone').text,
+                                     info_contacts_email = contact.find('.//email').text,
+                                     info_contacts_address = mail.find('.//address').text,
+                                     info_contacts_city = mail.find('.//city').text,
+                                     info_contacts_state = mail.find('.//state').text,
+                                     info_contacts_country = mail.find('.//country').text,
+                                     info_contacts_zip = mail.find('.//zip').text,
+
+                                     info_loc_city = loc.find('.//city').text,
+                                     info_loc_region = loc.find('.//region').text,
+                                     info_loc_country = loc.find('.//country').text)
+                    o.put()
+
         else:
             message = 'No file was uploaded. Try again? </br>'
         
