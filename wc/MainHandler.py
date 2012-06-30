@@ -90,7 +90,8 @@ class ImportPage(webapp.RequestHandler):
                     c = Crisis(
                                crisisid = crisis.attrib['id'],
                                name = crisis.find('.//name').text,
-                               misc = crisis.find('.//misc').text
+                               misc = crisis.find('.//misc').text,
+                               info_history = crisis.find('.//info').find('.//history').text
                                )
                     c.put()
             
