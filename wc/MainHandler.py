@@ -60,7 +60,6 @@ class ImportPage(webapp.RequestHandler):
                 root = et.getroot()
                 print "XML Validates!"
                 
-                tree = ElementTree.parse(f)
                 crises = tree.findall(".//crisis")
                 people = tree.findall(".//person")
                 orgs = tree.findall(".//organization")
@@ -90,7 +89,8 @@ class ImportPage(webapp.RequestHandler):
                 if (crisis.find('.//info')):
                     c = Crisis(
                                crisisid = crisis.attrib['id'],
-                               name = crisis.find('.//name').text
+                               name = crisis.find('.//name').text,
+                               misc = crisis.find('.//misc').text
                                )
                     c.put()
             
