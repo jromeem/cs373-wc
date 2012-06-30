@@ -45,7 +45,7 @@ def grabLinks(crisis):
             new_link.put()
             list_of_links.append(new_link.key())
             
-        return list_of_links
+    return list_of_links
         
 class ImportPage(webapp.RequestHandler):
     def get(self):
@@ -201,8 +201,8 @@ class ImportPage(webapp.RequestHandler):
                                      info_loc_country = loc.find('.//country').text,
                                      
                                      links = list_of_links,
-                                     personrefs = [x for x in person.find('.//person').attrib['idref']],
-                                     crisisrefs = [x for x in person.find('.//crisis').attrib['idref']]
+                                     personrefs = [x for x in org.find('.//person').attrib['idref']],
+                                     crisisrefs = [x for x in org.find('.//crisis').attrib['idref']]
                                      )
                     o.put()
 
