@@ -7,6 +7,7 @@ import cgi, os
 import cgitb; cgitb.enable()
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element, SubElement, dump
+from minixsv import pyxsval as xsv
 
 
 class MainPage(webapp.RequestHandler):
@@ -53,6 +54,32 @@ class ImportPage(webapp.RequestHandler):
             
             tree = ElementTree.parse(f)
             
+            try:
+                etw = xsv.parseAndValidateXmlInput(fn,'wc.xsd',xmlIfClass=xsv.XMLIF_ELEMENTTREE)
+                et = etw.getTree()
+                root = et.getroot()
+                print "XML Validates!"
+                
+                tree = ElementTree.parse(f)
+                crises = tree.findall(".//crisis")
+                people = tree.findall(".//person")
+                orgs = tree.findall(".//organization")
+                for crisis in crises:
+                    print crisis.items()
+                    print "</br>"
+                for person in people:
+                    print person.items()
+                    print "</br>"
+                for org in orgs:
+                    print org.items()
+                    print "</br>"
+                
+            except xsv.XsvalError,errstr:
+                print errstr
+                print "XML Does not Validate"
+                
+
+            
             crises = tree.findall(".//crisis")
         
             people = tree.findall(".//person")
@@ -70,39 +97,39 @@ class ImportPage(webapp.RequestHandler):
             """
             crisisid = db.StringProperty()
 
-    name = db.StringProperty()
-    misc = db.StringProperty()
-    
-    info_history = db.TextProperty()
-    info_help = db.StringProperty()
-    info_resources = db.StringProperty()
-    info_type = db.StringProperty()
-    info_loc = db.ReferenceProperty()
-    
-    date_time = db.StringProperty()
-    date_day = db.IntegerProperty()
-    date_month = db.IntegerProperty()
-    date_year = db.IntegerProperty()
-    date_misc = db.StringProperty()
-    
-    location_city = db.StringProperty()
-    location_region = db.StringProperty()
-    location_country = db.StringProperty()
-    
-    impact_human_deaths = db.IntegerProperty()
-    impact_human_displaced = db.IntegerProperty()
-    impact_human_injured = db.IntegerProperty()
-    impact_human_missing = db.IntegerProperty()
-    impact_human_misc = db.StringProperty()
-    
-    impact_economic_amount = db.IntegerProperty()
-    impact_economic_currency = db.StringProperty()
-    impact_economic_misc = db.StringProperty()
-    
-    links = db.ListProperty(db.Key)
-    
-    orgrefs = db.ListProperty(str)
-    personrefs = db.ListProperty(str)
+            name = db.StringProperty()
+            misc = db.StringProperty()
+            
+            info_history = db.TextProperty()
+            info_help = db.StringProperty()
+            info_resources = db.StringProperty()
+            info_type = db.StringProperty()
+            info_loc = db.ReferenceProperty()
+            
+            date_time = db.StringProperty()
+            date_day = db.IntegerProperty()
+            date_month = db.IntegerProperty()
+            date_year = db.IntegerProperty()
+            date_misc = db.StringProperty()
+            
+            location_city = db.StringProperty()
+            location_region = db.StringProperty()
+            location_country = db.StringProperty()
+            
+            impact_human_deaths = db.IntegerProperty()
+            impact_human_displaced = db.IntegerProperty()
+            impact_human_injured = db.IntegerProperty()
+            impact_human_missing = db.IntegerProperty()
+            impact_human_misc = db.StringProperty()
+            
+            impact_economic_amount = db.IntegerProperty()
+            impact_economic_currency = db.StringProperty()
+            impact_economic_misc = db.StringProperty()
+            
+            links = db.ListProperty(db.Key)
+            
+            orgrefs = db.ListProperty(str)
+            personrefs = db.ListProperty(str)
             """
             
 
