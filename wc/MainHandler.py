@@ -84,19 +84,6 @@ class ImportPage(webapp.RequestHandler):
                 root = et.getroot()
                 print "XML Validates!"
                 
-                crises = tree.findall(".//crisis")
-                people = tree.findall(".//person")
-                orgs = tree.findall(".//organization")
-                for crisis in crises:
-                    print crisis.items()
-                    print "</br>"
-                for person in people:
-                    print person.items()
-                    print "</br>"
-                for org in orgs:
-                    print org.items()
-                    print "</br>"
-                
             except xsv.XsvalError,errstr:
                 print errstr
                 print "XML Does not Validate"
@@ -201,8 +188,8 @@ class ImportPage(webapp.RequestHandler):
                                      info_loc_country = loc.find('.//country').text,
                                      
                                      links = list_of_links,
-                                     personrefs = [x for x in person.find('.//person').attrib['idref']],
-                                     crisisrefs = [x for x in person.find('.//crisis').attrib['idref']]
+                                     personrefs = [x for x in org.find('.//person').attrib['idref']],
+                                     crisisrefs = [x for x in org.find('.//crisis').attrib['idref']]
                                      )
                     o.put()
 
