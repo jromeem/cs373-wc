@@ -23,11 +23,24 @@ class MainPage(webapp.RequestHandler):
 
 class ExportPage(webapp.RequestHandler):
     def get(self):
-        #print "export page!!"
-        self.response.headers['Content-Type']='text/xml; charset=utf-8'
-        xml_string = """<?xml version="1.0" encoding="UTF-8"?><worldCrises xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xsi:noNamespaceSchemaLocation="wc.xsd">sdflkfdslkjdfslkj</worldCrises>"""
-
+        crises = db.GqlQuery("SELECT * FROM Crisis")
+              
+        xml_string = '<?xml version="1.0" encoding="UTF-8"?><worldCrises xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xsi:noNamespaceSchemaLocation="wc.xsd">'
+        
+        crisis_fields = ['name', 'misc', 'impact_human_deaths', 'impact_human_displaced', 'info_resources']
+        
+        for crisis in crises:
+            xml_string += "<crisis id=\"" + getattr(crisis, 'crisisid') + "\">"
+            for field in crisis_fields:
+                if getattr(crisis, field):
+                    xml_string += "<" + field + ">" + str(getattr(crisis, field)) + "</" + field + ">"
+                else:
+                    xml_string += ("<" + field + "></" + field + ">")
+            xml_string += "</crisis>"
+        xml_string += "</worldCrises>"
+        
         #print xml_string
+        self.response.headers['Content-Type'] = "text/xml; charset=utf-8"
         self.response.out.write(xml_string)
         
         
