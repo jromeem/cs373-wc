@@ -23,8 +23,12 @@ class MainPage(webapp.RequestHandler):
 
 class ExportPage(webapp.RequestHandler):
     def get(self):
-        print "export page!!"
-        self.response.out.write("")
+        #print "export page!!"
+        self.response.headers['Content-Type']='text/xml; charset=utf-8'
+        xml_string = """<?xml version="1.0" encoding="UTF-8"?><worldCrises xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xsi:noNamespaceSchemaLocation="wc.xsd">sdflkfdslkjdfslkj</worldCrises>"""
+
+        #print xml_string
+        self.response.out.write(xml_string)
         
         
 def grabLinks(crisis):
