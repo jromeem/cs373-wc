@@ -16,10 +16,16 @@ class MainPage(webapp.RequestHandler):
         template_values = {
             'page': page,
         }
-
-        #path = os.path.join(os.path.dirname(__file__), page + ".html")
+        
         path = os.path.join(os.path.dirname(__file__), "index.html")
         self.response.out.write(template.render(path, template_values))
+
+
+class ExportPage(webapp.RequestHandler):
+    def get(self):
+        print "export page!!"
+        self.response.out.write("")
+        
         
 def grabLinks(crisis):
     list_of_links = []
@@ -156,9 +162,9 @@ class ImportPage(webapp.RequestHandler):
                                name_middle = person.find('.//name').find('.//middle').text,
                                info_type = person.find('.//info').find('.//type').text,
                                info_birthdate_time = person.find('.//info').find('.//birthdate').find('.//time').text,
-                               info_birthdate_day = person.find('.//info').find('.//birthdate').find('.//day').text,
-                               info_birthdate_month = person.find('.//info').find('.//birthdate').find('.//month').text,
-                               info_birthdate_year = person.find('.//info').find('.//birthdate').find('.//year').text,
+                               info_birthdate_day = int(person.find('.//info').find('.//birthdate').find('.//day').text),
+                               info_birthdate_month = int(person.find('.//info').find('.//birthdate').find('.//month').text),
+                               info_birthdate_year = int(person.find('.//info').find('.//birthdate').find('.//year').text),
                                info_birthdate_misc = person.find('.//info').find('.//birthdate').find('.//misc').text,
                                info_nationality = person.find('.//info').find('.//nationality').text,
                                info_biography = person.find('.//info').find('.//biography').text,
@@ -192,7 +198,12 @@ class ImportPage(webapp.RequestHandler):
 
                                      info_loc_city = loc.find('.//city').text,
                                      info_loc_region = loc.find('.//region').text,
-                                     info_loc_country = loc.find('.//country').text)
+                                     info_loc_country = loc.find('.//country').text,
+                                     
+                                     links = list_of_links,
+                                     personrefs = [x for x in person.find('.//person').attrib['idref']],
+                                     crisisrefs = [x for x in person.find('.//crisis').attrib['idref']]
+                                     )
                     o.put()
 
         else:
@@ -231,7 +242,7 @@ class Person(db.Model):
     name_middle = db.StringProperty()
     
     info_type = db.StringProperty()
-    info_birthdate_time = db.IntegerProperty()
+    info_birthdate_time = db.StringProperty()
     info_birthdate_day = db.IntegerProperty()
     info_birthdate_month = db.IntegerProperty()
     info_birthdate_year = db.IntegerProperty()
@@ -308,7 +319,8 @@ class Organization(db.Model):
 
 
 application = webapp.WSGIApplication(
-                                     [('/', MainPage), ('/import', ImportPage)],
+                                     [('/', MainPage), ('/import', ImportPage),
+                                      ('/export', ExportPage)],
                                      debug=True)
 
 def main():
