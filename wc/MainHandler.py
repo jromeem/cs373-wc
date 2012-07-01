@@ -30,7 +30,7 @@ class ExportPage(webapp.RequestHandler):
         worldCrises = ElementTree.Element("worldCrisis", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance"})
         
         for c in crisis_list:
-            crisis = ElementTree.SubElement(worldCrises, "crisis", {"id" : c.crisisid})
+            crisis = ElementTree.SubElement(worldCrises, "crisis", {"id" : c.elemid})
             name = ElementTree.SubElement(crisis, "name")
             name.text = c.name
             
@@ -100,7 +100,8 @@ class ExportPage(webapp.RequestHandler):
     
     
         for o in organization_list:
-            organization = ElementTree.SubElement(worldCrises, "organization", {"id" : o.orgid})
+            organization = ElementTree.SubElement(worldCrises, "organization", {"id" : o.elemid})
+            name = ElementTree.SubElement(organization, "name")
             name.text = o.name
             
             info = ElementTree.SubElement(organization, "info")
@@ -127,13 +128,21 @@ class ExportPage(webapp.RequestHandler):
             orgzip = ElementTree.SubElement(mail, "zip")
             orgzip.text = o.info_contacts_zip
             
+            ref = ElementTree.SubElement(organization, "ref")
+            exportLinks(o, ref)
+            
             misc = ElementTree.SubElement(organization, "misc")
             misc.text = o.misc
+            
+            for crisisref in o.crisisrefs:
+                crisis = ElementTree.SubElement(crisis, "crisis", {"idref" : crisisref})
+            for personref in o.personrefs:
+                person = ElementTree.SubElement(crisis, "person", {"idref" : personref})
         
-
         for p in person_list:
-            person = ElementTree.SubElement(worldCrises, "person", {"id" : p.personid})
+            person = ElementTree.SubElement(worldCrises, "person", {"id" : p.elemid})
             name = ElementTree.SubElement(person, "name")
+            
             title = ElementTree.SubElement(name, "title")
             title.text = p.name_title
             first = ElementTree.SubElement(name, "first")
@@ -142,9 +151,11 @@ class ExportPage(webapp.RequestHandler):
             last.text = p.name_last
             middle = ElementTree.SubElement(name, "middle")
             middle.text = p.name_middle
+            
             info = ElementTree.SubElement(person, "info")
             info_type = ElementTree.SubElement(info, "type")
             info_type.text = p.info_type
+            
             info_birthdate = ElementTree.SubElement(info, "birthdate")
             info_birthdate_time = ElementTree.SubElement(info_birthdate, "time")
             info_birthdate_time.text = p.info_birthdate_time
@@ -156,11 +167,20 @@ class ExportPage(webapp.RequestHandler):
             info_birthdate_year.text = str(p.info_birthdate_year)
             info_birthdate_misc = ElementTree.SubElement(info_birthdate, "misc")
             info_birthdate_misc.text = p.info_birthdate_misc
+            
             info_nat = ElementTree.SubElement(info, "nationality")
             info_nat.text = p.info_nationality
+            
             info_bio = ElementTree.SubElement(info, "biography")
             info_bio.text = p.info_biography
-
+            
+            ref = ElementTree.SubElement(organization, "ref")
+            exportLinks(p, ref)
+            
+            for crisisref in p.crisisrefs:
+                crisis = ElementTree.SubElement(crisis, "crisis", {"idref" : crisisref})
+            for orgref in p.orgrefs:
+                org = ElementTree.SubElement(crisis, "org", {"idref" : orgref})
             
         tree = ElementTree.ElementTree(worldCrises)
         text = ElementTree.tostring(worldCrises)            
@@ -170,7 +190,7 @@ class ExportPage(webapp.RequestHandler):
         
 def exportLinks(c, ref):
     for l in link_list:
-        if not l.link_parent == c.crisisid:
+        if not l.link_parent == c.elemid:
             continue
         currRef = ElementTree.SubElement(ref, l.type)
         title = ElementTree.SubElement(currRef, "title")
@@ -258,7 +278,7 @@ class ImportPage(webapp.RequestHandler):
                     grabLinks(crisis)
                     
                     c = Crisis(
-                               crisisid = crisis.attrib['id'],
+                               elemid = crisis.attrib['id'],
                                name = crisis.find('.//name').text,
                                misc = crisis.find('.//misc').text,
                                
@@ -297,7 +317,7 @@ class ImportPage(webapp.RequestHandler):
                 if (person.find('.//info')):
                     grabLinks(person)
                     p = Person(
-                               personid = person.attrib['id'],
+                               elemid = person.attrib['id'],
                                name_title = person.find('.//name').find('.//title').text,
                                name_first = person.find('.//name').find('.//first').text,
                                name_last = person.find('.//name').find('.//last').text,
@@ -311,8 +331,8 @@ class ImportPage(webapp.RequestHandler):
                                info_nationality = person.find('.//info').find('.//nationality').text,
                                info_biography = person.find('.//info').find('.//biography').text,
                                
-                               orgrefs = [x for x in person.find('.//org').attrib['idref']],
-                               crisisrefs = [x for x in person.find('.//crisis').attrib['idref']]
+                               orgrefs = [x.attrib['idref'] for x in person.findall('.//org')],
+                               crisisrefs = [x.attrib['idref'] for x in person.findall('.//crisis')]
                                )
                     person_list.append(p)
                     #p.put()
@@ -324,7 +344,8 @@ class ImportPage(webapp.RequestHandler):
                     contact = info.find('.//contact')
                     mail = contact.find('.//mail')
                     loc = info.find('.//loc')
-                    o = Organization(orgid = org.attrib['id'],
+                    o = Organization(
+                                     elemid = org.attrib['id'],
                                      name = org.find('.//name').text,
                                      misc = org.find('.//misc').text,
                                      
@@ -343,8 +364,8 @@ class ImportPage(webapp.RequestHandler):
                                      info_loc_region = loc.find('.//region').text,
                                      info_loc_country = loc.find('.//country').text,
                                      
-                                     personrefs = [x for x in org.find('.//person').attrib['idref']],
-                                     crisisrefs = [x for x in org.find('.//crisis').attrib['idref']]
+                                     personrefs = [x.attrib['idref'] for x in org.findall('.//person')],
+                                     crisisrefs = [x.attrib['idref'] for x in org.findall('.//crisis')]
                                      )
                     organization_list.append(o)
                     #o.put()
@@ -378,7 +399,7 @@ class Link(db.Model):
     vid_site = db.StringProperty()
 
 class Person(db.Model):
-    personid = db.StringProperty()
+    elemid = db.StringProperty()
     
     name_title = db.StringProperty()
     name_first = db.StringProperty()
@@ -403,7 +424,7 @@ class Person(db.Model):
 
             
 class Crisis(db.Model):
-    crisisid = db.StringProperty()
+    elemid = db.StringProperty()
 
     name = db.StringProperty()
     misc = db.StringProperty()
@@ -439,7 +460,7 @@ class Crisis(db.Model):
     personrefs = db.ListProperty(str)
     
 class Organization(db.Model):
-    orgid = db.StringProperty()
+    elemid = db.StringProperty()
     
     name = db.StringProperty()
     
@@ -452,6 +473,10 @@ class Organization(db.Model):
     info_contacts_state = db.StringProperty()
     info_contacts_country = db.StringProperty()
     info_contacts_zip = db.StringProperty()
+    
+    info_loc_city = db.StringProperty()
+    info_loc_region = db.StringProperty()
+    info_loc_country = db.StringProperty()
     
     links = db.ListProperty(db.Key)
     
