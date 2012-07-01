@@ -9,9 +9,6 @@ from xml.etree import ElementTree
 from xml.etree.ElementTree import Element, SubElement, dump
 from minixsv import pyxsval as xsv
 
-crisis_list = []
-person_list = []
-organization_list = []
 
 class MainPage(webapp.RequestHandler):
     def get(self):
@@ -26,383 +23,55 @@ class MainPage(webapp.RequestHandler):
 
 class ExportPage(webapp.RequestHandler):
     def get(self):
-        worldCrises = ElementTree.Element("worldCrisis", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
+        crises = db.GqlQuery("SELECT * FROM Crisis")
+              
+        xml_string = '<?xml version="1.0" encoding="UTF-8"?><worldCrises xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xsi:noNamespaceSchemaLocation="wc.xsd">'
         
-        for c in crisis_list:
-            crisis = ElementTree.SubElement(worldCrises, "crisis", {"id" : c.crisisid})
-            name = ElementTree.SubElement(crisis, "name")
-            name.text = c.name
-            info = ElementTree.SubElement(crisis, "info")
-            history = ElementTree.SubElement(info, "history")
-            history.text = c.info_history
-        """
-        links = db.ListProperty(db.Key)
-    
-        crisisrefs = db.ListProperty(str)
-        personrefs = db.ListProperty(str)
-    
-        """
-        for o in organization_list:
-            organization = ElementTree.SubElement(worldCrises, "organization", {"id" : o.orgid})
-            name.text = o.name
-            
-            info = ElementTree.SubElement(organization, "info")
-            orgtype = ElementTree.SubElement(info, "type")
-            orgtype.text = o.info_type
-            history = ElementTree.SubElement(info, "history")
-            history.text = o.info_history
-            
-            contact = ElementTree.SubElement(info, "contact")
-            phone = ElementTree.SubElement(contact, "phone")
-            phone.text = o.info_contacts_phone
-            email = ElementTree.SubElement(contact, "email")
-            email.text = o.info_contacts_email
-            
-            mail = ElementTree.SubElement(contact, "mail")
-            address = ElementTree.SubElement(mail, "address")
-            address.text = o.info_contacts_address
-            city = ElementTree.SubElement(mail, "city")
-            city.text = o.info_contacts_city
-            state = ElementTree.SubElement(mail, "state")
-            state.text = o.info_contacts_state
-            country = ElementTree.SubElement(mail, "country")
-            country.text = o.info_contacts_country
-            orgzip = ElementTree.SubElement(mail, "zip")
-            orgzip.text = o.info_contacts_zip
-            
-            misc = ElementTree.SubElement(organization, "misc")
-            misc.text = o.misc
+        for crisis in crises:
+            xml_string += "<crisis id=\"" + crisis.crisisid + "\">"
+            xml_string += "<name>" + crisis.name + "</name>"
+            xml_string += "<info>"
+            xml_string += "<history>" + crisis.info_history + "</history>"
+            xml_string += "<help>" + crisis.info_help + "</help>"
+            xml_string += "<resources>" + crisis.info_resources + "</resources>"
+            xml_string += "<type>" + crisis.info_type + "</type>"
+            xml_string += "<time>"
+            xml_string += "<time>" + str(crisis.date_time) + "</time>"
+            xml_string += "<day>" + str(crisis.date_day) + "</day>"
+            xml_string += "<month>" + str(crisis.date_month) + "</month>"
+            xml_string += "<year>" + str(crisis.date_year) + "</year>"
+            xml_string += "<misc>" + (crisis.date_misc or "") + "</misc>"
+            xml_string += "</time>"
+            xml_string += "<loc>"
+            xml_string += "<city>" + (crisis.location_city or "") + "</city>"
+            xml_string += "<region>" + (crisis.location_region or "") + "</region>"
+            xml_string += "<country>" + (crisis.location_country or "") + "</country>"
+            xml_string += "</loc>"
+            xml_string += "<impact>"
+            xml_string += "<human>"
+            xml_string += "<deaths>" + str(crisis.impact_human_deaths) + "</deaths>"
+            xml_string += "<displaced>" + str(crisis.impact_human_displaced) + "</displaced>"
+            xml_string += "<injured>" + str(crisis.impact_human_injured) + "</injured>"
+            xml_string += "<missing>" + str(crisis.impact_human_missing) + "</missing>"
+            xml_string += "<misc>" + str(crisis.impact_human_misc or "") + "</misc>"
+            xml_string += "</human>"
+            xml_string += "<economic>"
+            xml_string += "<amount>" + str(crisis.impact_economic_amount) + "</amount>"
+            xml_string += "<currency>" + str(crisis.impact_economic_currency or "") + "</currency>"
+            xml_string += "<misc>" + str(crisis.impact_economic_misc or "") + "</misc>"
+            xml_string += "</economic>"
+            xml_string += "</impact>"
+            xml_string += "</info>"
+            xml_string += "</crisis>"
+        xml_string += "</worldCrises>"
         
-
-
-        for p in person_list:
-            person = ElementTree.SubElement(worldCrises, "person", {"id" : p.personid})
-            name = ElementTree.SubElement(person, "name")
-            title = ElementTree.SubElement(name, "title")
-            title.text = p.name_title
-            first = ElementTree.SubElement(name, "first")
-            first.text = p.name_first
-            last = ElementTree.SubElement(name, "last")
-            last.text = p.name_last
-            middle = ElementTree.SubElement(name, "middle")
-            middle.text = p.name_middle
-            info = ElementTree.SubElement(person, "info")
-            info_type = ElementTree.SubElement(info, "type")
-            info_type.text = p.info_type
-            info_birthdate = ElementTree.SubElement(info, "birthdate")
-            info_birthdate_time = ElementTree.SubElement(info_birthdate, "time")
-            info_birthdate_time.text = p.info_birthdate_time
-            info_birthdate_day = ElementTree.SubElement(info_birthdate, "day")
-            info_birthdate_day.text = str(p.info_birthdate_day)
-            info_birthdate_month = ElementTree.SubElement(info_birthdate, "month")
-            info_birthdate_month.text = str(p.info_birthdate_month)
-            info_birthdate_year = ElementTree.SubElement(info_birthdate, "year")
-            info_birthdate_year.text = str(p.info_birthdate_year)
-            info_birthdate_misc = ElementTree.SubElement(info_birthdate, "misc")
-            info_birthdate_misc.text = p.info_birthdate_misc
-            info_nat = ElementTree.SubElement(info, "nationality")
-            info_nat.text = p.info_nationality
-            info_bio = ElementTree.SubElement(info, "biography")
-            info_bio.text = p.info_biography
-            
-            
-
-
-            
-            #info = ElementTree.SubElement(person, "info")
-            
-        tree = ElementTree.ElementTree(worldCrises)
-        text = ElementTree.tostring(worldCrises)            
+        #print xml_string
         self.response.headers['Content-Type'] = "text/xml; charset=utf-8"
-        self.response.out.write(text)
-        
-        
-def grabLinks(crisis):
-    list_of_links = []
-    for ref in crisis.findall('.//ref'):
-        for l in ref:
-            new_link = Link()
-            if (l.tag):
-                new_link.type = l.tag
-            if (l.find('./title') != None):
-                new_link.title = l.find('./title').text
-            if (l.find('./url') != None):
-                new_link.link_url = db.Link(l.find('./url').text)
-            if (l.find('./description') != None):
-                new_link.description = l.find('./description').text
-            if (l.find('./site') != None):
-                new_link.vid_site = l.find('./site').text
-            new_link.put()
-            list_of_links.append(new_link.key())
-            
-    return list_of_links
-        
-class ImportPage(webapp.RequestHandler):
-    def get(self):
-        self.response.out.write("""
-            <html>
-            <body>
-            <form action="/import" method="post" enctype="multipart/form-data">
-            <div>
-            <input id="myfile" name="myfile" type="file">
-            <input value="Upload" type="submit">
-            </div>
-            </form>
-            </body>
-            </html>""")
-            
-    def post(self):
-        form = cgi.FieldStorage()
-        fileitem = form['myfile']
-        content = form.getvalue('myfile')
-        
-        # Test if the file was uploaded
-        if fileitem.filename:
-            fn = os.path.basename(fileitem.filename)
-            f = fileitem.file
-            message = 'The file "' + fn + '" was uploaded successfully.  Upload another? </br>'
-            
-            #f = f.read()
-            
-            #parser = ElementTree.XMLParser()
-            
-            tree = ElementTree.parse(f)
-            
-            try:
-                etw = xsv.parseAndValidateXmlInputString(content,'wc.xsd',xmlIfClass=xsv.XMLIF_ELEMENTTREE)
-                et = etw.getTree()
-                root = et.getroot()
-                print "XML Validates!"
-                
-            except xsv.XsvalError,errstr:
-                print errstr
-                print "XML Does not Validate"
-                
+        self.response.out.write(xml_string)
 
-            
-            crises = tree.findall(".//crisis")
-        
-            people = tree.findall(".//person")
-        
-            orgs = tree.findall(".//organization")
-        
-            for crisis in crises:
-                if (crisis.find('.//info')):
-                    
-                    list_of_links = grabLinks(crisis)
-                    
-                    info = crisis.find('.//info')
-                    c = Crisis(
-                               crisisid = crisis.attrib['id'],
-                               name = crisis.find('.//name').text,
-                               misc = crisis.find('.//misc').text,
-                               
-                               info_history = info.find('.//history').text,
-                               info_help = info.find('.//help').text,
-                               info_resources = info.find('.//resources').text,
-                               info_type = info.find('.//type').text,
-                               
-                               date_time = info.find('.//time').find('.//time').text,
-                               date_day = int(info.find('.//time').find('.//day').text),
-                               date_month = int(info.find('.//time').find('.//month').text),
-                               date_year = int(info.find('.//time').find('.//year').text),
-                               date_misc = info.find('.//time').find('.//misc').text,
-                               
-                               location_city = info.find('.//loc').find('.//city').text,
-                               location_region = info.find('.//loc').find('.//region').text,
-                               location_country = info.find('.//loc').find('.//country').text,
-                               
-                               impact_human_deaths = int(info.find('.//impact').find('.//human').find('.//deaths').text),
-                               impact_human_displaced = int(info.find('.//impact').find('.//human').find('.//displaced').text),
-                               impact_human_injured = int(info.find('.//impact').find('.//human').find('.//injured').text),
-                               impact_human_missing = int(info.find('.//impact').find('.//human').find('.//missing').text),
-                               impact_human_misc = info.find('.//impact').find('.//human').find('.//deaths').text,
-                               
-                               impact_economic_amount = int(info.find('.//impact').find('.//economic').find('.//amount').text),
-                               impact_economic_currency = info.find('.//impact').find('.//economic').find('.//currency').text,
-                               impact_economic_misc = info.find('.//impact').find('.//economic').find('.//misc').text,
-                               
-                               links = list_of_links,
-                               orgrefs = [x for x in crisis.find('.//org').attrib['idref']],
-                               personrefs = [x for x in crisis.find('.//person').attrib['idref']]
-                               )
-                    crisis_list.append(c)
-                    #c.put()
-
-            for person in people:
-                if (person.find('.//info')):
-                    list_of_links = grabLinks(person)
-                    p = Person(
-                               personid = person.attrib['id'],
-                               name_title = person.find('.//name').find('.//title').text,
-                               name_first = person.find('.//name').find('.//first').text,
-                               name_last = person.find('.//name').find('.//last').text,
-                               name_middle = person.find('.//name').find('.//middle').text,
-                               info_type = person.find('.//info').find('.//type').text,
-                               info_birthdate_time = person.find('.//info').find('.//birthdate').find('.//time').text,
-                               info_birthdate_day = int(person.find('.//info').find('.//birthdate').find('.//day').text),
-                               info_birthdate_month = int(person.find('.//info').find('.//birthdate').find('.//month').text),
-                               info_birthdate_year = int(person.find('.//info').find('.//birthdate').find('.//year').text),
-                               info_birthdate_misc = person.find('.//info').find('.//birthdate').find('.//misc').text,
-                               info_nationality = person.find('.//info').find('.//nationality').text,
-                               info_biography = person.find('.//info').find('.//biography').text,
-                               
-                               links = list_of_links,
-                               orgrefs = [x for x in person.find('.//org').attrib['idref']],
-                               crisisrefs = [x for x in person.find('.//crisis').attrib['idref']]
-                               )
-                    person_list.append(p)
-                    #p.put()
-
-            for org in orgs:
-                if org.find('.//info'):
-                    info = org.find('.//info')
-                    contact = info.find('.//contact')
-                    mail = contact.find('.//mail')
-                    loc = info.find('.//loc')
-                    o = Organization(orgid = org.attrib['id'],
-                                     name = org.find('.//name').text,
-                                     misc = org.find('.//misc').text,
-                                     
-                                     info_type = info.find('.//type').text,
-                                     info_history = info.find('.//history').text,
-
-                                     info_contacts_phone = contact.find('.//phone').text,
-                                     info_contacts_email = contact.find('.//email').text,
-                                     info_contacts_address = mail.find('.//address').text,
-                                     info_contacts_city = mail.find('.//city').text,
-                                     info_contacts_state = mail.find('.//state').text,
-                                     info_contacts_country = mail.find('.//country').text,
-                                     info_contacts_zip = mail.find('.//zip').text,
-
-                                     info_loc_city = loc.find('.//city').text,
-                                     info_loc_region = loc.find('.//region').text,
-                                     info_loc_country = loc.find('.//country').text,
-                                     
-                                     links = list_of_links,
-                                     personrefs = [x for x in org.find('.//person').attrib['idref']],
-                                     crisisrefs = [x for x in org.find('.//crisis').attrib['idref']]
-                                     )
-                    organization_list.append(o)
-                    #o.put()
-
-        else:
-            message = 'No file was uploaded. Try again? </br>'
-        
-        self.response.out.write("""
-            <html>
-            <body>
-            <form action="/import" method="post" enctype="multipart/form-data">
-            <div>
-            <input id="myfile" name="myfile" type="file">
-            <input value="Upload" type="submit">
-            </div>
-            </form>
-            <p>%s</p>
-            <a href="/">Home</a></br>
-            </body>
-            </html>""" % message)
-           
-        # print message
-
-
-class Link(db.Model):
-    type = db.StringProperty()
-    title = db.StringProperty()
-    link_url = db.LinkProperty()
-    description = db.StringProperty()
-    vid_site = db.StringProperty()
-
-class Person(db.Model):
-    personid = db.StringProperty()
-    
-    name_title = db.StringProperty()
-    name_first = db.StringProperty()
-    name_last = db.StringProperty()
-    name_middle = db.StringProperty()
-    
-    info_type = db.StringProperty()
-    info_birthdate_time = db.StringProperty()
-    info_birthdate_day = db.IntegerProperty()
-    info_birthdate_month = db.IntegerProperty()
-    info_birthdate_year = db.IntegerProperty()
-    info_birthdate_misc = db.StringProperty()
-    info_nationality = db.StringProperty()
-    info_biography = db.TextProperty()
-    
-    links = db.ListProperty(db.Key)
-    
-    orgrefs = db.ListProperty(str)
-    crisisrefs = db.ListProperty(str)
-    
-    misc = db.StringProperty()
-
-            
-class Crisis(db.Model):
-    crisisid = db.StringProperty()
-
-    name = db.StringProperty()
-    misc = db.StringProperty()
-    
-    info_history = db.TextProperty()
-    info_help = db.StringProperty()
-    info_resources = db.StringProperty()
-    info_type = db.StringProperty()
-    
-    date_time = db.StringProperty()
-    date_day = db.IntegerProperty()
-    date_month = db.IntegerProperty()
-    date_year = db.IntegerProperty()
-    date_misc = db.StringProperty()
-    
-    location_city = db.StringProperty()
-    location_region = db.StringProperty()
-    location_country = db.StringProperty()
-    
-    impact_human_deaths = db.IntegerProperty()
-    impact_human_displaced = db.IntegerProperty()
-    impact_human_injured = db.IntegerProperty()
-    impact_human_missing = db.IntegerProperty()
-    impact_human_misc = db.StringProperty()
-    
-    impact_economic_amount = db.IntegerProperty()
-    impact_economic_currency = db.StringProperty()
-    impact_economic_misc = db.StringProperty()
-    
-    links = db.ListProperty(db.Key)
-    
-    orgrefs = db.ListProperty(str)
-    personrefs = db.ListProperty(str)
-    
-class Organization(db.Model):
-    orgid = db.StringProperty()
-    
-    name = db.StringProperty()
-    
-    info_type = db.StringProperty()
-    info_history = db.TextProperty()
-    info_contacts_phone = db.StringProperty()
-    info_contacts_email = db.StringProperty()
-    info_contacts_address = db.StringProperty()
-    info_contacts_city = db.StringProperty()
-    info_contacts_state = db.StringProperty()
-    info_contacts_country = db.StringProperty()
-    info_contacts_zip = db.StringProperty()
-    
-    links = db.ListProperty(db.Key)
-    
-    crisisrefs = db.ListProperty(str)
-    personrefs = db.ListProperty(str)
-    
-    misc = db.StringProperty()
-    
-
-
-application = webapp.WSGIApplication(
-                                     [('/', MainPage), ('/import', ImportPage),
+application = webapp.WSGIApplication([('/', MainPage),
                                       ('/export', ExportPage)],
                                      debug=True)
-
 def main():
     run_wsgi_app(application)
             

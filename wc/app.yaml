@@ -1,9 +1,15 @@
-application: msp684
+application: jromeem
 version: 1
 runtime: python
 api_version: 1
 
 handlers:
+- url: /import
+  script: ImportHandler.py
+
+- url: /meow
+  script: meow.py
+
 - url: /test.*
   script: gaeunit.py  
 
