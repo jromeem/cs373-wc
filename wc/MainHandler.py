@@ -9,6 +9,9 @@ from xml.etree import ElementTree
 from xml.etree.ElementTree import Element, SubElement, dump
 from minixsv import pyxsval as xsv
 
+crisis_list = []
+person_list = []
+organization_list = []
 
 class MainPage(webapp.RequestHandler):
     def get(self):
@@ -23,51 +26,21 @@ class MainPage(webapp.RequestHandler):
 
 class ExportPage(webapp.RequestHandler):
     def get(self):
-        crises = db.GqlQuery("SELECT * FROM Crisis")
-              
-        xml_string = '<?xml version="1.0" encoding="UTF-8"?><worldCrises xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xsi:noNamespaceSchemaLocation="wc.xsd">'
+        worldCrises = ElementTree.Element("worldCrisis", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
         
-        for crisis in crises:
-            xml_string += "<crisis id=\"" + crisis.crisisid + "\">"
-            xml_string += "<name>" + crisis.name + "</name>"
-            xml_string += "<info>"
-            xml_string += "<history>" + crisis.info_history + "</history>"
-            xml_string += "<help>" + crisis.info_help + "</help>"
-            xml_string += "<resources>" + crisis.info_resources + "</resources>"
-            xml_string += "<type>" + crisis.info_type + "</type>"
-            xml_string += "<time>"
-            xml_string += "<time>" + str(crisis.date_time) + "</time>"
-            xml_string += "<day>" + str(crisis.date_day) + "</day>"
-            xml_string += "<month>" + str(crisis.date_month) + "</month>"
-            xml_string += "<year>" + str(crisis.date_year) + "</year>"
-            xml_string += "<misc>" + (crisis.date_misc or "") + "</misc>"
-            xml_string += "</time>"
-            xml_string += "<loc>"
-            xml_string += "<city>" + (crisis.location_city or "") + "</city>"
-            xml_string += "<region>" + (crisis.location_region or "") + "</region>"
-            xml_string += "<country>" + (crisis.location_country or "") + "</country>"
-            xml_string += "</loc>"
-            xml_string += "<impact>"
-            xml_string += "<human>"
-            xml_string += "<deaths>" + str(crisis.impact_human_deaths) + "</deaths>"
-            xml_string += "<displaced>" + str(crisis.impact_human_displaced) + "</displaced>"
-            xml_string += "<injured>" + str(crisis.impact_human_injured) + "</injured>"
-            xml_string += "<missing>" + str(crisis.impact_human_missing) + "</missing>"
-            xml_string += "<misc>" + str(crisis.impact_human_misc or "") + "</misc>"
-            xml_string += "</human>"
-            xml_string += "<economic>"
-            xml_string += "<amount>" + str(crisis.impact_economic_amount) + "</amount>"
-            xml_string += "<currency>" + str(crisis.impact_economic_currency or "") + "</currency>"
-            xml_string += "<misc>" + str(crisis.impact_economic_misc or "") + "</misc>"
-            xml_string += "</economic>"
-            xml_string += "</impact>"
-            xml_string += "</info>"
-            xml_string += "</crisis>"
-        xml_string += "</worldCrises>"
+        for c in crisis_list:
+            crisis = ElementTree.SubElement(worldCrises, "crisis", {"id" : c.crisisid})
+            name = ElementTree.SubElement(crisis, "name")
+            name.text = c.name
+            info = ElementTree.SubElement(crisis, "info")
+            history = ElementTree.SubElement(info, "history")
+            history.text = c.info_history
         
-        #print xml_string
+        tree = ElementTree.ElementTree(worldCrises)
+        text = ElementTree.tostring(worldCrises)
+        
         self.response.headers['Content-Type'] = "text/xml; charset=utf-8"
-        self.response.out.write(xml_string)
+        self.response.out.write(text)
         
         
 def grabLinks(crisis):
@@ -179,7 +152,8 @@ class ImportPage(webapp.RequestHandler):
                                orgrefs = [x for x in crisis.find('.//org').attrib['idref']],
                                personrefs = [x for x in crisis.find('.//person').attrib['idref']]
                                )
-                    c.put()
+                    crisis_list.append(c)
+                    #c.put()
 
             for person in people:
                 if (person.find('.//info')):
@@ -203,7 +177,8 @@ class ImportPage(webapp.RequestHandler):
                                orgrefs = [x for x in person.find('.//org').attrib['idref']],
                                crisisrefs = [x for x in person.find('.//crisis').attrib['idref']]
                                )
-                    p.put()
+                    person_list.append(p)
+                    #p.put()
 
             for org in orgs:
                 if org.find('.//info'):
@@ -234,7 +209,8 @@ class ImportPage(webapp.RequestHandler):
                                      personrefs = [x for x in org.find('.//person').attrib['idref']],
                                      crisisrefs = [x for x in org.find('.//crisis').attrib['idref']]
                                      )
-                    o.put()
+                    organization_list.append(o)
+                    #o.put()
 
         else:
             message = 'No file was uploaded. Try again? </br>'
