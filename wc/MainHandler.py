@@ -174,8 +174,10 @@ class ExportPage(webapp.RequestHandler):
             info_bio = ElementTree.SubElement(info, "biography")
             info_bio.text = p.info_biography
             
-            ref = ElementTree.SubElement(organization, "ref")
+            ref = ElementTree.SubElement(person, "ref")
             exportLinks(p, ref)
+            misc = ElementTree.SubElement(person, "misc")
+            misc.text = p.misc
             
             for crisisref in p.crisisrefs:
                 crisis = ElementTree.SubElement(person, "crisis", {"idref" : crisisref})
