@@ -42,8 +42,8 @@ class ExportPage(webapp.RequestHandler):
             help.text = c.info_help
             resources = ElementTree.SubElement(info, "resources")
             resources.text = c.info_resources
-            type = ElementTree.SubElement(info, "type")
-            type.text = c.info_type
+            c_type = ElementTree.SubElement(info, "type")
+            c_type.text = c.info_type
             
             time = ElementTree.SubElement(info, "time")
             time_time = ElementTree.SubElement(time, "time")
@@ -194,15 +194,15 @@ def exportLinks(c, ref):
     for l in link_list:
         if not l.link_parent == c.elemid:
             continue
-        currRef = ElementTree.SubElement(ref, l.type)
+        currRef = ElementTree.SubElement(ref, l.link_type)
         title = ElementTree.SubElement(currRef, "title")
         title.text = l.title
         url = ElementTree.SubElement(currRef, "url")
         url.text = l.link_url
-        if (l.type == "video"):
+        if (l.link_type == "video"):
             site = ElementTree.SubElement(currRef, "site")
             site.text = l.vid_site
-        if (l.type != "social"):
+        if (l.link_type != "social"):
             description = ElementTree.SubElement(currRef, "description")
             description.text = l.description
         
@@ -211,7 +211,7 @@ def grabLinks(crisis):
         for l in ref:
             new_link = Link()
             if (l.tag):
-                new_link.type = l.tag
+                new_link.link_type = l.tag
             if (l.find('./title') != None):
                 new_link.title = l.find('./title').text
             if (l.find('./url') != None):
@@ -303,7 +303,7 @@ class ImportPage(webapp.RequestHandler):
                                impact_human_displaced = int(info.find('.//impact').find('.//human').find('.//displaced').text),
                                impact_human_injured = int(info.find('.//impact').find('.//human').find('.//injured').text),
                                impact_human_missing = int(info.find('.//impact').find('.//human').find('.//missing').text),
-                               impact_human_misc = info.find('.//impact').find('.//human').find('.//deaths').text,
+                               impact_human_misc = info.find('.//impact').find('.//human').find('.//misc').text,
                                
                                impact_economic_amount = int(info.find('.//impact').find('.//economic').find('.//amount').text),
                                impact_economic_currency = info.find('.//impact').find('.//economic').find('.//currency').text,
@@ -394,7 +394,7 @@ class ImportPage(webapp.RequestHandler):
 
 class Link(db.Model):
     link_parent = db.StringProperty()
-    type = db.StringProperty()
+    link_type = db.StringProperty()
     title = db.StringProperty()
     link_url = db.LinkProperty()
     description = db.StringProperty()
@@ -450,7 +450,7 @@ class Crisis(db.Model):
     impact_human_displaced = db.IntegerProperty()
     impact_human_injured = db.IntegerProperty()
     impact_human_missing = db.IntegerProperty()
-    impact_human_misc = db.StringProperty()
+    impact_human_misc = db.TextProperty()
     
     impact_economic_amount = db.IntegerProperty()
     impact_economic_currency = db.StringProperty()
