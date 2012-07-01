@@ -219,7 +219,8 @@ def grabLinks(crisis):
             if (l.find('./title') != None):
                 new_link.title = l.find('./title').text
             if (l.find('./url') != None):
-                new_link.link_url = db.Link(l.find('./url').text)
+                #new_link.link_url = db.Link(l.find('./url').text)
+                new_link.link_url = str(l.find('./url').text)
             if (l.find('./description') != None):
                 new_link.description = l.find('./description').text
             if (l.find('./site') != None):
@@ -410,7 +411,8 @@ class Link(db.Model):
     link_parent = db.StringProperty()
     link_type = db.StringProperty()
     title = db.StringProperty()
-    link_url = db.LinkProperty()
+    #link_url = db.LinkProperty()
+    link_url = db.StringProperty(multiline=True)
     description = db.StringProperty()
     vid_site = db.StringProperty()
 
