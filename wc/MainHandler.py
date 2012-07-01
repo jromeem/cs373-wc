@@ -25,10 +25,12 @@ class MainPage(webapp.RequestHandler):
         self.response.out.write(template.render(path, template_values))
 
 
+#exports current data to an xml string
 class ExportPage(webapp.RequestHandler):
     def get(self):
         worldCrises = ElementTree.Element("worldCrisis", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance"})
         
+        #convert the crisis list to an xml string and append it
         for c in crisis_list:
             crisis = ElementTree.SubElement(worldCrises, "crisis", {"id" : c.elemid})
             name = ElementTree.SubElement(crisis, "name")
@@ -98,7 +100,7 @@ class ExportPage(webapp.RequestHandler):
             for personref in c.personrefs:
                 person = ElementTree.SubElement(crisis, "person", {"idref" : personref})
     
-    
+		#convert the organization list to an xml string and append it
         for o in organization_list:
             organization = ElementTree.SubElement(worldCrises, "organization", {"id" : o.elemid})
             name = ElementTree.SubElement(organization, "name")
@@ -139,6 +141,7 @@ class ExportPage(webapp.RequestHandler):
             for personref in o.personrefs:
                 person = ElementTree.SubElement(organization, "person", {"idref" : personref})
         
+        #convert the person list to an xml string and append it
         for p in person_list:
             person = ElementTree.SubElement(worldCrises, "person", {"id" : p.elemid})
             name = ElementTree.SubElement(person, "name")
@@ -189,7 +192,7 @@ class ExportPage(webapp.RequestHandler):
         self.response.headers['Content-Type'] = "text/xml; charset=utf-8"
         self.response.out.write(text)
         
-        
+#gets links for a crisis from the list and adds them to the element tree
 def exportLinks(c, ref):
     for l in link_list:
         if not l.link_parent == c.elemid:
@@ -205,7 +208,8 @@ def exportLinks(c, ref):
         if (l.link_type != "social"):
             description = ElementTree.SubElement(currRef, "description")
             description.text = l.description
-        
+
+#helper function, gets links for a specific crisis and adds them to the link list 
 def grabLinks(crisis):
     for ref in crisis.findall('.//ref'):
         for l in ref:
@@ -224,7 +228,10 @@ def grabLinks(crisis):
             #new_link.put()
             link_list.append(new_link)
         
+        
+#handles imports
 class ImportPage(webapp.RequestHandler):
+    #displays a file upload form when page is accessed normally
     def get(self):
         self.response.out.write("""
             <html>
@@ -237,7 +244,8 @@ class ImportPage(webapp.RequestHandler):
             </form>
             </body>
             </html>""")
-            
+    
+    #attempts to read and parse an xml file when the page is posted to
     def post(self):
         form = cgi.FieldStorage()
         fileitem = form['myfile']
@@ -255,6 +263,7 @@ class ImportPage(webapp.RequestHandler):
             
             tree = ElementTree.parse(f)
             
+            #see if xml is valid
             try:
                 etw = xsv.parseAndValidateXmlInputString(content,'wc.xsd',xmlIfClass=xsv.XMLIF_ELEMENTTREE)
                 et = etw.getTree()
@@ -273,6 +282,7 @@ class ImportPage(webapp.RequestHandler):
         
             orgs = tree.findall(".//organization")
         
+			#build crisis list
             for crisis in crises:
                 if (crisis.find('.//info')):
                     
@@ -315,6 +325,7 @@ class ImportPage(webapp.RequestHandler):
                     crisis_list.append(c)
                     #c.put()
 
+			#build person list
             for person in people:
                 if (person.find('.//info')):
                     grabLinks(person)
@@ -338,7 +349,8 @@ class ImportPage(webapp.RequestHandler):
                                )
                     person_list.append(p)
                     #p.put()
-
+			
+			#build organization list
             for org in orgs:
                 if org.find('.//info'):
                     grabLinks(org)
@@ -375,6 +387,7 @@ class ImportPage(webapp.RequestHandler):
         else:
             message = 'No file was uploaded. Try again? </br>'
         
+        #display the upload form again
         self.response.out.write("""
             <html>
             <body>
@@ -392,6 +405,7 @@ class ImportPage(webapp.RequestHandler):
         # print message
 
 
+# a general model for links, used in other models
 class Link(db.Model):
     link_parent = db.StringProperty()
     link_type = db.StringProperty()
@@ -400,6 +414,7 @@ class Link(db.Model):
     description = db.StringProperty()
     vid_site = db.StringProperty()
 
+#a model for a Person
 class Person(db.Model):
     elemid = db.StringProperty()
     
@@ -424,7 +439,7 @@ class Person(db.Model):
     
     misc = db.StringProperty()
 
-            
+# a model for a Crisis
 class Crisis(db.Model):
     elemid = db.StringProperty()
 
@@ -461,6 +476,7 @@ class Crisis(db.Model):
     orgrefs = db.ListProperty(str)
     personrefs = db.ListProperty(str)
     
+# a model for an Organization
 class Organization(db.Model):
     elemid = db.StringProperty()
     
@@ -488,7 +504,7 @@ class Organization(db.Model):
     misc = db.StringProperty()
     
 
-
+#specify handlers for different urls
 application = webapp.WSGIApplication(
                                      [('/', MainPage), ('/import', ImportPage),
                                       ('/export', ExportPage)],
