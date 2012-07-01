@@ -13,6 +13,15 @@ class ExportPage(webapp.RequestHandler):
     def get(self):
         worldCrises = ElementTree.Element("worldCrisis", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance"})
         
+        query = db.GqlQuery("SELECT * FROM Crisis")
+        crisis_list = query.fetch()
+        
+        query = db.GqlQuery("SELECT * FROM Person")
+        person_list = cquery.fetch()
+        
+        query = db.GqlQuery("SELECT * FROM Organization")
+        organization_list = cquery.fetch()
+        
         for c in crisis_list:
             crisis = ElementTree.SubElement(worldCrises, "crisis", {"id" : c.crisisid})
             name = ElementTree.SubElement(crisis, "name")
