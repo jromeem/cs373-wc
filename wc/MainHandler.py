@@ -97,10 +97,73 @@ class ExportPage(webapp.RequestHandler):
                 org = ElementTree.SubElement(crisis, "org", {"idref" : orgref})
             for personref in c.personrefs:
                 person = ElementTree.SubElement(crisis, "person", {"idref" : personref})
+    
+    
+        for o in organization_list:
+            organization = ElementTree.SubElement(worldCrises, "organization", {"id" : o.orgid})
+            name.text = o.name
+            
+            info = ElementTree.SubElement(organization, "info")
+            orgtype = ElementTree.SubElement(info, "type")
+            orgtype.text = o.info_type
+            history = ElementTree.SubElement(info, "history")
+            history.text = o.info_history
+            
+            contact = ElementTree.SubElement(info, "contact")
+            phone = ElementTree.SubElement(contact, "phone")
+            phone.text = o.info_contacts_phone
+            email = ElementTree.SubElement(contact, "email")
+            email.text = o.info_contacts_email
+            
+            mail = ElementTree.SubElement(contact, "mail")
+            address = ElementTree.SubElement(mail, "address")
+            address.text = o.info_contacts_address
+            city = ElementTree.SubElement(mail, "city")
+            city.text = o.info_contacts_city
+            state = ElementTree.SubElement(mail, "state")
+            state.text = o.info_contacts_state
+            country = ElementTree.SubElement(mail, "country")
+            country.text = o.info_contacts_country
+            orgzip = ElementTree.SubElement(mail, "zip")
+            orgzip.text = o.info_contacts_zip
+            
+            misc = ElementTree.SubElement(organization, "misc")
+            misc.text = o.misc
         
+
+        for p in person_list:
+            person = ElementTree.SubElement(worldCrises, "person", {"id" : p.personid})
+            name = ElementTree.SubElement(person, "name")
+            title = ElementTree.SubElement(name, "title")
+            title.text = p.name_title
+            first = ElementTree.SubElement(name, "first")
+            first.text = p.name_first
+            last = ElementTree.SubElement(name, "last")
+            last.text = p.name_last
+            middle = ElementTree.SubElement(name, "middle")
+            middle.text = p.name_middle
+            info = ElementTree.SubElement(person, "info")
+            info_type = ElementTree.SubElement(info, "type")
+            info_type.text = p.info_type
+            info_birthdate = ElementTree.SubElement(info, "birthdate")
+            info_birthdate_time = ElementTree.SubElement(info_birthdate, "time")
+            info_birthdate_time.text = p.info_birthdate_time
+            info_birthdate_day = ElementTree.SubElement(info_birthdate, "day")
+            info_birthdate_day.text = str(p.info_birthdate_day)
+            info_birthdate_month = ElementTree.SubElement(info_birthdate, "month")
+            info_birthdate_month.text = str(p.info_birthdate_month)
+            info_birthdate_year = ElementTree.SubElement(info_birthdate, "year")
+            info_birthdate_year.text = str(p.info_birthdate_year)
+            info_birthdate_misc = ElementTree.SubElement(info_birthdate, "misc")
+            info_birthdate_misc.text = p.info_birthdate_misc
+            info_nat = ElementTree.SubElement(info, "nationality")
+            info_nat.text = p.info_nationality
+            info_bio = ElementTree.SubElement(info, "biography")
+            info_bio.text = p.info_biography
+
+            
         tree = ElementTree.ElementTree(worldCrises)
-        text = ElementTree.tostring(worldCrises)
-        
+        text = ElementTree.tostring(worldCrises)            
         self.response.headers['Content-Type'] = "text/xml; charset=utf-8"
         self.response.out.write(text)
         
@@ -328,8 +391,8 @@ class Person(db.Model):
     info_birthdate_month = db.IntegerProperty()
     info_birthdate_year = db.IntegerProperty()
     info_birthdate_misc = db.StringProperty()
-    info_nat = db.StringProperty()
-    into_bio = db.TextProperty()
+    info_nationality = db.StringProperty()
+    info_biography = db.TextProperty()
     
     links = db.ListProperty(db.Key)
     
