@@ -135,9 +135,9 @@ class ExportPage(webapp.RequestHandler):
             misc.text = o.misc
             
             for crisisref in o.crisisrefs:
-                crisis = ElementTree.SubElement(crisis, "crisis", {"idref" : crisisref})
+                crisis = ElementTree.SubElement(organization, "crisis", {"idref" : crisisref})
             for personref in o.personrefs:
-                person = ElementTree.SubElement(crisis, "person", {"idref" : personref})
+                person = ElementTree.SubElement(organization, "person", {"idref" : personref})
         
         for p in person_list:
             person = ElementTree.SubElement(worldCrises, "person", {"id" : p.elemid})
@@ -178,9 +178,9 @@ class ExportPage(webapp.RequestHandler):
             exportLinks(p, ref)
             
             for crisisref in p.crisisrefs:
-                crisis = ElementTree.SubElement(crisis, "crisis", {"idref" : crisisref})
+                crisis = ElementTree.SubElement(person, "crisis", {"idref" : crisisref})
             for orgref in p.orgrefs:
-                org = ElementTree.SubElement(crisis, "org", {"idref" : orgref})
+                org = ElementTree.SubElement(person, "org", {"idref" : orgref})
             
         tree = ElementTree.ElementTree(worldCrises)
         text = ElementTree.tostring(worldCrises)            
