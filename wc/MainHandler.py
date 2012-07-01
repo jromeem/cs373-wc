@@ -35,6 +35,43 @@ class ExportPage(webapp.RequestHandler):
             info = ElementTree.SubElement(crisis, "info")
             history = ElementTree.SubElement(info, "history")
             history.text = c.info_history
+        """
+        links = db.ListProperty(db.Key)
+    
+        crisisrefs = db.ListProperty(str)
+        personrefs = db.ListProperty(str)
+    
+        """
+        for o in organization_list:
+            organization = ElementTree.SubElement(worldCrises, "organization", {"id" : o.orgid})
+            name.text = o.name
+            
+            info = ElementTree.SubElement(organization, "info")
+            orgtype = ElementTree.SubElement(info, "type")
+            orgtype.text = o.info_type
+            history = ElementTree.SubElement(info, "history")
+            history.text = o.info_history
+            
+            contact = ElementTree.SubElement(info, "contact")
+            phone = ElementTree.SubElement(contact, "phone")
+            phone.text = o.info_contacts_phone
+            email = ElementTree.SubElement(contact, "email")
+            email.text = o.info_contacts_email
+            
+            mail = ElementTree.SubElement(contact, "mail")
+            address = ElementTree.SubElement(mail, "address")
+            address.text = o.info_contacts_address
+            city = ElementTree.SubElement(mail, "city")
+            city.text = o.info_contacts_city
+            state = ElementTree.SubElement(mail, "state")
+            state.text = o.info_contacts_state
+            country = ElementTree.SubElement(mail, "country")
+            country.text = o.info_contacts_country
+            orgzip = ElementTree.SubElement(mail, "zip")
+            orgzip.text = o.info_contacts_zip
+            
+            misc = ElementTree.SubElement(organization, "misc")
+            misc.text = o.misc
         
         tree = ElementTree.ElementTree(worldCrises)
         text = ElementTree.tostring(worldCrises)
