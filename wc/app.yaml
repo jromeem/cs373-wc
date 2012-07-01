@@ -6,6 +6,9 @@ api_version: 1
 handlers:
 - url: /import
   script: ImportHandler.py
+  
+- url: /export
+  script: ExportHandler.py
 
 - url: /meow
   script: meow.py
