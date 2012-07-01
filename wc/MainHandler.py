@@ -12,6 +12,7 @@ from minixsv import pyxsval as xsv
 crisis_list = []
 person_list = []
 organization_list = []
+link_list = []
 
 class MainPage(webapp.RequestHandler):
     def get(self):
@@ -26,15 +27,76 @@ class MainPage(webapp.RequestHandler):
 
 class ExportPage(webapp.RequestHandler):
     def get(self):
-        worldCrises = ElementTree.Element("worldCrisis", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
+        worldCrises = ElementTree.Element("worldCrisis", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance"})
         
         for c in crisis_list:
             crisis = ElementTree.SubElement(worldCrises, "crisis", {"id" : c.crisisid})
             name = ElementTree.SubElement(crisis, "name")
             name.text = c.name
+            
             info = ElementTree.SubElement(crisis, "info")
+            
             history = ElementTree.SubElement(info, "history")
             history.text = c.info_history
+            help = ElementTree.SubElement(info, "help")
+            help.text = c.info_help
+            resources = ElementTree.SubElement(info, "resources")
+            resources.text = c.info_resources
+            type = ElementTree.SubElement(info, "type")
+            type.text = c.info_type
+            
+            time = ElementTree.SubElement(info, "time")
+            time_time = ElementTree.SubElement(time, "time")
+            time_time.text = str(c.date_time)
+            day = ElementTree.SubElement(time, "day")
+            day.text = str(c.date_day)
+            month = ElementTree.SubElement(time, "month")
+            month.text = str(c.date_month)
+            year = ElementTree.SubElement(time, "year")
+            year.text = str(c.date_year)
+            time_misc = ElementTree.SubElement(time, "misc")
+            time_misc.text = str(c.date_misc)
+            
+            loc = ElementTree.SubElement(info, "loc")
+            city = ElementTree.SubElement(loc, "city")
+            city.text = c.location_city
+            region = ElementTree.SubElement(loc, "region")
+            region.text = c.location_region
+            country = ElementTree.SubElement(loc, "country")
+            country.text = c.location_country
+            
+            impact = ElementTree.SubElement(info, "impact")
+            
+            human = ElementTree.SubElement(impact, "human")
+            deaths = ElementTree.SubElement(human, "deaths")
+            deaths.text = str(c.impact_human_deaths)
+            displaced = ElementTree.SubElement(human, "displaced")
+            displaced.text = str(c.impact_human_displaced)
+            injured = ElementTree.SubElement(human, "injured")
+            injured.text = str(c.impact_human_injured)
+            missing = ElementTree.SubElement(human, "missing")
+            missing.text = str(c.impact_human_missing)
+            human_misc = ElementTree.SubElement(human, "misc")
+            human_misc.text = c.impact_human_misc
+            
+            economic = ElementTree.SubElement(impact, "economic")
+            amount = ElementTree.SubElement(economic, "amount")
+            amount.text = str(c.impact_economic_amount)
+            currency = ElementTree.SubElement(economic, "currency")
+            currency.text = str(c.impact_economic_currency)
+            economic_misc = ElementTree.SubElement(economic, "misc")
+            economic_misc.text = c.impact_economic_misc
+            
+            ref = ElementTree.SubElement(crisis, "ref")
+            exportLinks(c, ref)
+            
+            misc = ElementTree.SubElement(crisis, "misc")
+            misc.text = c.misc
+            
+            for orgref in c.orgrefs:
+                org = ElementTree.SubElement(crisis, "org", {"idref" : orgref})
+            for personref in c.personrefs:
+                person = ElementTree.SubElement(crisis, "person", {"idref" : personref})
         
         tree = ElementTree.ElementTree(worldCrises)
         text = ElementTree.tostring(worldCrises)
@@ -43,8 +105,23 @@ class ExportPage(webapp.RequestHandler):
         self.response.out.write(text)
         
         
+def exportLinks(c, ref):
+    for l in link_list:
+        if not l.link_parent == c.crisisid:
+            continue
+        currRef = ElementTree.SubElement(ref, l.type)
+        title = ElementTree.SubElement(currRef, "title")
+        title.text = l.title
+        url = ElementTree.SubElement(currRef, "url")
+        url.text = l.link_url
+        if (l.type == "video"):
+            site = ElementTree.SubElement(currRef, "site")
+            site.text = l.vid_site
+        if (l.type != "social"):
+            description = ElementTree.SubElement(currRef, "description")
+            description.text = l.description
+        
 def grabLinks(crisis):
-    list_of_links = []
     for ref in crisis.findall('.//ref'):
         for l in ref:
             new_link = Link()
@@ -58,10 +135,9 @@ def grabLinks(crisis):
                 new_link.description = l.find('./description').text
             if (l.find('./site') != None):
                 new_link.vid_site = l.find('./site').text
-            new_link.put()
-            list_of_links.append(new_link.key())
-            
-    return list_of_links
+            new_link.link_parent = crisis.attrib['id']
+            #new_link.put()
+            link_list.append(new_link)
         
 class ImportPage(webapp.RequestHandler):
     def get(self):
@@ -115,9 +191,9 @@ class ImportPage(webapp.RequestHandler):
             for crisis in crises:
                 if (crisis.find('.//info')):
                     
-                    list_of_links = grabLinks(crisis)
-                    
                     info = crisis.find('.//info')
+                    grabLinks(crisis)
+                    
                     c = Crisis(
                                crisisid = crisis.attrib['id'],
                                name = crisis.find('.//name').text,
@@ -148,16 +224,15 @@ class ImportPage(webapp.RequestHandler):
                                impact_economic_currency = info.find('.//impact').find('.//economic').find('.//currency').text,
                                impact_economic_misc = info.find('.//impact').find('.//economic').find('.//misc').text,
                                
-                               links = list_of_links,
-                               orgrefs = [x for x in crisis.find('.//org').attrib['idref']],
-                               personrefs = [x for x in crisis.find('.//person').attrib['idref']]
+                               orgrefs = [x.attrib['idref'] for x in crisis.findall('.//org')],
+                               personrefs = [x.attrib['idref'] for x in crisis.findall('.//person')]
                                )
                     crisis_list.append(c)
                     #c.put()
 
             for person in people:
                 if (person.find('.//info')):
-                    list_of_links = grabLinks(person)
+                    grabLinks(person)
                     p = Person(
                                personid = person.attrib['id'],
                                name_title = person.find('.//name').find('.//title').text,
@@ -173,7 +248,6 @@ class ImportPage(webapp.RequestHandler):
                                info_nationality = person.find('.//info').find('.//nationality').text,
                                info_biography = person.find('.//info').find('.//biography').text,
                                
-                               links = list_of_links,
                                orgrefs = [x for x in person.find('.//org').attrib['idref']],
                                crisisrefs = [x for x in person.find('.//crisis').attrib['idref']]
                                )
@@ -182,6 +256,7 @@ class ImportPage(webapp.RequestHandler):
 
             for org in orgs:
                 if org.find('.//info'):
+                    grabLinks(org)
                     info = org.find('.//info')
                     contact = info.find('.//contact')
                     mail = contact.find('.//mail')
@@ -205,7 +280,6 @@ class ImportPage(webapp.RequestHandler):
                                      info_loc_region = loc.find('.//region').text,
                                      info_loc_country = loc.find('.//country').text,
                                      
-                                     links = list_of_links,
                                      personrefs = [x for x in org.find('.//person').attrib['idref']],
                                      crisisrefs = [x for x in org.find('.//crisis').attrib['idref']]
                                      )
@@ -233,6 +307,7 @@ class ImportPage(webapp.RequestHandler):
 
 
 class Link(db.Model):
+    link_parent = db.StringProperty()
     type = db.StringProperty()
     title = db.StringProperty()
     link_url = db.LinkProperty()
