@@ -8,7 +8,7 @@ class Link(db.Model):
     title = db.StringProperty()
     link_url = db.LinkProperty()
     description = db.StringProperty()
-    vid_site = db.StringProperty()
+    link_site = db.StringProperty()
 
 class Person(db.Model):
     elemid = db.StringProperty()

@@ -47,14 +47,14 @@ def grabLinks(crisis):
             new_link = Link()
             if (l.tag):
                 new_link.link_type = l.tag
+            if (l.find('./site') != None):
+                new_link.link_site = l.find('./site').text
             if (l.find('./title') != None):
                 new_link.title = l.find('./title').text
             if (l.find('./url') != None):
                 new_link.link_url = db.Link(l.find('./url').text)
             if (l.find('./description') != None):
                 new_link.description = l.find('./description').text
-            if (l.find('./site') != None):
-                new_link.vid_site = l.find('./site').text
             new_link.link_parent = crisis.attrib['id']
             #new_link.put()
             link_list.append(new_link)
@@ -189,16 +189,14 @@ def exportLinks(c, ref):
         if not l.link_parent == c.elemid:
             continue
         currRef = ElementTree.SubElement(ref, l.link_type)
+        site = ElementTree.SubElement(currRef, "site")
+        site.text = l.link_site
         title = ElementTree.SubElement(currRef, "title")
         title.text = l.title
         url = ElementTree.SubElement(currRef, "url")
         url.text = l.link_url
-        if (l.link_type == "video"):
-            site = ElementTree.SubElement(currRef, "site")
-            site.text = l.vid_site
-        if (l.link_type != "social"):
-            description = ElementTree.SubElement(currRef, "description")
-            description.text = l.description
+        description = ElementTree.SubElement(currRef, "description")
+        description.text = l.description
 
 # fills a crisis subtree, where crisis is the root element, and c is a Crisis object
 def buildCrisis(crisis, c):
