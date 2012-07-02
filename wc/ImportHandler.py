@@ -1,11 +1,13 @@
+# Group Import Antigravity
+# ImportHandler.py
+
 import cgi, os
 import cgitb; cgitb.enable()
 from google.appengine.ext import db
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 
-# module that parses and stores into data models
-from ParseStore import is_valid_xml, parse_store
+from XMLHelpers import validXML, parseXML
         
 ##################
 # IMPORT HANDLER #
@@ -33,7 +35,7 @@ class ImportPage(webapp.RequestHandler):
 
         # check if file was uploaded
         if not file_item.filename:
-            message = 'No file was uploaded. Try again? </br>'
+            message = 'Error: No file was uploaded. Try again? </br>'
         
         else:
             file_name = os.path.basename(file_item.filename)
@@ -41,14 +43,13 @@ class ImportPage(webapp.RequestHandler):
             message = 'The file "' + file_name + '" was uploaded successfully '
 
             # check if uploaded file is a valid xml_instance
-            if not is_valid_xml(content, "wc.xsd"):
-                message += "but file does not validate against schema! </br>"
-                
+            if not validXML(content, "wc.xsd"):
+                message = "Error: " + message + "but the file does not validate against our schema.</br>"                
             else:
-                message += "and XML file validates against schema! </br>"
+                message += "and is a valid XML file!</br>"
 
                 # call function to parse and store into datastore
-                parse_store(in_file)
+                parseXML(in_file)
         
         self.response.out.write("""
         <html>
