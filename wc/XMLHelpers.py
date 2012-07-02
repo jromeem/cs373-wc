@@ -359,7 +359,7 @@ def buildPerson(person, p):
         org = ElementTree.SubElement(person, "org", {"idref" : orgref})
 
 # main function that builds xml
-def buildXML():
+def buildXML(worldCrises):
     
     #build sub-trees for each crisis
     for c in crisis_list:
