@@ -171,21 +171,17 @@ def parseXML(in_file):
     people = tree.findall(".//person")
     orgs = tree.findall(".//organization")
 
-    print type(crises)
+    #build crisis list
+    for crisis in crises:
+        addCrisis(crisis)
 
-    item_dict = {"crises":crises,
-                 "people":people,
-                 "orgs":orgs}
-    for key, item in item_dict.iteritems():
-        if key == "crises":
-            print type(item)
-            addCrisis(item)
-        elif key == "people":
-            addPerson(item)
-        elif key == "orgs":
-            addOrganization(item)
-        else:
-            pass
+    #build person list
+    for person in people:
+        addPerson(person)
+
+    #build organization list
+    for org in orgs:
+        addOrganization(org)
         
 
 ############################
