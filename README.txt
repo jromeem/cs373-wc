@@ -8,7 +8,7 @@ Actual    number of hours:
 Turnin CS Username: jromeem
 GitHub ID: jromeem
 GitHub Repository Name: cs373-wc
-Google App Engine URL:  -cs373-wc.appspot.com
+Google App Engine URL:  http://msp684.appspot.com
 
 Group Member First Name: Michael
 Group Member Last Name: Pace
