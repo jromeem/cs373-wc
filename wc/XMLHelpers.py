@@ -52,12 +52,13 @@ def grabLinks(crisis):
             if (l.find('./title') != None):
                 new_link.title = l.find('./title').text
             if (l.find('./url') != None):
-                new_link.link_url = db.Link(l.find('./url').text)
+                new_link.link_url = l.find('./url').text
             if (l.find('./description') != None):
                 new_link.description = l.find('./description').text
             new_link.link_parent = crisis.attrib['id']
             #new_link.put()
             link_list.append(new_link)
+    return link_list
 
 #adds a crisis to the list, where crisis is an element tree
 def addCrisis(crisis):
@@ -158,10 +159,7 @@ def addOrganization(org):
         organization_list.append(o)
         #o.put()
 
-# in_file : file (XML-validated file)
-# parse and store the XML data in the GAE datastore
-def parseXML(in_file):
-    
+def clearGlobals():
     # to prevent multiple copy uploads
     global crisis_list
     global person_list
@@ -171,6 +169,12 @@ def parseXML(in_file):
     person_list = []
     organization_list = []
     link_list = []
+
+# in_file : file (XML-validated file)
+# parse and store the XML data in the GAE datastore
+def parseXML(in_file):
+    
+    clearGlobals()
 
     tree = ElementTree.parse(in_file)
         

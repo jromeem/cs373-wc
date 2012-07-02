@@ -220,8 +220,54 @@ class ImportTests(unittest.TestCase):
         return False
             
     def test_grablinks1(self):
-        return False
+        crisis = Element("crisis", {"id" : "wow"})
+        ref = SubElement(crisis, "ref")
+        img = SubElement(ref, "image")
+        site = SubElement(img, "site")
+        site.text = "i'm a site"
+        title = SubElement(img, "title")
+        title.text = "i'm a title"
+        url = SubElement(img, "url")
+        url.text = "i'm a url"
+        description = SubElement(img, "description")
+        description.text = "i'm a description"
+        
+        temp = XMLHelpers.grabLinks(crisis)
+        assert (temp[0].link_site == "i'm a site")
+        XMLHelpers.clearGlobals()
+        
     def test_grablinks2(self):
-        return False
+        person = Element("person", {"id" : "globetrotter"})
+        ref = SubElement(person, "ref")
+        img = SubElement(ref, "image")
+        site = SubElement(img, "site")
+        site.text = "i'm a site"
+        title = SubElement(img, "title")
+        title.text = "i'm a title"
+        url = SubElement(img, "url")
+        url.text = "i'm a url"
+        description = SubElement(img, "description")
+        description.text = "i'm a description"
+        
+        img2 = SubElement(ref, "video")
+        site2 = SubElement(img, "site")
+        site2.text = "youtube"
+        title2 = SubElement(img, "title")
+        title2.text = "dancing cats"
+        url2 = SubElement(img, "url")
+        url2.text = "http://youtube.com/watch?v=si7f8f7tiuhsfi"
+        description2 = SubElement(img, "description")
+        description2.text = "the cats are dancing!!!"
+        
+        temp = XMLHelpers.grabLinks(person)
+        assert (len(temp) == 2)
+        XMLHelpers.clearGlobals()
+        
     def test_grablinks3(self):
-        return False
+        person = Element("person", {"id" : "globetrotter"})
+        temp = XMLHelpers.grabLinks(person)
+        assert (len(temp) == 0)
+        XMLHelpers.clearGlobals()
+        
+        
+        
