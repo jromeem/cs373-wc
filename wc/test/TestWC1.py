@@ -74,33 +74,56 @@ class ExportTests(unittest.TestCase):
 	def test_exportlinks3(self):
 		return False
 		
-class ImportTests(unittest.TestCase):
-	
-	def test_addperson1(self):
-	    return False
-	def test_addperson2(self):
-	    return False
-	def test_addperson3(self):
-	    return False
-		
-	def test_addorg1(self):
-	    return False
-	def test_addorg2(self):
-	    return False
-	def test_addorg3(self):
-		return False
-		
-	def test_addcrisis1(self):
-	    return False
-	def test_addcrisis2(self):
-	    return False
-	def test_addcrisis3(self):
-	    return False
-		
-	def test_grablinks1(self):
-	    return False
-	def test_grablinks2(self):
-	    return False
-	def test_grablinks3(self):
-		return False
 
+		
+class ImportTests(unittest.TestCase):        
+    
+    def test_validxml1(self):
+
+    def test_validxml2(self):
+
+    def test_validxml3(self):
+        
+
+    
+    def test_addperson1(self):
+        xml_file = open("test_instance1.xml", 'w')
+        tree = ElementTree.parse(xml_file)
+
+        people = tree.findall(".//person")
+        
+    def test_addperson2(self):
+        xml_file = open("test_instance1.xml", 'w')
+        tree = ElementTree.parse(xml_file)
+
+        people = tree.findall(".//person")
+        
+        
+    def test_addperson3(self):
+        xml_file = open("test_instance1.xml", 'w')
+        tree = ElementTree.parse(xml_file)
+
+        people = tree.findall(".//person")
+        
+
+        
+            
+    def test_addorg1(self):
+        
+    def test_addorg2(self):
+        
+    def test_addorg3(self):
+            
+            
+    def test_addcrisis1(self):
+        
+    def test_addcrisis2(self):
+        
+    def test_addcrisis3(self):
+        
+            
+    def test_grablinks1(self):
+        
+    def test_grablinks2(self):
+        
+    def test_grablinks3(self):
