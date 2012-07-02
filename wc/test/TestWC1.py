@@ -1,4 +1,5 @@
 import unittest
+<<<<<<< HEAD
 import XMLHelpers
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element, SubElement, dump
@@ -80,3 +81,17 @@ class ImportTests(unittest.TestCase):
 	    return False
 	def test_grablinks3(self):
 		return False
+=======
+from XMLHelpers import exportLinks, validXML
+
+crisis_list = []
+person_list = []
+organization_list = []
+link_list = []
+
+class ExportTests(unittest.TestCase):
+		
+		
+class ImportTests(unittest.TestCase):
+	
+>>>>>>> 17999f9d5eb91ae53274fb8270ccb8069e101388
