@@ -4,8 +4,11 @@ runtime: python
 api_version: 1
 
 handlers:
-- url: /(import|export)
-  script: ImportExportHandler.py
+- url: /(import)
+  script: ImportHandler.py
+  
+  - url: /(export)
+  script: ExportHandler.py
   
 - url: /meow
   script: meow.py
