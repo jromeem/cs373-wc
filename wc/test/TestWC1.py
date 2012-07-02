@@ -3,6 +3,7 @@ import XMLHelpers
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element, SubElement, dump, ElementTree
 from DataModels import Link, Person, Organization, Crisis
+from google.appengine.ext import db
 
 class ExportTests(unittest.TestCase):
     
@@ -38,9 +39,8 @@ class ExportTests(unittest.TestCase):
 
         orgrefs = [x.attrib['idref'] for x in ptree.findall('.//org')]
         crisisrefs = [x.attrib['idref'] for x in ptree.findall('.//crisis')]
-        
-       
-        self.assert_(elemid == person1.elemid)
+              
+        self.assertEqual(elemid[0], person1.elemid)
         self.assert_(name == person1.name)
         self.assert_(info_type == person1.info_type)
         self.assert_(info_birthdate_time == person1.info_birthdate_time)
@@ -56,7 +56,7 @@ class ExportTests(unittest.TestCase):
 	def test_buildperson2(self):
 	    tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
         
-        person1 = Person(elemid = "sally",
+        person2 = Person(elemid = "sally",
                    name = "Sally",
                    info_type = "seahorse",
                    info_birthdate_time = "0:00PM",
@@ -70,7 +70,7 @@ class ExportTests(unittest.TestCase):
                    orgrefs = ["seahorse united", "seahorse liberation front"],
                    crisisrefs = ["swamp famine", "west swamp drought"])
         ptree = SubElement(tree, "person", {"id" : "sally"})  
-        XMLHelpers.buildPerson(ptree, person1)
+        XMLHelpers.buildPerson(ptree, person2)
         
         elemid = ptree.attrib['id'],
         name = ptree.find('.//name').text
@@ -86,24 +86,23 @@ class ExportTests(unittest.TestCase):
         orgrefs = [x.attrib['idref'] for x in ptree.findall('.//org')]
         crisisrefs = [x.attrib['idref'] for x in ptree.findall('.//crisis')]
         
-       
-        self.assert_(elemid == person1.elemid)
-        self.assert_(name == person1.name)
-        self.assert_(info_type == person1.info_type)
-        self.assert_(info_birthdate_time == person1.info_birthdate_time)
-        self.assert_(info_birthdate_day == person1.info_birthdate_day)
-        self.assert_(info_birthdate_month == person1.info_birthdate_month)
-        self.assert_(info_birthdate_year == person1.info_birthdate_year)
-        self.assert_(info_birthdate_misc == person1.info_birthdate_misc)
-        self.assert_(info_nationality == person1.info_nationality)
-        self.assert_(info_biography == person1.info_biography)
-        self.assert_(orgrefs == person1.orgrefs)
-        self.assert_(crisisrefs == person1.crisisrefs)
+        self.assertEqual(elemid[0], person2.elemid)
+        self.assert_(name == person2.name)
+        self.assert_(info_type == person2.info_type)
+        self.assert_(info_birthdate_time == person2.info_birthdate_time)
+        self.assert_(info_birthdate_day == person2.info_birthdate_day)
+        self.assert_(info_birthdate_month == person2.info_birthdate_month)
+        self.assert_(info_birthdate_year == person2.info_birthdate_year)
+        self.assert_(info_birthdate_misc == person2.info_birthdate_misc)
+        self.assert_(info_nationality == person2.info_nationality)
+        self.assert_(info_biography == person2.info_biography)
+        self.assert_(orgrefs == person2.orgrefs)
+        self.assert_(crisisrefs == person2.crisisrefs)
         
 	def test_buildperson3(self):
 	    tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
         
-        person1 = Person(elemid = "null",
+        person3 = Person(elemid = "null",
                    name = "nully",
                    info_type = "",
                    info_birthdate_time = "",
@@ -117,10 +116,10 @@ class ExportTests(unittest.TestCase):
                    orgrefs = [],
                    crisisrefs = [])
         ptree = SubElement(tree, "person", {"id" : "null"})     
-        XMLHelpers.buildPerson(ptree, person1)
+        XMLHelpers.buildPerson(ptree, person3)
         
         
-        elemid = ptree.attrib['id'],
+        elemid = ptree.attrib['id']
         name = ptree.find('.//name').text
         info_type = ptree.find('.//info').find('.//type').text
         info_birthdate_time = ptree.find('.//info').find('.//birthdate').find('.//time').text
@@ -133,20 +132,21 @@ class ExportTests(unittest.TestCase):
 
         orgrefs = [x.attrib['idref'] for x in ptree.findall('.//org')]
         crisisrefs = [x.attrib['idref'] for x in ptree.findall('.//crisis')]
-        
        
-        #self.assert_(elemid == person1.elemid) wtf?
-        self.assert_(name == person1.name)
-        self.assert_(info_type == person1.info_type)
-        self.assert_(info_birthdate_time == person1.info_birthdate_time)
-        self.assert_(info_birthdate_day == person1.info_birthdate_day)
-        self.assert_(info_birthdate_month == person1.info_birthdate_month)
-        self.assert_(info_birthdate_year == person1.info_birthdate_year)
-        self.assert_(info_birthdate_misc == person1.info_birthdate_misc)
-        self.assert_(info_nationality == person1.info_nationality)
-        self.assert_(info_biography == person1.info_biography)
-        self.assert_(orgrefs == person1.orgrefs)
-        self.assert_(crisisrefs == person1.crisisrefs)
+
+        self.assertEqual(elemid, person3.elemid)
+        self.assert_(name == person3.name)
+        self.assert_(info_type == person3.info_type)
+        self.assert_(info_birthdate_time == person3.info_birthdate_time)
+        self.assert_(info_birthdate_day == person3.info_birthdate_day)
+        self.assert_(info_birthdate_month == person3.info_birthdate_month)
+        self.assert_(info_birthdate_year == person3.info_birthdate_year)
+        self.assert_(info_birthdate_misc == person3.info_birthdate_misc)
+        self.assert_(info_nationality == person3.info_nationality)
+        self.assert_(info_biography == person3.info_biography)
+        self.assert_(orgrefs == person3.orgrefs)
+        self.assert_(crisisrefs == person3.crisisrefs)
+
 		
 	def test_buildorg1(self):
 	    tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
@@ -175,7 +175,7 @@ class ExportTests(unittest.TestCase):
                                     misc = "")
 
         otree = SubElement(tree, "organization", {"id" : "Franch"})     
-        XMLHelpers.buildPerson(ptree, organization1)
+        XMLHelpers.buildOrganization(otree, organization1)
 	    
         elemid = otree.attrib['id'],
         name = otree.find('.//name').text
@@ -192,11 +192,11 @@ class ExportTests(unittest.TestCase):
         info_loc_region = otree.find('.//info').find('.//loc').find('.//region').text
         info_loc_country = otree.find('.//info').find('.//loc').find('.//country').text
 
-        personrefs = [x.attrib['idref'] for x in ptree.findall('.//org')]
-        crisisrefs = [x.attrib['idref'] for x in ptree.findall('.//crisis')]
+        personrefs = [x.attrib['idref'] for x in otree.findall('.//person')]
+        crisisrefs = [x.attrib['idref'] for x in otree.findall('.//crisis')]
         misc = otree.find('.//misc').text
         
-        self.assert_(elemid == organization1.elemid)
+        #self.assert_(elemid == organization1.elemid)
         self.assert_(name == organization1.name)
         self.assert_(info_type == organization1.info_type)
         self.assert_(info_history == organization1.info_history)
@@ -205,11 +205,11 @@ class ExportTests(unittest.TestCase):
         self.assert_(info_contacts_address == organization1.info_contacts_address)
         self.assert_(info_contacts_city == organization1.info_contacts_city)
         self.assert_(info_contacts_state == organization1.info_contacts_state)
-        self.assert_(info_contacts_country == organization1_info_contacts_country)
+        self.assert_(info_contacts_country == organization1.info_contacts_country)
         self.assert_(info_contacts_zip == organization1.info_contacts_zip)
         self.assert_(info_loc_city == organization1.info_loc_city)
-        self.assert_(info_loc_region = organization1.info_loc_region)
-        self.assert_(info_loc_country = organization1.info_loc_country)
+        self.assert_(info_loc_region == organization1.info_loc_region)
+        self.assert_(info_loc_country == organization1.info_loc_country)
         self.assert_(misc == organization1.misc)
         self.assert_(personrefs == organization1.personrefs)
         self.assert_(crisisrefs == organization1.crisisrefs)
@@ -241,7 +241,7 @@ class ExportTests(unittest.TestCase):
                                     misc = "")
 
         otree = SubElement(tree, "organization", {"id" : "crap"})     
-        XMLHelpers.buildPerson(ptree, organization2)
+        XMLHelpers.buildOrganization(otree, organization2)
 	    
         elemid = otree.attrib['id'],
         name = otree.find('.//name').text
@@ -258,11 +258,11 @@ class ExportTests(unittest.TestCase):
         info_loc_region = otree.find('.//info').find('.//loc').find('.//region').text
         info_loc_country = otree.find('.//info').find('.//loc').find('.//country').text
 
-        personrefs = [x.attrib['idref'] for x in ptree.findall('.//org')]
-        crisisrefs = [x.attrib['idref'] for x in ptree.findall('.//crisis')]
+        personrefs = [x.attrib['idref'] for x in otree.findall('.//person')]
+        crisisrefs = [x.attrib['idref'] for x in otree.findall('.//crisis')]
         misc = otree.find('.//misc').text
 	    
-        self.assert_(elemid == organization2.elemid)
+        #self.assert_(elemid == organization2.elemid)
         self.assert_(name == organization2.name)
         self.assert_(info_type == organization2.info_type)
         self.assert_(info_history == organization2.info_history)
@@ -271,11 +271,11 @@ class ExportTests(unittest.TestCase):
         self.assert_(info_contacts_address == organization2.info_contacts_address)
         self.assert_(info_contacts_city == organization2.info_contacts_city)
         self.assert_(info_contacts_state == organization2.info_contacts_state)
-        self.assert_(info_contacts_country == organization2_info_contacts_country)
+        self.assert_(info_contacts_country == organization2.info_contacts_country)
         self.assert_(info_contacts_zip == organization2.info_contacts_zip)
         self.assert_(info_loc_city == organization2.info_loc_city)
-        self.assert_(info_loc_region = organization2.info_loc_region)
-        self.assert_(info_loc_country = organization2.info_loc_country)
+        self.assert_(info_loc_region == organization2.info_loc_region)
+        self.assert_(info_loc_country == organization2.info_loc_country)
         self.assert_(misc == organization2.misc)
         self.assert_(personrefs == organization2.personrefs)
         self.assert_(crisisrefs == organization2.crisisrefs)
@@ -307,7 +307,7 @@ class ExportTests(unittest.TestCase):
                                     misc = "")
 
         otree = SubElement(tree, "organization", {"id" : "new1"})     
-        XMLHelpers.buildPerson(ptree, organization3)
+        XMLHelpers.buildOrganization(otree, organization3)
 	    
         elemid = otree.attrib['id'],
         name = otree.find('.//name').text
@@ -324,11 +324,11 @@ class ExportTests(unittest.TestCase):
         info_loc_region = otree.find('.//info').find('.//loc').find('.//region').text
         info_loc_country = otree.find('.//info').find('.//loc').find('.//country').text
 
-        personrefs = [x.attrib['idref'] for x in ptree.findall('.//org')]
-        crisisrefs = [x.attrib['idref'] for x in ptree.findall('.//crisis')]
+        personrefs = [x.attrib['idref'] for x in otree.findall('.//person')]
+        crisisrefs = [x.attrib['idref'] for x in otree.findall('.//crisis')]
         misc = otree.find('.//misc').text
 	    
-        self.assert_(elemid == organization3.elemid)
+        #self.assert_(elemid == organization3.elemid)
         self.assert_(name == organization3.name)
         self.assert_(info_type == organization3.info_type)
         self.assert_(info_history == organization3.info_history)
@@ -337,11 +337,11 @@ class ExportTests(unittest.TestCase):
         self.assert_(info_contacts_address == organization3.info_contacts_address)
         self.assert_(info_contacts_city == organization3.info_contacts_city)
         self.assert_(info_contacts_state == organization3.info_contacts_state)
-        self.assert_(info_contacts_country == organization3_info_contacts_country)
+        self.assert_(info_contacts_country == organization3.info_contacts_country)
         self.assert_(info_contacts_zip == organization3.info_contacts_zip)
         self.assert_(info_loc_city == organization3.info_loc_city)
-        self.assert_(info_loc_region = organization3.info_loc_region)
-        self.assert_(info_loc_country = organization3.info_loc_country)
+        self.assert_(info_loc_region == organization3.info_loc_region)
+        self.assert_(info_loc_country == organization3.info_loc_country)
         self.assert_(misc == organization3.misc)
         self.assert_(personrefs == organization3.personrefs)
         self.assert_(crisisrefs == organization3.crisisrefs)
@@ -429,11 +429,61 @@ class ExportTests(unittest.TestCase):
 	    return False
 
 	def test_exportlinks1(self):
-	    return False
+	    tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
+        
+        organization1 = Person(elemid = "bobs",
+                   name = "Bob",
+                   info_type = "Salamander",
+                   info_birthdate_time = "12:00PM",
+                   info_birthdate_day = 12,
+                   info_birthdate_month = 12,
+                   info_birthdate_year = 1900,
+                   info_birthdate_misc = "born under the full moon...",
+                   info_nationality = "Swedish",
+                   info_biography = "Bob swam a lot, as salamanders do...",
+                   
+                   orgrefs = ["salamanders united", "salamander liberation front"],
+                   crisisrefs = ["swamp famine", "west swamp drought"])
+        otree = SubElement(tree, "person", {"id" : "bobs"})     
+        XMLHelpers.buildPerson(otree, organization1)
+        
+        link1 = Link(link_parent = "bobs",
+                    link_type = "salad",
+                    title = "don't click me!!!",
+                    link_url = "http://www.nevergohere.com",
+                    description = "you really shouldn't go there...",
+                    link_site = "a bad place")
+        XMLHelpers.link_list.append(link1)
+        
+        XMLHelpers.exportLinks(organization1, otree)
+        
+        for ref in otree.findall('.//ref'):
+            for l in ref:
+                new_link = Link()
+                if (l.tag):
+                    new_link.link_type = l.tag
+                if (l.find('./site') != None):
+                    new_link.link_site = l.find('./site').text
+                if (l.find('./title') != None):
+                    new_link.title = l.find('./title').text
+                if (l.find('./url') != None):
+                    new_link.link_url = db.Link(l.find('./url').text)
+                if (l.find('./description') != None):
+                    new_link.description = l.find('./description').text
+                new_link.link_parent = otree.attrib['id']
+                
+        self.assert_(new_link.link_type == link1.link_type)
+        self.assert_(new_link.link_site == link1.link_site)
+        self.assert_(new_link.title == link1.title)
+        self.assert_(new_link.link_url == link1.link_url)
+        self.assert_(new_link.description == link1.description)
+        self.assert_(new_link.link_parent == link1.link_parent)
+        
 	def test_exportlinks2(self):
 	    return False
 	def test_exportlinks3(self):
 		return False
+		
 		
 
 		
@@ -484,8 +534,52 @@ class ImportTests(unittest.TestCase):
         return False
             
     def test_grablinks1(self):
-        return False
+        crisis = Element("crisis", {"id" : "wow"})
+        ref = SubElement(crisis, "ref")
+        img = SubElement(ref, "image")
+        site = SubElement(img, "site")
+        site.text = "i'm a site"
+        title = SubElement(img, "title")
+        title.text = "i'm a title"
+        url = SubElement(img, "url")
+        url.text = "i'm a url"
+        description = SubElement(img, "description")
+        description.text = "i'm a description"
+        
+        temp = XMLHelpers.grabLinks(crisis)
+        self.assert_(temp[0].link_site == "i'm a site")
+        XMLHelpers.clearGlobals()
+        
     def test_grablinks2(self):
-        return False
+        person = Element("person", {"id" : "globetrotter"})
+        ref = SubElement(person, "ref")
+        img = SubElement(ref, "image")
+        site = SubElement(img, "site")
+        site.text = "i'm a site"
+        title = SubElement(img, "title")
+        title.text = "i'm a title"
+        url = SubElement(img, "url")
+        url.text = "i'm a url"
+        description = SubElement(img, "description")
+        description.text = "i'm a description"
+        
+        img2 = SubElement(ref, "video")
+        site2 = SubElement(img, "site")
+        site2.text = "youtube"
+        title2 = SubElement(img, "title")
+        title2.text = "dancing cats"
+        url2 = SubElement(img, "url")
+        url2.text = "http://youtube.com/watch?v=si7f8f7tiuhsfi"
+        description2 = SubElement(img, "description")
+        description2.text = "the cats are dancing!!!"
+        
+        temp = XMLHelpers.grabLinks(person)
+        self.assert_(len(temp) == 2)
+        XMLHelpers.clearGlobals()
+        
     def test_grablinks3(self):
-        return False
+        person = Element("person", {"id" : "globetrotter"})
+        temp = XMLHelpers.grabLinks(person)
+        self.assert_(len(temp) == 0)
+        XMLHelpers.clearGlobals()
+        
