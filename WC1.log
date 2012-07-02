@@ -1,3 +1,607 @@
+commit 0bc48723ed751022346cbd6e1e7ecb758314eefc
+Merge: d6487e4 a907220
+Author: Jerome Martinez <jerome.e.martinez@gmail.com>
+Date:   Sun Jul 1 21:27:26 2012 -0500
+
+    merged?
+
+commit d6487e4296fc54c97cdac71e0047e930e28ea35b
+Merge: f325394 c2512d7
+Author: Jerome Martinez <jerome.e.martinez@gmail.com>
+Date:   Sun Jul 1 21:23:41 2012 -0500
+
+    merged refactor to master
+
+commit c2512d7e968c52ab1ccdc13c80c8c0c5f680c55e
+Author: Jerome Martinez <jerome.e.martinez@gmail.com>
+Date:   Sun Jul 1 20:49:53 2012 -0500
+
+    various refactored files
+
+commit a907220ff4303a83444ffa4a3cd7e9763f308bac
+Author: joe <joe@vbm13.(none)>
+Date:   Sun Jul 1 20:39:49 2012 -0500
+
+    refactors export and import
+
+commit b8ff668baad4c079e0c30d3a34d27d80cdc4be57
+Author: Jerome Martinez <jerome.e.martinez@gmail.com>
+Date:   Sun Jul 1 20:27:33 2012 -0500
+
+    working refactored file: ImportExportHandler.py
+
+commit 265a6ced20126f8a008585763d5cdc0ac4456a3f
+Author: joe <joe@vbm13.(none)>
+Date:   Sun Jul 1 19:08:27 2012 -0500
+
+    begin refactoring to allow for unit tests
+
+commit 4626fcb5c536672c6e71009c44a5a27ce35ee614
+Author: Jerome Martinez <jerome.e.martinez@gmail.com>
+Date:   Sun Jul 1 18:47:44 2012 -0500
+
+    uneeded files
+
+commit 94bb832b69438d5724ff3815bddde2a7c847bdaa
+Author: joe <joe@vbm13.(none)>
+Date:   Sun Jul 1 18:41:53 2012 -0500
+
+    starting on unit tests
+
+commit 8e2b3aee9d8810dd625004c01ce012004e936172
+Author: joe <joe@vbm13.(none)>
+Date:   Sun Jul 1 18:40:45 2012 -0500
+
+    starting on unit tests
+
+commit 8977ec16e1f1110fee45143f65f9e5b3204add8e
+Author: Jerome Martinez <jerome.e.martinez@gmail.com>
+Date:   Sun Jul 1 18:38:24 2012 -0500
+
+    refactored import
+
+commit f325394c98fc71efc35b6228a97bc7f809c75ae5
+Author: joe <joe@vbm13.(none)>
+Date:   Sun Jul 1 17:53:35 2012 -0500
+
+    changes how link urls are handled
+
+commit 32b1e1b35ae2d841980e3661bcfaca873451f12f
+Author: joe <joe@vbm13.(none)>
+Date:   Sun Jul 1 17:41:19 2012 -0500
+
+    adds comments
+
+commit 52ba48741b941798d154b6b8d84c4a95c8c8a2ae
+Merge: fca4a21 b8f7141
+Author: joe <joe@vbm13.(none)>
+Date:   Sun Jul 1 17:25:04 2012 -0500
+
+    Merge branch 'master' of https://github.com/jromeem/cs373-wc
+
+commit fca4a211a471a554989801a2b15a48ebf66ee35c
+Author: joe <joe@vbm13.(none)>
+Date:   Sun Jul 1 17:08:09 2012 -0500
+
+    just removing .pycs
+
+commit b8f714128aa39f6a0351f146b6d40c316ae7eb0c
+Author: Michael Pace <mpace1027@gmail.com>
+Date:   Sun Jul 1 17:05:46 2012 -0500
+
+    renamed type in link model to link_type
+
+commit a7351d12ded73558a0834ee7f108f80931bd134e
+Author: joe <joe@vbm13.(none)>
+Date:   Sun Jul 1 16:59:58 2012 -0500
+
+    export now queries the db
+
+commit 2bac4e8d6149b0784d828df8964df00a079f4928
+Author: Justin Salazar <jrsalazar89@gmail.com>
+Date:   Sun Jul 1 16:43:31 2012 -0500
+
+    Fixed person export w/ ref & links
+
+commit 0b604b510d4bf358883e902f19385b37a3511acd
+Author: andyhsu <andyhsu@vegrandis.(none)>
+Date:   Sun Jul 1 16:37:57 2012 -0500
+
+    Fixed issues with export
+
+commit 6c18f60397722e9904151a28928a043a55b94885
+Author: andyhsu <andyhsu@vegrandis.(none)>
+Date:   Sun Jul 1 16:34:08 2012 -0500
+
+    Added in ref for org/people
+
+commit fd5043f666ed426764f9fa21633d7a4561049277
+Author: joe <joe@vbm13.(none)>
+Date:   Sun Jul 1 16:23:27 2012 -0500
+
+    new stuff in export
+
+commit 5d21dc70c32e41e2fe7c61ce7e50af585cb2f578
+Author: joe <joe@vbm13.(none)>
+Date:   Sun Jul 1 16:17:46 2012 -0500
+
+    moved export to ExportHandler
+
+commit bc288550a9c20dc63f2479bd91d8ee56ad06bf69
+Author: joe <joe@vbm13.(none)>
+Date:   Sun Jul 1 16:15:47 2012 -0500
+
+    moved export to ExportHandler
+
+commit 752528714cd82468c0ae5da32638584a94b8542f
+Merge: d8eb408 747198d
+Author: Michael Pace <mpace1027@gmail.com>
+Date:   Sun Jul 1 16:05:22 2012 -0500
+
+    merged
+
+commit d8eb40807f439791f283e13f1a4fa063cae62f1a
+Author: Michael Pace <mpace1027@gmail.com>
+Date:   Sun Jul 1 16:04:15 2012 -0500
+
+    crisis exports done
+
+commit 4e9a31cf42d9380ab1fb95c38018447a676f3651
+Author: Jerome Martinez <jerome.e.martinez@gmail.com>
+Date:   Sun Jul 1 15:59:09 2012 -0500
+
+    organizing Import function...separated into diff files
+
+commit 747198d05d1948db0b7b6c456d51e356313b54de
+Merge: f8fcd00 4ff9bf5
+Author: Justin Salazar <jrsalazar89@gmail.com>
+Date:   Sun Jul 1 15:43:28 2012 -0500
+
+    Merge branch 'master' of https://github.com/jromeem/cs373-wc
+
+commit f8fcd00ce097b76d2b289581c5a98a6852c0748e
+Author: Justin Salazar <jrsalazar89@gmail.com>
+Date:   Sun Jul 1 15:40:43 2012 -0500
+
+    Added person to export
+
+commit 4ff9bf54343f81786b1fe93e2a6fb3c27c541f82
+Author: andyhsu <andyhsu@vegrandis.(none)>
+Date:   Sun Jul 1 15:15:15 2012 -0500
+
+    Added orgs to export
+
+commit 8f000371ed2282d271406c0668875ca22acb6b74
+Author: Michael Pace <mpace1027@gmail.com>
+Date:   Sun Jul 1 14:35:08 2012 -0500
+
+    starting export the right way...
+
+commit 8c46bbcd2cc125de49c3240f905abb5e46195048
+Author: Michael Pace <mpace1027@gmail.com>
+Date:   Sun Jul 1 13:56:20 2012 -0500
+
+    started export
+
+commit 3dce222fe0b68a328b145597c1f2c7acd3aa8baa
+Author: Michael Pace <mpace1027@gmail.com>
+Date:   Sat Jun 30 18:41:18 2012 -0500
+
+    fixed validation
+
+commit 1f32da90e46aaffbe3755cd08ce17601090fe263
+Author: Michael Pace <mpace1027@gmail.com>
+Date:   Sat Jun 30 18:39:36 2012 -0500
+
+    beginning to export
+
+commit ed72a495ff0f7db8d02e3d3ee504cf3ce95179be
+Author: Jerome Martinez <jerome.e.martinez@gmail.com>
+Date:   Sat Jun 30 17:50:23 2012 -0500
+
+    export page
+
+commit 09e6f6f5cf2ab7516cdcd5c535816e732126ce12
+Author: Jerome Martinez <jerome.e.martinez@gmail.com>
+Date:   Sat Jun 30 16:57:50 2012 -0500
+
+    lsdfjlsdkjf
+
+commit e9f763b901a0fe3f041262a74e582ffcfc454ea9
+Merge: e1a7b24 dbbd8e3
+Author: Jerome Martinez <jerome.e.martinez@gmail.com>
+Date:   Sat Jun 30 16:57:24 2012 -0500
+
+    Merge branch 'master' of github.com:jromeem/cs373-wc
+
+commit e1a7b24878f6835343f2e1f657df702214347d2c
+Author: Jerome Martinez <jerome.e.martinez@gmail.com>
+Date:   Sat Jun 30 16:56:48 2012 -0500
+
+    small changes
+
+commit dbbd8e3f500ffda4dc91af5ff0d1b0fc7cf4c592
+Author: Michael Pace <mpace1027@gmail.com>
+Date:   Sat Jun 30 16:53:11 2012 -0500
+
+    fixed mistake in org model building
+
+commit 37362d19e9a962b707d8435b02b5f8f9f22d6f55
+Merge: dfd3c42 f74684d
+Author: Jerome Martinez <jerome.e.martinez@gmail.com>
+Date:   Sat Jun 30 16:45:27 2012 -0500
+
+    Merge branch 'master' of github.com:jromeem/cs373-wc
+
+commit dfd3c42385ec24b24de3fbff2fe605736a094e45
+Author: Jerome Martinez <jerome.e.martinez@gmail.com>
+Date:   Sat Jun 30 16:44:49 2012 -0500
+
+    start export page
+
+commit f74684d8754a3298bcd5f47fa9b576eaf5387987
+Author: Harrison He <gold831@Jinqing-HuangmatoMacBook-Pro.local>
+Date:   Sat Jun 30 16:38:28 2012 -0500
+
+    add people main3
+
+commit 76686945a42155dc4292badcb44aef470a28ac01
+Author: Harrison He <gold831@Jinqing-HuangmatoMacBook-Pro.local>
+Date:   Sat Jun 30 16:24:13 2012 -0500
+
+    add people main2
+
+commit d205d5030d3f9af3ef8aa64753deee02eb696c44
+Author: Harrison He <gold831@Jinqing-HuangmatoMacBook-Pro.local>
+Date:   Sat Jun 30 16:22:03 2012 -0500
+
+    add people main
+
+commit f69f80611b38353f86419b1336fa059c3d12e39e
+Merge: f234634 77d7a0c
+Author: Michael Pace <mpace1027@gmail.com>
+Date:   Sat Jun 30 16:18:21 2012 -0500
+
+    Merge branch 'master' of https://github.com/jromeem/cs373-wc
+
+commit f234634e873d5dfa0cbc274988b2135388b3c08b
+Author: Michael Pace <mpace1027@gmail.com>
+Date:   Sat Jun 30 16:18:00 2012 -0500
+
+    crisis import working
+
+commit 77d7a0c293797db8a2e38fa953044991e6010bae
+Author: Jerome Martinez <jerome.e.martinez@gmail.com>
+Date:   Sat Jun 30 15:57:13 2012 -0500
+
+    orgs xml parsing-data storing into models
+
+commit a9cd6ff7da4a28c5491b093ea2e7ccf1a3decde7
+Author: Michael Pace <mpace1027@gmail.com>
+Date:   Sat Jun 30 15:48:54 2012 -0500
+
+    crisis import working?
+
+commit 3b8c69753cafc5e83790f84952d0956c06673cff
+Author: Michael Pace <mpace1027@gmail.com>
+Date:   Sat Jun 30 14:57:52 2012 -0500
+
+    another ex
+
+commit 24959fb4a47fa68a12ff0b83e0f3b0386458aada
+Author: Michael Pace <mpace1027@gmail.com>
+Date:   Sat Jun 30 14:55:35 2012 -0500
+
+    IT WORKS OMFG
+
+commit 7a256552e44ab73eb13b4326c32699cc308fde4e
+Merge: 4a624f2 c2d7bf7
+Author: Michael Pace <mpace1027@gmail.com>
+Date:   Sat Jun 30 14:44:25 2012 -0500
+
+    Merge branch 'master' of https://github.com/jromeem/cs373-wc
+
+commit 4a624f2ea1f00d61804b7950edb6fb763e7cfaf0
+Merge: 3b36c16 fe3e072
+Author: Michael Pace <mpace1027@gmail.com>
+Date:   Sat Jun 30 14:44:07 2012 -0500
+
+    attempt to merge validation and import stuff
+
+commit c2d7bf7786855e38178c542e2e6d1d220be9c9c0
+Author: Harrison He <gold831@Jinqing-HuangmatoMacBook-Pro.local>
+Date:   Sat Jun 30 14:38:41 2012 -0500
+
+    xml validator3
+
+commit fe3e072dc489fc9811c4abddfcd22b4d8e67b4b7
+Author: Harrison He <gold831@Jinqing-HuangmatoMacBook-Pro.local>
+Date:   Sat Jun 30 14:30:06 2012 -0500
+
+    xml validator2
+
+commit 3b36c16e7a56a73c14e7be59db93a4649135e1f3
+Author: Michael Pace <mpace1027@gmail.com>
+Date:   Sat Jun 30 14:30:01 2012 -0500
+
+    beginning to import into datastore
+
+commit bb09ced39c1ab40b5c5d31aac67d19f6923d7c7a
+Author: Harrison He <gold831@Jinqing-HuangmatoMacBook-Pro.local>
+Date:   Sat Jun 30 14:28:28 2012 -0500
+
+    xml validator
+
+commit 46427bdd05c82dd81fa54febb61c3c33776d5e22
+Author: joe <joe@joe-VB32.(none)>
+Date:   Fri Jun 29 13:58:09 2012 -0500
+
+    more fix attempts
+
+commit c9e725da57161c64450b3833e5e00001a025237f
+Author: joe <joe@joe-VB32.(none)>
+Date:   Fri Jun 29 13:54:29 2012 -0500
+
+    attempted fix to error in deployed version
+
+commit 738fde4182ff5bf0ff975017c9a6112fe9d21e3a
+Author: joe <joe@joe-VB32.(none)>
+Date:   Thu Jun 28 21:05:25 2012 -0500
+
+    fixes weird type errors in models
+
+commit 07359ea35829a28c47cf489bbe436c8a6a8ab287
+Author: joe <joe@joe-K53U.(none)>
+Date:   Thu Jun 28 20:02:24 2012 -0500
+
+    fixing models.. again
+
+commit f0e0142a6c42a3ad2dce7d75b7288713dc035187
+Author: joe <joe@joe-K53U.(none)>
+Date:   Thu Jun 28 20:01:17 2012 -0500
+
+    fixing models
+
+commit 054fded2d49efa391c11c8f9eb305a43fb30191c
+Merge: 46bbcc0 d09836e
+Author: joe <joe@joe-K53U.(none)>
+Date:   Thu Jun 28 19:53:02 2012 -0500
+
+    fix conflicts
+
+commit 46bbcc0c38cf9937e23569e2fee7f4c091ba6dda
+Author: joe <joe@joe-K53U.(none)>
+Date:   Thu Jun 28 19:48:05 2012 -0500
+
+    more modelstuff
+
+commit d09836ee1647a4c957e1fa10675ec0630ad62833
+Author: Jerome Martinez <jerome.e.martinez@gmail.com>
+Date:   Thu Jun 28 19:36:02 2012 -0500
+
+    person model
+
+commit e8c150390807b0a5a96c6f851e78f5f3e75a1156
+Author: Michael Pace <mpace1027@gmail.com>
+Date:   Thu Jun 28 19:29:29 2012 -0500
+
+    updaed links model
+
+commit 1415bf07b1c132dcfeff85298e3255ce10c3fd88
+Merge: 4db6b65 b509e9a
+Author: joe <joe@joe-K53U.(none)>
+Date:   Thu Jun 28 19:24:28 2012 -0500
+
+    Merge branch 'master' of https://github.com/jromeem/cs373-wc
+
+commit 4db6b65ca3392724f8e5bad952a95232b407831c
+Author: joe <joe@joe-K53U.(none)>
+Date:   Thu Jun 28 19:24:23 2012 -0500
+
+    working on models
+
+commit b509e9a6983289db84c223365e6c50bd3c716c5b
+Merge: 6539d9f f97880b
+Author: Michael Pace <mpace1027@gmail.com>
+Date:   Thu Jun 28 19:23:31 2012 -0500
+
+    Merge branch 'master' of https://github.com/jromeem/cs373-wc
+
+commit 6539d9f2aaad232ea5b5a3bd947d04db1ac374ee
+Author: Michael Pace <mpace1027@gmail.com>
+Date:   Thu Jun 28 19:23:08 2012 -0500
+
+    crisis model
+
+commit f97880b9e69e7781b67679359d1b98aa583069e3
+Author: andyhsu <andyhsu@ubuntu.(none)>
+Date:   Thu Jun 28 19:17:14 2012 -0500
+
+    added info to xml instance
+
+commit c970a7c0b8ed145877758234c4c10b067faecca0
+Author: joe <joe@joe-K53U.(none)>
+Date:   Thu Jun 28 19:05:01 2012 -0500
+
+    schema and instance tweaks
+
+commit 8e063f50916ac506869d6839020cb1baf07b39c2
+Author: Harrison He <gold831@Jinqing-HuangmatoMacBook-Pro.local>
+Date:   Thu Jun 28 18:50:27 2012 -0500
+
+    schema and instance
+
+commit 6692fb19ec36e2c061de189e12c2cb1604392b66
+Merge: e48d553 b0ad8a6
+Author: joe <joe@joe-K53U.(none)>
+Date:   Thu Jun 28 18:45:01 2012 -0500
+
+    Merge branch 'master' of https://github.com/jromeem/cs373-wc
+
+commit e48d553c7148e44b4dc0015d6e9d97da3900a2d1
+Author: joe <joe@joe-K53U.(none)>
+Date:   Thu Jun 28 18:44:48 2012 -0500
+
+    more formatting in import
+
+commit b0ad8a6c97786666c764d4beec68803442b23c7e
+Author: Harrison He <gold831@Jinqing-HuangmatoMacBook-Pro.local>
+Date:   Thu Jun 28 18:34:50 2012 -0500
+
+    schema and instance
+
+commit 3f516779cdfb242f37550ce3a5def2853131b9ee
+Merge: 18e8522 45bdb44
+Author: joe <joe@joe-K53U.(none)>
+Date:   Thu Jun 28 18:34:21 2012 -0500
+
+    Merge branch 'master' of https://github.com/jromeem/cs373-wc
+
+commit 18e8522931d5302f9ce0e30f88fb8128ee7b7259
+Author: joe <joe@joe-K53U.(none)>
+Date:   Thu Jun 28 18:33:52 2012 -0500
+
+    changed import
+
+commit 45bdb44729c42502262dab4645ba6e776ccd21b9
+Author: Michael Pace <mpace1027@gmail.com>
+Date:   Thu Jun 28 18:26:33 2012 -0500
+
+    updated index.html
+
+commit 9705739affa42013f8daeaae9ec5222ef65091c5
+Author: Michael Pace <mpace1027@gmail.com>
+Date:   Thu Jun 28 18:25:53 2012 -0500
+
+    updated index.html
+
+commit a25c0ca15585b5d9745b5e3327eb94d9ea524ac2
+Author: Michael Pace <mpace1027@gmail.com>
+Date:   Thu Jun 28 18:23:43 2012 -0500
+
+    updated index.html
+
+commit c69e2bbbe8cf9d752b6ab1b3a8088bfeb9c6be11
+Author: Michael Pace <mpace1027@gmail.com>
+Date:   Thu Jun 28 18:22:44 2012 -0500
+
+    updated index.html
+
+commit d76ad3c4e0c0ecf714438e933d93419bded689dc
+Author: Michael Pace <mpace1027@gmail.com>
+Date:   Thu Jun 28 18:20:57 2012 -0500
+
+    updated index.html
+
+commit 70d71cf5bce83d4ebba399cd349980baf9c3c471
+Merge: b31b36b 6df29f6
+Author: Michael Pace <mpace1027@gmail.com>
+Date:   Thu Jun 28 18:10:18 2012 -0500
+
+    Merge branch 'master' of https://github.com/jromeem/cs373-wc
+
+commit 6df29f64a9200746635e33b891605dca7e26f624
+Author: Harrison He <gold831@Jinqing-HuangmatoMacBook-Pro.local>
+Date:   Thu Jun 28 18:09:29 2012 -0500
+
+    schema and instance
+
+commit b31b36bde226f4096b86c5505025e84424759612
+Merge: dd7973e af868f3
+Author: Michael Pace <mpace1027@gmail.com>
+Date:   Thu Jun 28 17:43:56 2012 -0500
+
+    resolving conflicts
+
+commit dd7973e992a09c68c21ec943a0e302ed5652882a
+Author: Michael Pace <mpace1027@gmail.com>
+Date:   Thu Jun 28 17:42:23 2012 -0500
+
+    some mainhandler changes
+
+commit af868f3f6b21f5ad069216c1543e46cc32c69d26
+Author: joe <joe@joe-K53U.(none)>
+Date:   Thu Jun 28 17:41:37 2012 -0500
+
+    moved import handling
+
+commit f529ffd118b29895faf02425eabcef7da824b8e1
+Merge: 09cfd7b a62d06f
+Author: joe <joe@joe-K53U.(none)>
+Date:   Thu Jun 28 17:17:28 2012 -0500
+
+    git is obnoxious
+
+commit 09cfd7be061884901487a88e8c1006738f9e76be
+Author: joe <joe@joe-K53U.(none)>
+Date:   Thu Jun 28 17:16:13 2012 -0500
+
+    gets models
+
+commit a62d06fb23f9944fb960675279c4e0b01778c0d8
+Author: harrisonhe <harrisonhe824@gmail.com>
+Date:   Thu Jun 28 16:53:53 2012 -0500
+
+    Update master
+
+commit 5f1e4fad137093c610e44f58afdd8992fc03127d
+Merge: fc4d283 572b553
+Author: Jerome Martinez <jerome.e.martinez@gmail.com>
+Date:   Thu Jun 28 16:39:11 2012 -0500
+
+    Merge branch 'master' of github.com:jromeem/cs373-wc
+
+commit 572b5536e939f710ad1293c0adebe00958ef080f
+Author: Michael Pace <mpace1027@gmail.com>
+Date:   Thu Jun 28 16:38:50 2012 -0500
+
+    xml import updates
+
+commit fc4d283a97418ed5cd8533492d9398ed3a063b8f
+Merge: bfe89ba 557dec7
+Author: Jerome Martinez <jerome.e.martinez@gmail.com>
+Date:   Thu Jun 28 16:27:08 2012 -0500
+
+    Merge branch 'master' of github.com:jromeem/cs373-wc
+
+commit 2e8395818b95305ee6d81298451944055693dba5
+Merge: bb0a8fd 557dec7
+Author: joe <joe@joe-K53U.(none)>
+Date:   Thu Jun 28 16:14:27 2012 -0500
+
+    Merge branch 'master' of https://github.com/jromeem/cs373-wc
+
+commit 557dec76697f686c24b6d6250178251679f0fc33
+Author: Michael Pace <mpace1027@gmail.com>
+Date:   Thu Jun 28 16:13:38 2012 -0500
+
+    push for joe
+
+commit 3c0f2e574cbe4a9258c6ec183bd521ab971cff9e
+Author: Michael Pace <mpace1027@gmail.com>
+Date:   Thu Jun 28 16:13:23 2012 -0500
+
+    push for joe
+
+commit bfe89ba1317d53501fcee74b843bb926ce452bd5
+Author: Jerome Martinez <jerome.e.martinez@gmail.com>
+Date:   Thu Jun 28 16:12:22 2012 -0500
+
+    api test added
+
+commit bb0a8fd919985ccdcd31452bc331d56e99949906
+Merge: 4345790 2278bf5
+Author: joe <joe@joe-K53U.(none)>
+Date:   Thu Jun 28 16:11:59 2012 -0500
+
+    merging
+
+commit 43457906e383c5d88e2f34e6fefa6fb3f8b26c97
+Author: joe <joe@joe-K53U.(none)>
+Date:   Thu Jun 28 16:10:33 2012 -0500
+
+    will be merged
+
 commit 2278bf51faf2ed7ec0b05a9277bade5d30e9c25b
 Merge: 3e1e172 fedcba6
 Author: Jerome Martinez <jerome.e.martinez@gmail.com>
