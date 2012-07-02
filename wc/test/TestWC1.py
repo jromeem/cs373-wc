@@ -26,8 +26,6 @@ class ExportTests(unittest.TestCase):
         XMLHelpers.buildPerson(ptree, person1)
         
         
-        
-        
         elemid = ptree.attrib['id'],
         name = ptree.find('.//name').text
         info_type = ptree.find('.//info').find('.//type').text
@@ -42,12 +40,20 @@ class ExportTests(unittest.TestCase):
         orgrefs = [x.attrib['idref'] for x in ptree.findall('.//org')]
         crisisrefs = [x.attrib['idref'] for x in ptree.findall('.//crisis')]
         
-       # print elemid
-        self.assert_(elemid == "bobs")
-        self.assert_(name == "Bob")
-        self.assert_(info_type == "Salamander")
-                   
-                   
+       
+        self.assert_(elemid == person1.elemid)
+        self.assert_(name == person1.name)
+        self.assert_(info_type == person1.info_type)
+        self.assert_(info_birthdate_time == person1.info_birthdate_time)
+        self.assert_(info_birthdate_day == person1.info_birthdate_day)
+        self.assert_(info_birthdate_month == person1.info_birthdate_month)
+        self.assert_(info_birthdate_year == person1.info_birthdate_year)
+        self.assert_(info_birthdate_misc == person1.info_birthdate_misc)
+        self.assert_(info_nationality == person1.info_nationality)
+        self.assert_(info_biography = person1.info_biography)
+        self.assert_(orgrefs == person1.orgrefs)
+        self.assert_(crisisrefs == person1.crisisrefs)
+        
 	def test_buildperson2(self):
 	    return False
 	def test_buildperson3(self):
