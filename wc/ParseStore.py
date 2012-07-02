@@ -14,8 +14,12 @@ from minixsv import pyxsval as xsv
 # our GAE defined data models
 from DataModels import Link, Person, Organization, Crisis
 
-# validates a xml instance against a schema
-# 
+###################
+# PARSE AND STORE #
+###################
+
+link_list = []
+
 # xml_instance : string
 # a string contains the contents of an xml file
 #
@@ -33,12 +37,11 @@ def is_valid_xml (xml_instance, xml_schema_filename):
 # used for creating the list of links for a given crisis/ppl/org
 # crisis : Elementtree object
 def grabLinks(crisis):
-    list_of_links = []
     for ref in crisis.findall('.//ref'):
         for l in ref:
             new_link = Link()
             if (l.tag):
-                new_link.type = l.tag
+                new_link.link_type = l.tag
             if (l.find('./title') != None):
                 new_link.title = l.find('./title').text
             if (l.find('./url') != None):
@@ -47,14 +50,12 @@ def grabLinks(crisis):
                 new_link.description = l.find('./description').text
             if (l.find('./site') != None):
                 new_link.vid_site = l.find('./site').text
-            new_link.put()
-            list_of_links.append(new_link.key())
-            
-    return list_of_links
+            new_link.link_parent = crisis.attrib['id']
+            #new_link.put()
+            link_list.append(new_link)
 
-# in_file
-# parse and store the xml data
-
+# in_file : file (XML-validated file)
+# parse and store the xml data in the GAE datastore
 def parse_store(in_file):
 
     tree = ElementTree.parse(in_file)
@@ -66,11 +67,11 @@ def parse_store(in_file):
     for crisis in crises:
         if (crisis.find('.//info')):
             
-            list_of_links = grabLinks(crisis)
-            
             info = crisis.find('.//info')
+            grabLinks(crisis)
+            
             c = Crisis(
-                       crisisid = crisis.attrib['id'],
+                       elemid = crisis.attrib['id'],
                        name = crisis.find('.//name').text,
                        misc = crisis.find('.//misc').text,
                        
@@ -93,23 +94,23 @@ def parse_store(in_file):
                        impact_human_displaced = int(info.find('.//impact').find('.//human').find('.//displaced').text),
                        impact_human_injured = int(info.find('.//impact').find('.//human').find('.//injured').text),
                        impact_human_missing = int(info.find('.//impact').find('.//human').find('.//missing').text),
-                       impact_human_misc = info.find('.//impact').find('.//human').find('.//deaths').text,
+                       impact_human_misc = info.find('.//impact').find('.//human').find('.//misc').text,
                        
                        impact_economic_amount = int(info.find('.//impact').find('.//economic').find('.//amount').text),
                        impact_economic_currency = info.find('.//impact').find('.//economic').find('.//currency').text,
                        impact_economic_misc = info.find('.//impact').find('.//economic').find('.//misc').text,
                        
-                       links = list_of_links,
-                       orgrefs = [x for x in crisis.find('.//org').attrib['idref']],
-                       personrefs = [x for x in crisis.find('.//person').attrib['idref']]
+                       orgrefs = [x.attrib['idref'] for x in crisis.findall('.//org')],
+                       personrefs = [x.attrib['idref'] for x in crisis.findall('.//person')]
                        )
+            #crisis_list.append(c)
             c.put()
 
     for person in people:
         if (person.find('.//info')):
-            list_of_links = grabLinks(person)
+            grabLinks(person)
             p = Person(
-                       personid = person.attrib['id'],
+                       elemid = person.attrib['id'],
                        name_title = person.find('.//name').find('.//title').text,
                        name_first = person.find('.//name').find('.//first').text,
                        name_last = person.find('.//name').find('.//last').text,
@@ -123,19 +124,21 @@ def parse_store(in_file):
                        info_nationality = person.find('.//info').find('.//nationality').text,
                        info_biography = person.find('.//info').find('.//biography').text,
                        
-                       links = list_of_links,
-                       orgrefs = [x for x in person.find('.//org').attrib['idref']],
-                       crisisrefs = [x for x in person.find('.//crisis').attrib['idref']]
+                       orgrefs = [x.attrib['idref'] for x in person.findall('.//org')],
+                       crisisrefs = [x.attrib['idref'] for x in person.findall('.//crisis')]
                        )
+            #person_list.append(p)
             p.put()
 
     for org in orgs:
         if org.find('.//info'):
+            grabLinks(org)
             info = org.find('.//info')
             contact = info.find('.//contact')
             mail = contact.find('.//mail')
             loc = info.find('.//loc')
-            o = Organization(orgid = org.attrib['id'],
+            o = Organization(
+                             elemid = org.attrib['id'],
                              name = org.find('.//name').text,
                              misc = org.find('.//misc').text,
                              
@@ -154,8 +157,8 @@ def parse_store(in_file):
                              info_loc_region = loc.find('.//region').text,
                              info_loc_country = loc.find('.//country').text,
                              
-                             links = list_of_links,
-                             personrefs = [x for x in org.find('.//person').attrib['idref']],
-                             crisisrefs = [x for x in org.find('.//crisis').attrib['idref']]
+                             personrefs = [x.attrib['idref'] for x in org.findall('.//person')],
+                             crisisrefs = [x.attrib['idref'] for x in org.findall('.//crisis')]
                              )
+            #organization_list.append(o)
             o.put()

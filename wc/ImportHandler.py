@@ -7,6 +7,10 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 # module that parses and stores into data models
 from ParseStore import is_valid_xml, parse_store
         
+##################
+# IMPORT HANDLER #
+##################
+
 class ImportPage(webapp.RequestHandler):
     def get(self):
         self.response.out.write("""
@@ -59,7 +63,7 @@ class ImportPage(webapp.RequestHandler):
             <a href="/">Home</a></br>
           </body>
         </html>""" % message)
-
+        
 application = webapp.WSGIApplication([('/import', ImportPage)],
                                      debug=True)
 

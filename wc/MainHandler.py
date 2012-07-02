@@ -9,7 +9,6 @@ from xml.etree import ElementTree
 from xml.etree.ElementTree import Element, SubElement, dump
 from minixsv import pyxsval as xsv
 
-
 class MainPage(webapp.RequestHandler):
     def get(self):
         page = self.request.get('page')
@@ -19,8 +18,6 @@ class MainPage(webapp.RequestHandler):
         
         path = os.path.join(os.path.dirname(__file__), "index.html")
         self.response.out.write(template.render(path, template_values))
-
-
 
 application = webapp.WSGIApplication([('/', MainPage)],debug=True)
 

@@ -9,21 +9,26 @@ from xml.etree import ElementTree
 from xml.etree.ElementTree import Element, SubElement, dump
 from minixsv import pyxsval as xsv
 
+# our GAE defined data models
+from DataModels import Link, Person, Organization, Crisis
+from ParseStore import link_list
+
+##################
+# EXPORT HANDLER #
+##################
+
+#exports current data to an xml string
 class ExportPage(webapp.RequestHandler):
     def get(self):
         worldCrises = ElementTree.Element("worldCrisis", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance"})
+
+        crisis_list = db.GqlQuery("SELECT * FROM Crisis")
+        person_list = db.GqlQuery("SELECT * FROM Person")
+        organization_list = db.GqlQuery("SELECT * FROM Organization")
         
-        query = db.GqlQuery("SELECT * FROM Crisis")
-        crisis_list = query.fetch()
-        
-        query = db.GqlQuery("SELECT * FROM Person")
-        person_list = cquery.fetch()
-        
-        query = db.GqlQuery("SELECT * FROM Organization")
-        organization_list = cquery.fetch()
-        
+        #convert the crisis list to an xml string and append it
         for c in crisis_list:
-            crisis = ElementTree.SubElement(worldCrises, "crisis", {"id" : c.crisisid})
+            crisis = ElementTree.SubElement(worldCrises, "crisis", {"id" : c.elemid})
             name = ElementTree.SubElement(crisis, "name")
             name.text = c.name
             
@@ -35,8 +40,8 @@ class ExportPage(webapp.RequestHandler):
             help.text = c.info_help
             resources = ElementTree.SubElement(info, "resources")
             resources.text = c.info_resources
-            type = ElementTree.SubElement(info, "type")
-            type.text = c.info_type
+            c_type = ElementTree.SubElement(info, "type")
+            c_type.text = c.info_type
             
             time = ElementTree.SubElement(info, "time")
             time_time = ElementTree.SubElement(time, "time")
@@ -91,9 +96,10 @@ class ExportPage(webapp.RequestHandler):
             for personref in c.personrefs:
                 person = ElementTree.SubElement(crisis, "person", {"idref" : personref})
     
-    
+		#convert the organization list to an xml string and append it
         for o in organization_list:
-            organization = ElementTree.SubElement(worldCrises, "organization", {"id" : o.orgid})
+            organization = ElementTree.SubElement(worldCrises, "organization", {"id" : o.elemid})
+            name = ElementTree.SubElement(organization, "name")
             name.text = o.name
             
             info = ElementTree.SubElement(organization, "info")
@@ -120,13 +126,22 @@ class ExportPage(webapp.RequestHandler):
             orgzip = ElementTree.SubElement(mail, "zip")
             orgzip.text = o.info_contacts_zip
             
+            ref = ElementTree.SubElement(organization, "ref")
+            exportLinks(o, ref)
+            
             misc = ElementTree.SubElement(organization, "misc")
             misc.text = o.misc
+            
+            for crisisref in o.crisisrefs:
+                crisis = ElementTree.SubElement(organization, "crisis", {"idref" : crisisref})
+            for personref in o.personrefs:
+                person = ElementTree.SubElement(organization, "person", {"idref" : personref})
         
-
+        #convert the person list to an xml string and append it
         for p in person_list:
-            person = ElementTree.SubElement(worldCrises, "person", {"id" : p.personid})
+            person = ElementTree.SubElement(worldCrises, "person", {"id" : p.elemid})
             name = ElementTree.SubElement(person, "name")
+            
             title = ElementTree.SubElement(name, "title")
             title.text = p.name_title
             first = ElementTree.SubElement(name, "first")
@@ -135,9 +150,11 @@ class ExportPage(webapp.RequestHandler):
             last.text = p.name_last
             middle = ElementTree.SubElement(name, "middle")
             middle.text = p.name_middle
+            
             info = ElementTree.SubElement(person, "info")
             info_type = ElementTree.SubElement(info, "type")
             info_type.text = p.info_type
+            
             info_birthdate = ElementTree.SubElement(info, "birthdate")
             info_birthdate_time = ElementTree.SubElement(info_birthdate, "time")
             info_birthdate_time.text = p.info_birthdate_time
@@ -149,31 +166,42 @@ class ExportPage(webapp.RequestHandler):
             info_birthdate_year.text = str(p.info_birthdate_year)
             info_birthdate_misc = ElementTree.SubElement(info_birthdate, "misc")
             info_birthdate_misc.text = p.info_birthdate_misc
+            
             info_nat = ElementTree.SubElement(info, "nationality")
             info_nat.text = p.info_nationality
+            
             info_bio = ElementTree.SubElement(info, "biography")
             info_bio.text = p.info_biography
-
+            
+            ref = ElementTree.SubElement(person, "ref")
+            exportLinks(p, ref)
+            misc = ElementTree.SubElement(person, "misc")
+            misc.text = p.misc
+            
+            for crisisref in p.crisisrefs:
+                crisis = ElementTree.SubElement(person, "crisis", {"idref" : crisisref})
+            for orgref in p.orgrefs:
+                org = ElementTree.SubElement(person, "org", {"idref" : orgref})
             
         tree = ElementTree.ElementTree(worldCrises)
         text = ElementTree.tostring(worldCrises)            
         self.response.headers['Content-Type'] = "text/xml; charset=utf-8"
         self.response.out.write(text)
         
-        
+#gets links for a crisis from the list and adds them to the element tree
 def exportLinks(c, ref):
     for l in link_list:
-        if not l.link_parent == c.crisisid:
+        if not l.link_parent == c.elemid:
             continue
-        currRef = ElementTree.SubElement(ref, l.type)
+        currRef = ElementTree.SubElement(ref, l.link_type)
         title = ElementTree.SubElement(currRef, "title")
         title.text = l.title
         url = ElementTree.SubElement(currRef, "url")
         url.text = l.link_url
-        if (l.type == "video"):
+        if (l.link_type == "video"):
             site = ElementTree.SubElement(currRef, "site")
             site.text = l.vid_site
-        if (l.type != "social"):
+        if (l.link_type != "social"):
             description = ElementTree.SubElement(currRef, "description")
             description.text = l.description
 
