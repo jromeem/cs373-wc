@@ -168,10 +168,15 @@ def parseXML(in_file):
     people = tree.findall(".//person")
     orgs = tree.findall(".//organization")
 
+    #build crisis list
     for crisis in crises:
         addCrisis(crisis)
+
+    #build person list
     for person in people:
         addPerson(person)
+
+    #build organization list
     for org in orgs:
         addOrganization(org)
 
