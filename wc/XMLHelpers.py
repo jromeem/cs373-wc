@@ -295,6 +295,14 @@ def buildOrganization(organization, o):
     country.text = o.info_contacts_country
     orgzip = ElementTree.SubElement(mail, "zip")
     orgzip.text = o.info_contacts_zip
+    
+    loc = ElementTree.SubElement(info, "loc")
+    city = ElementTree.SubElement(loc, "city")
+    city.text = o.info_loc_city
+    region = ElementTree.SubElement(loc, "region")
+    region.text = o.info_loc_region
+    country = ElementTree.SubElement(loc, "country")
+    country.text = o.info_loc_country
 
     ref = ElementTree.SubElement(organization, "ref")
     exportLinks(o, ref)
