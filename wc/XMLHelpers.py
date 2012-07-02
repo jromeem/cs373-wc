@@ -107,10 +107,7 @@ def addPerson(person):
         grabLinks(person)
         p = Person(
                    elemid = person.attrib['id'],
-                   name_title = person.find('.//name').find('.//title').text,
-                   name_first = person.find('.//name').find('.//first').text,
-                   name_last = person.find('.//name').find('.//last').text,
-                   name_middle = person.find('.//name').find('.//middle').text,
+                   name = person.find('.//name').text,
                    info_type = person.find('.//info').find('.//type').text,
                    info_birthdate_time = person.find('.//info').find('.//birthdate').find('.//time').text,
                    info_birthdate_day = int(person.find('.//info').find('.//birthdate').find('.//day').text),
@@ -171,22 +168,12 @@ def parseXML(in_file):
     people = tree.findall(".//person")
     orgs = tree.findall(".//organization")
 
-    print type(crises)
-
-    item_dict = {"crises":crises,
-                 "people":people,
-                 "orgs":orgs}
-    for key, item in item_dict.iteritems():
-        if key == "crises":
-            print type(item)
-            addCrisis(item)
-        elif key == "people":
-            addPerson(item)
-        elif key == "orgs":
-            addOrganization(item)
-        else:
-            pass
-        
+    for crisis in crises:
+        addCrisis(crisis)
+    for person in people:
+        addPerson(person)
+    for org in orgs:
+        addOrganization(org)
 
 ############################
 # EXPORT HANDLER FUNCTIONS #
@@ -320,16 +307,8 @@ def buildOrganization(organization, o):
 # fills a person subtree, where person is the root element, and p is a person object
 def buildPerson(person, p):
     name = ElementTree.SubElement(person, "name")
-
-    title = ElementTree.SubElement(name, "title")
-    title.text = p.name_title
-    first = ElementTree.SubElement(name, "first")
-    first.text = p.name_first
-    last = ElementTree.SubElement(name, "last")
-    last.text = p.name_last
-    middle = ElementTree.SubElement(name, "middle")
-    middle.text = p.name_middle
-
+    name.text = p.name
+    
     info = ElementTree.SubElement(person, "info")
     info_type = ElementTree.SubElement(info, "type")
     info_type.text = p.info_type
@@ -363,7 +342,7 @@ def buildPerson(person, p):
         org = ElementTree.SubElement(person, "org", {"idref" : orgref})
 
 # main function that builds xml
-def buildXML():
+def buildXML(worldCrises):
     
     #build sub-trees for each crisis
     for c in crisis_list:
