@@ -41,8 +41,11 @@ class ExportTests(unittest.TestCase):
         crisisrefs = [x.attrib['idref'] for x in ptree.findall('.//crisis')]
         
        
+<<<<<<< HEAD
         self.assertEqual(elemid[0], person1.elemid)
-
+=======
+        self.assert_(elemid == person1.elemid)
+>>>>>>> c896f7cf8025246b5c3bd3ee742bdb0597705067
         self.assert_(name == person1.name)
         self.assert_(info_type == person1.info_type)
         self.assert_(info_birthdate_time == person1.info_birthdate_time)
@@ -89,9 +92,11 @@ class ExportTests(unittest.TestCase):
         crisisrefs = [x.attrib['idref'] for x in ptree.findall('.//crisis')]
         
        
-
+<<<<<<< HEAD
         self.assertEqual(elemid[0], person1.elemid)
-
+=======
+        self.assert_(elemid == person1.elemid)
+>>>>>>> c896f7cf8025246b5c3bd3ee742bdb0597705067
         self.assert_(name == person1.name)
         self.assert_(info_type == person1.info_type)
         self.assert_(info_birthdate_time == person1.info_birthdate_time)
@@ -137,10 +142,14 @@ class ExportTests(unittest.TestCase):
 
         orgrefs = [x.attrib['idref'] for x in ptree.findall('.//org')]
         crisisrefs = [x.attrib['idref'] for x in ptree.findall('.//crisis')]
-
+        
+<<<<<<< HEAD
         
         self.assertEqual(elemid, person1.elemid)
-
+=======
+       
+        self.assert_(elemid == person1.elemid) wtf?
+>>>>>>> c896f7cf8025246b5c3bd3ee742bdb0597705067
         self.assert_(name == person1.name)
         self.assert_(info_type == person1.info_type)
         self.assert_(info_birthdate_time == person1.info_birthdate_time)
