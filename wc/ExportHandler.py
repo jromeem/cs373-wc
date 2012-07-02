@@ -15,7 +15,7 @@ from XMLHelpers import buildXML
 #exports current data to an xml string
 class ExportPage(webapp.RequestHandler):
     def get(self):
-        worldCrises = ElementTree.Element("worldCrisis", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance"})
+        worldCrises = ElementTree.Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
 
         #crisis_list = db.GqlQuery("SELECT * FROM Crisis")
         #person_list = db.GqlQuery("SELECT * FROM Person")
