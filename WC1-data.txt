@@ -1,22 +1,97 @@
-==============
-==  CRISES  ==
-==============
- ---------- ----------
-Name:  Earthquake in Haiti
-Kind:  Natural Disaster
-Location:  Leogane, Haiti
-Date and Time:  6:53 local time (21:53 UTC) 12 January 2010
-Human Impact:  316,000 people had died, 300,000 had been injured and 1,000,000 made homeless
-Economic Impact:  2,300,000,000 USD
-Resources Needed:  Food, Volunteers, Donations
-Ways to Help:  Donations
-Embedded Image:  http://img.timeinc.net/time/photoessays/2010/haiti_time_z/haiti_time_z_01.jpg
-Embedded Video:  http://www.youtube.com/watch?v=3l9B1dvfT-o
-Social Networks:  
-External Links:  http://en.wikipedia.org/wiki/2010_Haiti_earthquake, http://www.dec.org.uk/haiti-earthquake-facts-and-figures
-Organizations:  
-People:  
- ---------- ----------
+                     ==============
+                     ==  CRISES  ==
+                     ==============
+ ====------ ---------- ---------- ---------- ------====
+Name: Earthquake in Haiti
+Info:
+  Type: Natural Disaster
+  History/Background: The 2010 Haiti earthquake was a catastrophic magnitude 7.0 Mw earthquake, with an epicenter near the town of Léogâne, approximately 25 km (16 miles) west of Port-au-Prince, Haiti's capital. The earthquake occurred at 16:53 local time (21:53 UTC) on Tuesday, 12 January 2010. By 24 January, at least 52 aftershocks measuring 4.5 or greater had been recorded. An estimated three million people were affected by the quake; the Haitian government reported that an estimated 316,000 people had died, 300,000 had been injured and 1,000,000 made homeless. The government of Haiti also estimated that 250,000 residences and 30,000 commercial buildings had collapsed or were severely damaged. The earthquake caused major damage in Port-au-Prince, Jacmel and other settlements in the region. Many notable landmark buildings were significantly damaged or destroyed, including the Presidential Palace, the National Assembly building, the Port-au-Prince Cathedral, and the main jail. Among those killed were Archbishop of Port-au-Prince Joseph Serge Miot, and opposition leader Micha Gaillard. The headquarters of the United Nations Stabilization Mission in Haiti (MINUSTAH), located in the capital, collapsed, killing many, including the Mission's Chief, Hédi Annabi
+  Date and Time:
+    Time: 6:53 Local Time (21:53 UTC)
+    Day: 12
+    Month: 1
+    Year: 2010
+  Location:
+    City: Leogane
+    Country: Haiti
+  Impact:
+    Human:
+      Deaths: 316000
+      Displaced: 1000000
+      Injured: 300000
+	Economic:
+      Amount: 2300000000
+      Currency: USD
+  Resources Needed: Food, Volunteers, Donations
+  Ways to Help: Donations, Volunteering
+References:
+  Image:
+    Title: Aftermath of Haiti Earthquake
+	URL: http://img.timeinc.net/time/photoessays/2010/haiti_time_z/haiti_time_z_01.jpg
+    Description: The destruction caused by the Haiti Earthquake
+  Video:
+    Title: World: Surviving the Haiti Earthquake - nytimes.com/video
+	URL: http://www.youtube.com/watch?v=3l9B1dvfT-o
+	Description: A look back at the month following the earthquake in Haiti and how a diverse group of individuals dealt with the crisis.
+  Social Media:
+    Title: Facebook
+	URL: https://www.facebook.com/profile.php?id=100000664137709
+  Externals:
+    Title: Wikipedia - Haiti Earthquake
+	URL: http://en.wikipedia.org/wiki/2010_Haiti_earthquake
+	Description: More information about the Haiti Earthquake
+	 ----------
+	Title: Haiti Earthquake Facts and Figures | Disasters Emergency Committee
+	URL: http://www.dec.org.uk/haiti-earthquake-facts-and-figures
+    Description: Facts and figures about the Haiti Earthquake
+Related Organizations: World Food Programme
+Related People: Josette Sheeran
+ ====------ ---------- ---------- ---------- ------====
+Name: 
+Info:
+  Type: 
+  History/Background: 
+  Date and Time:
+    Time: 
+    Day: 
+    Month: 
+    Year: 
+  Location:
+    City: 
+    Country: 
+  Impact:
+    Human:
+      Deaths: 
+      Displaced: 
+      Injured: 
+	Economic:
+      Amount: 
+      Currency: 
+  Resources Needed: 
+  Ways to Help: 
+References:
+  Image:
+    Title: 
+	URL: 
+  Description: 
+  Video:
+    Title: 
+	URL: 
+	Description: 
+  Social Media:
+    Title: 
+	URL: 
+  Externals:
+    Title: 
+	URL: 
+	Description: 
+	 ----------
+	Title: 
+	URL: 
+    Description: 
+Related Organizations: 
+Related People: 
+ 
 Name:  Iraqi Refugee Crisis
 Kind:  Refugee Crisis, societal crisis
 Location:  Iraq, other parts of the world
@@ -31,7 +106,7 @@ Social Networks:  http://www.facebook.com/IraqiRefugeeAssistanceProject
 External Links: http://refugeerights.org/
 Organizations:  Red Crescent
 People:  Mustafa Barzani
- ---------- ----------
+ ====------ ---------- ---------- ---------- ------====
 Name:  Chernobyl disaster
 Kind:  Nuclear accident
 Location:  Chernobyl, Ukraine
@@ -47,7 +122,7 @@ External links:  http://www.chernobyl-international.com/index.aspx
 Organizations:  Chernobyl Children's Project International, Friends of Chernobyl's Children, The Chernobyl Forum
 People:  Adi Roche, Mikhail Gorbachev
 Causes:  Operator error initially faulted, Operating instructions and design deficiencies found
- ---------- ----------
+ ====------ ---------- ---------- ---------- ------====
 Name:  West Africa Food Crisis
 Kind:  Food Shortage/Drought
 Location:  West Africa
@@ -62,10 +137,11 @@ External links:  http://www.oxfamamerica.org/emergencies/west-africa-food-crisis
 Organizations:  Oxfam
 People:  Raymond C. Offenheiser
 Causes:  Regional Drought, Poverty, Climate Change
-==============
-==   ORGS   ==
-==============
- ---------- ----------
+
+                     ==============
+                     ==   ORGS   ==
+                     ==============
+ ====------ ---------- ---------- ---------- ------====
 Name:  Red Crescent
 Kind:  non-governmental, humanitarian
 Location:  Geneva, Switzerland
@@ -77,7 +153,7 @@ Social Networks:  http://www.facebook.com/RedCrossRedCrescent
 External Links:  http://www.redcrescent.org/
 Crises:  Iraqi Refugee Crisis
 People:  Mustafa Barzani
- ---------- ----------
+ ====------ ---------- ---------- ---------- ------====
 Name:  Oxfam    
 Type:  International Aid Organization
 Location:  Active worldwide
@@ -89,7 +165,7 @@ Social Networks:  http://twitter.com/#!/oxfam, http://www.facebook.com/pages/Oxf
 External Links:  http://www.oxfam.org/en, http://en.wikipedia.org/wiki/Oxfam, http://www.oxfamamerica.org/
 Crises:  West Africa Drought/ Food Crisis, East Africa Food Crisis, Sudan Crisis, Yemen Crisis
 People:  Raymond C. Offenheiser - President: Oxfam America, Karen Brown - Chair: Oxfam GB
- ---------- ----------
+ ====------ ---------- ---------- ---------- ------====
 Name:  World Food Programme
 Type:  Humanitarian Agency
 Location:  Based in Rome, Italy
@@ -100,7 +176,7 @@ People:  Ertharin Cousin (head),  George McGovern (started), Josette Sheeran(200
 External Links:  http://www.wfp.org/, http://en.wikipedia.org/wiki/World_Food_Programme
 Embedded Images:  http://upload.wikimedia.org/wikipedia/commons/9/9e/Official_WFP_logo.gif
 Embedded Videos:  http://www.youtube.com/watch?v=u-orDpbq3N4
- ---------- ----------
+ ====------ ---------- ---------- ---------- ------====
 Name:  Chernobyl Children's Project International
 Kind:  UN-accredited non-profit international development, medical, and humanitarian organization
 Location:  Cork, Ireland - New York, New York
@@ -113,10 +189,10 @@ External links:  http://www.chernobyl-international.com/index.aspx
 Crises:  Chernobyl disaster
 People:  Adi Roche
 
-==============
-==  PEOPLE  ==
-==============
- ---------- ----------
+                     ==============
+                     ==  PEOPLE  ==
+                     ==============
+ ====------ ---------- ---------- ---------- ------====
 Name:  Mustafa Barzani
 Kind:  Kurdish nationalist leader, and the most prominent political figure in the modern Kurdish politics
 Location:  Barzan, Ottoman Empire
@@ -125,7 +201,7 @@ Embedded videos:  http://www.youtube.com/watch?v=t1jLwD-xnPY
 External links:  http://www.meforum.org/220/the-last-years-of-mustafa-barzani
 Crises:  Iraqi Refugee Crisis
 Organizations:  Red Crescent
- ---------- ----------
+ ====------ ---------- ---------- ---------- ------====
 Name:  Josette Sheeran
 Kind:  Vice Chairman of the World Economic Forum
 Location: United States
@@ -134,7 +210,7 @@ Embedded Images:  http://upload.wikimedia.org/wikipedia/commons/c/ca/Josette_She
 Embedded Videos:  http://www.youtube.com/watch?v=CdxVbUja_pY 
 Crises:  Earthquake in Haiti, World Food Crisis, Gaza conflict
 Organizations:  World Economic Forum, World Food Programme
- ---------- ----------
+ ====------ ---------- ---------- ---------- ------====
 Name:  Adi Roche
 Kind:  Humanitarian
 Location:  Cork, Ireland
@@ -144,7 +220,7 @@ Social Networks:  http://www.facebook.com/pages/Adi-Roche/103118666395441
 External links:  http://en.wikipedia.org/wiki/Adi_Roche
 Crises:  Chernobyl disaster
 Organizations:  CCPI
- ---------- ----------
+ ====------ ---------- ---------- ---------- ------====
 Name:  Raymond C. Offenheiser
 Kind:  Humanitarian
 Location:  Notre Dame, Indiana, USA
