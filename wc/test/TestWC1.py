@@ -50,27 +50,27 @@ class ExportTests(unittest.TestCase):
         self.assert_(info_birthdate_year == person1.info_birthdate_year)
         self.assert_(info_birthdate_misc == person1.info_birthdate_misc)
         self.assert_(info_nationality == person1.info_nationality)
-        self.assert_(info_biography = person1.info_biography)
+        self.assert_(info_biography == person1.info_biography)
         self.assert_(orgrefs == person1.orgrefs)
         self.assert_(crisisrefs == person1.crisisrefs)
         
 	def test_buildperson2(self):
 	    tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
         
-        person1 = Person(elemid = "bobs",
-                   name = "Bob",
-                   info_type = "Salamander",
-                   info_birthdate_time = "12:00PM",
-                   info_birthdate_day = 12,
-                   info_birthdate_month = 12,
-                   info_birthdate_year = 1900,
-                   info_birthdate_misc = "born under the full moon...",
-                   info_nationality = "Swedish",
-                   info_biography = "Bob swam a lot, as salamanders do...",
+        person1 = Person(elemid = "sally",
+                   name = "Sally",
+                   info_type = "seahorse",
+                   info_birthdate_time = "0:00PM",
+                   info_birthdate_day = 1124,
+                   info_birthdate_month = 1132,
+                   info_birthdate_year = 19000,
+                   info_birthdate_misc = "born in a clamshell...",
+                   info_nationality = "French",
+                   info_biography = "Sally was boring...",
                    
-                   orgrefs = ["salamanders united", "salamander liberation front"],
+                   orgrefs = ["seahorse united", "seahorse liberation front"],
                    crisisrefs = ["swamp famine", "west swamp drought"])
-        ptree = SubElement(tree, "person", {"id" : "bobs"})     
+        ptree = SubElement(tree, "person", {"id" : "sally"})  
         XMLHelpers.buildPerson(ptree, person1)
         
         
@@ -98,7 +98,7 @@ class ExportTests(unittest.TestCase):
         self.assert_(info_birthdate_year == person1.info_birthdate_year)
         self.assert_(info_birthdate_misc == person1.info_birthdate_misc)
         self.assert_(info_nationality == person1.info_nationality)
-        self.assert_(info_biography = person1.info_biography)
+        self.assert_(info_biography == person1.info_biography)
         self.assert_(orgrefs == person1.orgrefs)
         self.assert_(crisisrefs == person1.crisisrefs)
         
@@ -137,7 +137,7 @@ class ExportTests(unittest.TestCase):
         crisisrefs = [x.attrib['idref'] for x in ptree.findall('.//crisis')]
         
        
-        #self.assert_(elemid == person1.elemid)
+        #self.assert_(elemid == person1.elemid) wtf?
         self.assert_(name == person1.name)
         self.assert_(info_type == person1.info_type)
         self.assert_(info_birthdate_time == person1.info_birthdate_time)
@@ -146,7 +146,7 @@ class ExportTests(unittest.TestCase):
         self.assert_(info_birthdate_year == person1.info_birthdate_year)
         self.assert_(info_birthdate_misc == person1.info_birthdate_misc)
         self.assert_(info_nationality == person1.info_nationality)
-        self.assert_(info_biography = person1.info_biography)
+        self.assert_(info_biography == person1.info_biography)
         self.assert_(orgrefs == person1.orgrefs)
         self.assert_(crisisrefs == person1.crisisrefs)
 		
