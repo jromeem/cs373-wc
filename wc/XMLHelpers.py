@@ -161,6 +161,16 @@ def addOrganization(org):
 # in_file : file (XML-validated file)
 # parse and store the XML data in the GAE datastore
 def parseXML(in_file):
+    
+    # to prevent multiple copy uploads
+    global crisis_list
+    global person_list
+    global organization_list
+    global link_list
+    crisis_list = []
+    person_list = []
+    organization_list = []
+    link_list = []
 
     tree = ElementTree.parse(in_file)
         
