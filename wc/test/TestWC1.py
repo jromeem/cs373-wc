@@ -3,6 +3,7 @@ import XMLHelpers
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element, SubElement, dump, ElementTree
 from DataModels import Link, Person, Organization, Crisis
+from google.appengine.ext import db
 
 class ExportTests(unittest.TestCase):
     
@@ -41,7 +42,7 @@ class ExportTests(unittest.TestCase):
         crisisrefs = [x.attrib['idref'] for x in ptree.findall('.//crisis')]
         
        
-        #self.assert_(elemid == person1.elemid)
+        self.assertEqual(elemid[0], person1.elemid)
         self.assert_(name == person1.name)
         self.assert_(info_type == person1.info_type)
         self.assert_(info_birthdate_time == person1.info_birthdate_time)
@@ -89,7 +90,7 @@ class ExportTests(unittest.TestCase):
         crisisrefs = [x.attrib['idref'] for x in ptree.findall('.//crisis')]
         
        
-        #self.assert_(elemid == person1.elemid)
+        self.assertEqual(elemid[0], person1.elemid)
         self.assert_(name == person1.name)
         self.assert_(info_type == person1.info_type)
         self.assert_(info_birthdate_time == person1.info_birthdate_time)
@@ -106,7 +107,7 @@ class ExportTests(unittest.TestCase):
 	    tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
         
         person1 = Person(elemid = "null",
-                   name = "nully",
+                   name = "",
                    info_type = "",
                    info_birthdate_time = "",
                    info_birthdate_day = 0,
@@ -122,7 +123,7 @@ class ExportTests(unittest.TestCase):
         XMLHelpers.buildPerson(ptree, person1)
         
         
-        elemid = ptree.attrib['id'],
+        elemid = ptree.attrib['id']
         name = ptree.find('.//name').text
         info_type = ptree.find('.//info').find('.//type').text
         info_birthdate_time = ptree.find('.//info').find('.//birthdate').find('.//time').text
@@ -136,8 +137,8 @@ class ExportTests(unittest.TestCase):
         orgrefs = [x.attrib['idref'] for x in ptree.findall('.//org')]
         crisisrefs = [x.attrib['idref'] for x in ptree.findall('.//crisis')]
         
-       
-        #self.assert_(elemid == person1.elemid) wtf?
+        
+        self.assertEqual(elemid, person1.elemid)
         self.assert_(name == person1.name)
         self.assert_(info_type == person1.info_type)
         self.assert_(info_birthdate_time == person1.info_birthdate_time)
@@ -165,11 +166,61 @@ class ExportTests(unittest.TestCase):
 	    return False
 
 	def test_exportlinks1(self):
-	    return False
+	    tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
+        
+        person1 = Person(elemid = "bobs",
+                   name = "Bob",
+                   info_type = "Salamander",
+                   info_birthdate_time = "12:00PM",
+                   info_birthdate_day = 12,
+                   info_birthdate_month = 12,
+                   info_birthdate_year = 1900,
+                   info_birthdate_misc = "born under the full moon...",
+                   info_nationality = "Swedish",
+                   info_biography = "Bob swam a lot, as salamanders do...",
+                   
+                   orgrefs = ["salamanders united", "salamander liberation front"],
+                   crisisrefs = ["swamp famine", "west swamp drought"])
+        ptree = SubElement(tree, "person", {"id" : "bobs"})     
+        XMLHelpers.buildPerson(ptree, person1)
+        
+        link1 = Link(link_parent = "bobs",
+                    link_type = "salad",
+                    title = "don't click me!!!",
+                    link_url = "http://www.nevergohere.com",
+                    description = "you really shouldn't go there...",
+                    link_site = "a bad place")
+        XMLHelpers.link_list.append(link1)
+        
+        XMLHelpers.exportLinks(person1, ptree)
+        
+        for ref in ptree.findall('.//ref'):
+            for l in ref:
+                new_link = Link()
+                if (l.tag):
+                    new_link.link_type = l.tag
+                if (l.find('./site') != None):
+                    new_link.link_site = l.find('./site').text
+                if (l.find('./title') != None):
+                    new_link.title = l.find('./title').text
+                if (l.find('./url') != None):
+                    new_link.link_url = db.Link(l.find('./url').text)
+                if (l.find('./description') != None):
+                    new_link.description = l.find('./description').text
+                new_link.link_parent = ptree.attrib['id']
+                
+        self.assert_(new_link.link_type == link1.link_type)
+        self.assert_(new_link.link_site == link1.link_site)
+        self.assert_(new_link.title == link1.title)
+        self.assert_(new_link.link_url == link1.link_url)
+        self.assert_(new_link.description == link1.description)
+        self.assert_(new_link.link_parent == link1.link_parent)
+        
 	def test_exportlinks2(self):
 	    return False
 	def test_exportlinks3(self):
 		return False
+		
 		
 
 		
