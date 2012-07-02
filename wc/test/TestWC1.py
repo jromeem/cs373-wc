@@ -1,15 +1,15 @@
 import unittest
-<<<<<<< HEAD
 import XMLHelpers
 from xml.etree import ElementTree
-from xml.etree.ElementTree import Element, SubElement, dump
+from xml.etree.ElementTree import Element, SubElement, dump, ElementTree
 from DataModels import Link, Person, Organization, Crisis
 
 class ExportTests(unittest.TestCase):
-		
-	def test_buildperson1(self):
-	    ptree = ElementTree.ElementTree()
-	    person1 = Person(elemid = "bobs",
+    
+    def test_buildperson1(self):
+        tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
+        
+        person1 = Person(elemid = "bobs",
                    name = "Bob",
                    info_type = "Salamander",
                    info_birthdate_time = "12:00PM",
@@ -22,8 +22,30 @@ class ExportTests(unittest.TestCase):
                    
                    orgrefs = ["salamanders united", "salamander liberation front"],
                    crisisrefs = ["swamp famine", "west swamp drought"])
-                   XMLHelpers.buildPerson(ptree, person1)
-                   
+        ptree = SubElement(tree, "person", {"id" : "bobs"})     
+        XMLHelpers.buildPerson(ptree, person1)
+        
+        
+        
+        
+        elemid = ptree.attrib['id'],
+        name = ptree.find('.//name').text
+        info_type = ptree.find('.//info').find('.//type').text
+        info_birthdate_time = ptree.find('.//info').find('.//birthdate').find('.//time').text
+        info_birthdate_day = int(ptree.find('.//info').find('.//birthdate').find('.//day').text)
+        info_birthdate_month = int(ptree.find('.//info').find('.//birthdate').find('.//month').text)
+        info_birthdate_year = int(ptree.find('.//info').find('.//birthdate').find('.//year').text)
+        info_birthdate_misc = ptree.find('.//info').find('.//birthdate').find('.//misc').text
+        info_nationality = ptree.find('.//info').find('.//nationality').text
+        info_biography = ptree.find('.//info').find('.//biography').text
+
+        orgrefs = [x.attrib['idref'] for x in ptree.findall('.//org')]
+        crisisrefs = [x.attrib['idref'] for x in ptree.findall('.//crisis')]
+        
+       # print elemid
+        self.assert_(elemid == "bobs")
+        self.assert_(name == "Bob")
+        self.assert_(info_type == "Salamander")
                    
                    
 	def test_buildperson2(self):
@@ -81,17 +103,4 @@ class ImportTests(unittest.TestCase):
 	    return False
 	def test_grablinks3(self):
 		return False
-=======
-from XMLHelpers import exportLinks, validXML
 
-crisis_list = []
-person_list = []
-organization_list = []
-link_list = []
-
-class ExportTests(unittest.TestCase):
-		
-		
-class ImportTests(unittest.TestCase):
-	
->>>>>>> 17999f9d5eb91ae53274fb8270ccb8069e101388
