@@ -363,18 +363,22 @@ def buildPerson(person, p):
         org = ElementTree.SubElement(person, "org", {"idref" : orgref})
 
 # main function that builds xml
-def buildXML(dict_list):
-    for list_key, list_value in dict_lists.iteritems():
-        for obj in list_value:
-            branch = ElementTree.SubElement(worldCrises, list_key, {"id" : obj.elemid})
-            if list_key == "crisis":
-                buildCrisis(branch, obj)
-            elif list_key == "person":
-                buildPerson(branch, obj)
-            elif list_key == "organization":
-                buildOrganization(branch, obj)
-            else:
-                pass
+def buildXML():
+    
+    #build sub-trees for each crisis
+    for c in crisis_list:
+        crisis = ElementTree.SubElement(worldCrises, "crisis", {"id" : c.elemid})
+        buildCrisis(crisis, c)
+        
+    #build sub-trees for each organization
+    for o in organization_list:
+        organization = ElementTree.SubElement(worldCrises, "organization", {"id" : o.elemid})
+        buildOrganization(organization, o)
+
+    #build sub-trees for each person
+    for p in person_list:
+        person = ElementTree.SubElement(worldCrises, "person", {"id" : p.elemid})
+        buildPerson(person, p)
             
     tree = ElementTree.ElementTree(worldCrises)
     text = ElementTree.tostring(worldCrises)

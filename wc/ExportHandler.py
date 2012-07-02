@@ -17,15 +17,11 @@ class ExportPage(webapp.RequestHandler):
     def get(self):
         worldCrises = ElementTree.Element("worldCrisis", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance"})
 
-        crisis_list = db.GqlQuery("SELECT * FROM Crisis")
-        person_list = db.GqlQuery("SELECT * FROM Person")
-        organization_list = db.GqlQuery("SELECT * FROM Organization")
-
-        dict_lists = {"crisis":crisis_list,
-                      "person":person_list,
-                      "organization":organization_list}
+        #crisis_list = db.GqlQuery("SELECT * FROM Crisis")
+        #person_list = db.GqlQuery("SELECT * FROM Person")
+        #organization_list = db.GqlQuery("SELECT * FROM Organization")
         
-        xml_out = buildXML(dict_list)
+        xml_out = buildXML()
         
         self.response.headers['Content-Type'] = "text/xml; charset=utf-8"
         self.response.out.write(text)
