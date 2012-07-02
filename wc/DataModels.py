@@ -6,7 +6,7 @@ class Link(db.Model):
     link_parent = db.StringProperty()
     link_type = db.StringProperty()
     title = db.StringProperty()
-    link_url = db.LinkProperty()
+    link_url = db.StringProperty()
     description = db.StringProperty()
     link_site = db.StringProperty()
 
