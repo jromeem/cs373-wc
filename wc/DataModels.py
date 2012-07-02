@@ -13,11 +13,8 @@ class Link(db.Model):
 class Person(db.Model):
     elemid = db.StringProperty()
     
-    name_title = db.StringProperty()
-    name_first = db.StringProperty()
-    name_last = db.StringProperty()
-    name_middle = db.StringProperty()
-    
+    name = db.StringProperty()
+   
     info_type = db.StringProperty()
     info_birthdate_time = db.StringProperty()
     info_birthdate_day = db.IntegerProperty()

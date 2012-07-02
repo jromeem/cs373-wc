@@ -40,11 +40,11 @@
         </info>
         <ref>
 			<primaryImage>
-            	<site></site>
-                <title>Aftermath of Haiti Earthquake</title>           
-				<url>http://img.timeinc.net/time/photoessays/2010/haiti_time_z/haiti_time_z_01.jpg</url>
-                <description>The destruction caused by the Haiti Earthquake</description>
-            </primaryImage>
+        		<site></site>
+                <title></title>
+                <url></url>
+                <description></description>
+        	</primaryImage>
             <image>
             	<site></site>
                 <title>Aftermath of Haiti Earthquake</title>           
@@ -116,11 +116,11 @@
         </info>
         <ref>
 			<primaryImage>
-            	<site></site>
-                <title>Iraqi Refugees in Syria</title>
-                <url>http://www.asianews.it/files/img/IRAQ_iraq_refugees_IN_SYRIA.jpg</url>
-                <description>An Iraqi family displaced from their home</description>
-            </primaryImage>
+        		<site></site>
+                <title></title>
+                <url></url>
+                <description></description>
+        	</primaryImage>
             <image>
             	<site></site>
                 <title>Iraqi Refugees in Syria</title>
@@ -186,11 +186,11 @@
         </info>
         <ref>
 			<primaryImage>
-            	<site></site>
-                <title>Chernobyl Reactor</title>
-                <url>http://upload.wikimedia.org/wikipedia/en/1/1b/Chernobyl_Disaster.jpg</url>
-                <description>The nuclear reactor after the disaster</description>
-            </primaryImage>
+        		<site></site>
+                <title></title>
+                <url></url>
+                <description></description>
+        	</primaryImage>
             <image>
             	<site></site>
                 <title>Chernobyl Reactor</title>
@@ -257,11 +257,11 @@
         </info>
         <ref>
 			<primaryImage>
-            	<site></site>
-                <title>Women in a garden - Burkina Faso</title>
-                <url>http://www.oxfamamerica.org/oxfam-images/women-in-garden-burkina-faso-11-june-2012/image_large</url>
+        		<site></site>
+                <title></title>
+                <url></url>
                 <description></description>
-            </primaryImage>
+        	</primaryImage>
             <image>
             	<site></site>
                 <title>Women in a garden - Burkina Faso</title>
@@ -316,11 +316,11 @@
         </info>
         <ref>
 			<primaryImage>
-	            <site></site>
-                <title>Red Crescent Flag</title>
-                <url>http://upload.wikimedia.org/wikipedia/commons/b/b6/Croixrouge_logos.jpg</url>
+        		<site></site>
+                <title></title>
+                <url></url>
                 <description></description>
-            </primaryImage>
+        	</primaryImage>
             <image>
 	            <site></site>
                 <title>Red Crescent Flag</title>
@@ -374,11 +374,11 @@
         </info>
         <ref>
 			<primaryImage>
-            	<site></site>
-                <title>OxFam logo</title>
-                <url>http://www.oxfam.org/sites/www.oxfam.org/themes/oxizen/logo.png</url>
+        		<site></site>
+                <title></title>
+                <url></url>
                 <description></description>
-            </primaryImage>
+        	</primaryImage>
             <image>
             	<site></site>
                 <title>OxFam logo</title>
@@ -450,11 +450,11 @@
         </info>
         <ref>
 			<primaryImage>
-            	<site></site>
-                <title>WFP logo</title>
-                <url>http://upload.wikimedia.org/wikipedia/commons/9/9e/Official_WFP_logo.gif</url>
+        		<site></site>
+                <title></title>
+                <url></url>
                 <description></description>
-            </primaryImage>
+        	</primaryImage>
             <image>
             	<site></site>
                 <title>WFP logo</title>
@@ -514,11 +514,11 @@
         </info>
         <ref>
 			<primaryImage>
-            	<site></site>
-                <title>CCPI logo</title>
-                <url>http://www.chernobyl-international.com/App_Themes/CCI/images/header/img_logo.gif</url>
+        		<site></site>
+                <title></title>
+                <url></url>
                 <description></description>
-            </primaryImage>
+        	</primaryImage>
             <image>
             	<site></site>
                 <title>CCPI logo</title>
@@ -570,11 +570,11 @@
         </info>
         <ref>
 			<primaryImage>
-            	<site></site>
-                <title>Mustafa Barzani</title>
-                <url>http://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Mustafa_barzani.jpg/280px-Mustafa_barzani.jpg</url>
-                <description>Barzani riding his horse</description>
-            </primaryImage>
+        		<site></site>
+                <title></title>
+                <url></url>
+                <description></description>
+        	</primaryImage>
             <image>
             	<site></site>
                 <title>Mustafa Barzani</title>
@@ -620,11 +620,11 @@
         </info>
         <ref>
         	<primaryImage>
-            	<site></site>
-                <title>Josette Sheeran</title>
-                <url>http://upload.wikimedia.org/wikipedia/commons/c/ca/Josette_Sheeran_Shiner_Dept_State.jpg</url>
+        		<site></site>
+                <title></title>
+                <url></url>
                 <description></description>
-            </primaryImage>
+        	</primaryImage>
             <image>
             	<site></site>
                 <title>Josette Sheeran</title>
@@ -670,11 +670,11 @@
         </info>
         <ref>
         	<primaryImage>
-            	<site></site>
-                <title>Adi Roche</title>
-                <url>http://www.businessandfinance.ie/files/2010/images/20100304113435_Adi-Roche.jpg</url>
+        		<site></site>
+                <title></title>
+                <url></url>
                 <description></description>
-            </primaryImage>
+        	</primaryImage>
             <image>
             	<site></site>
                 <title>Adi Roche</title>
@@ -720,11 +720,11 @@
         </info>
         <ref>
         	<primaryImage>
-            	<site></site>
-                <title>Raymond Offenheiser</title>
-                <url>http://kellogg.nd.edu/about/images/offenheiser.jpg</url>
+        		<site></site>
+                <title></title>
+                <url></url>
                 <description></description>
-            </primaryImage>
+        	</primaryImage>
             <image>
             	<site></site>
                 <title>Raymond Offenheiser</title>
