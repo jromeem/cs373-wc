@@ -14,6 +14,7 @@ person_list = []
 organization_list = []
 link_list = []
 
+# defines the main page handler
 class MainPage(webapp.RequestHandler):
     def get(self):
         page = self.request.get('page')
@@ -24,6 +25,7 @@ class MainPage(webapp.RequestHandler):
         path = os.path.join(os.path.dirname(__file__), "index.html")
         self.response.out.write(template.render(path, template_values))
 
+# fills a crisis subtree, where crisis is the root element, and c is a Crisis object
 def buildCrisis(crisis, c):
 	name = ElementTree.SubElement(crisis, "name")
 	name.text = c.name
@@ -92,6 +94,7 @@ def buildCrisis(crisis, c):
 	for personref in c.personrefs:
 		person = ElementTree.SubElement(crisis, "person", {"idref" : personref})
 
+# fills an organization subtree, where organization is the root element, and o is an Organization object
 def buildOrganization(organization, o):
 	name = ElementTree.SubElement(organization, "name")
 	name.text = o.name
@@ -130,7 +133,8 @@ def buildOrganization(organization, o):
 		crisis = ElementTree.SubElement(organization, "crisis", {"idref" : crisisref})
 	for personref in o.personrefs:
 		person = ElementTree.SubElement(organization, "person", {"idref" : personref})
-	
+
+# fills a person subtree, where person is the root element, and p is a person object
 def buildPerson(person, p):
 	name = ElementTree.SubElement(person, "name")
 	
@@ -174,7 +178,9 @@ def buildPerson(person, p):
 		crisis = ElementTree.SubElement(person, "crisis", {"idref" : crisisref})
 	for orgref in p.orgrefs:
 		org = ElementTree.SubElement(person, "org", {"idref" : orgref})
-#exports current data to an xml string
+
+
+# defines export page handler
 class ExportPage(webapp.RequestHandler):
     def get(self):
         worldCrises = ElementTree.Element("worldCrisis", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance"})
@@ -347,7 +353,7 @@ class ExportPage(webapp.RequestHandler):
         self.response.headers['Content-Type'] = "text/xml; charset=utf-8"
         self.response.out.write(text)
         
-#gets links for a crisis from the list and adds them to the element tree
+# gets links for a crisis from the list and adds them to its subtree, where c is a Crisis, and ref is a links element
 def exportLinks(c, ref):
     for l in link_list:
         if not l.link_parent == c.elemid:
@@ -364,7 +370,7 @@ def exportLinks(c, ref):
             description = ElementTree.SubElement(currRef, "description")
             description.text = l.description
 
-#helper function, gets links for a specific crisis and adds them to the link list 
+# gets links for a specific crisis and adds them to the link list 
 def grabLinks(crisis):
     for ref in crisis.findall('.//ref'):
         for l in ref:
@@ -385,7 +391,7 @@ def grabLinks(crisis):
             link_list.append(new_link)
         
         
-#handles imports
+#defines import page handler
 class ImportPage(webapp.RequestHandler):
     #displays a file upload form when page is accessed normally
     def get(self):
@@ -413,10 +419,6 @@ class ImportPage(webapp.RequestHandler):
             f = fileitem.file
             message = 'The file "' + fn + '" was uploaded successfully.  Upload another? </br>'
             
-            #f = f.read()
-            
-            #parser = ElementTree.XMLParser()
-            
             tree = ElementTree.parse(f)
             
             #see if xml is valid
@@ -429,18 +431,17 @@ class ImportPage(webapp.RequestHandler):
             except xsv.XsvalError,errstr:
                 print errstr
                 print "XML Does not Validate"
-                
 
-            
+
             crises = tree.findall(".//crisis")
-        
             people = tree.findall(".//person")
-        
             orgs = tree.findall(".//organization")
-        
-			#build crisis list
+
+            #build crisis list
             for crisis in crises:
-                if (crisis.find('.//info')):
+                addCrisis(crisis)
+            
+                """if (crisis.find('.//info')):
                     
                     info = crisis.find('.//info')
                     grabLinks(crisis)
@@ -477,13 +478,14 @@ class ImportPage(webapp.RequestHandler):
                                
                                orgrefs = [x.attrib['idref'] for x in crisis.findall('.//org')],
                                personrefs = [x.attrib['idref'] for x in crisis.findall('.//person')]
-                               )
-                    crisis_list.append(c)
-                    #c.put()
+                               )    
+                #c.put()"""
 
-			#build person list
+            #build person list
             for person in people:
-                if (person.find('.//info')):
+                addPerson(person)
+                
+                """if (person.find('.//info')):
                     grabLinks(person)
                     p = Person(
                                elemid = person.attrib['id'],
@@ -503,12 +505,15 @@ class ImportPage(webapp.RequestHandler):
                                orgrefs = [x.attrib['idref'] for x in person.findall('.//org')],
                                crisisrefs = [x.attrib['idref'] for x in person.findall('.//crisis')]
                                )
+                               
                     person_list.append(p)
-                    #p.put()
-			
-			#build organization list
+                    #p.put()"""
+            
+            #build organization list
             for org in orgs:
-                if org.find('.//info'):
+                addOrganization(org)
+                
+                """if org.find('.//info'):
                     grabLinks(org)
                     info = org.find('.//info')
                     contact = info.find('.//contact')
@@ -538,11 +543,11 @@ class ImportPage(webapp.RequestHandler):
                                      crisisrefs = [x.attrib['idref'] for x in org.findall('.//crisis')]
                                      )
                     organization_list.append(o)
-                    #o.put()
+                    #o.put()"""
 
         else:
             message = 'No file was uploaded. Try again? </br>'
-        
+
         #display the upload form again
         self.response.out.write("""
             <html>
@@ -557,10 +562,110 @@ class ImportPage(webapp.RequestHandler):
             <a href="/">Home</a></br>
             </body>
             </html>""" % message)
-           
-        # print message
+                
+                
+#adds a crisis to the list, where crisis is an element tree
+def addCrisis(crisis):
+    if (crisis.find('.//info')):
+        info = crisis.find('.//info')
+        grabLinks(crisis)
+        
+        c = Crisis(
+                   elemid = crisis.attrib['id'],
+                   name = crisis.find('.//name').text,
+                   misc = crisis.find('.//misc').text,
+                   
+                   info_history = info.find('.//history').text,
+                   info_help = info.find('.//help').text,
+                   info_resources = info.find('.//resources').text,
+                   info_type = info.find('.//type').text,
+                   
+                   date_time = info.find('.//time').find('.//time').text,
+                   date_day = int(info.find('.//time').find('.//day').text),
+                   date_month = int(info.find('.//time').find('.//month').text),
+                   date_year = int(info.find('.//time').find('.//year').text),
+                   date_misc = info.find('.//time').find('.//misc').text,
+                   
+                   location_city = info.find('.//loc').find('.//city').text,
+                   location_region = info.find('.//loc').find('.//region').text,
+                   location_country = info.find('.//loc').find('.//country').text,
+                   
+                   impact_human_deaths = int(info.find('.//impact').find('.//human').find('.//deaths').text),
+                   impact_human_displaced = int(info.find('.//impact').find('.//human').find('.//displaced').text),
+                   impact_human_injured = int(info.find('.//impact').find('.//human').find('.//injured').text),
+                   impact_human_missing = int(info.find('.//impact').find('.//human').find('.//missing').text),
+                   impact_human_misc = info.find('.//impact').find('.//human').find('.//misc').text,
+                   
+                   impact_economic_amount = int(info.find('.//impact').find('.//economic').find('.//amount').text),
+                   impact_economic_currency = info.find('.//impact').find('.//economic').find('.//currency').text,
+                   impact_economic_misc = info.find('.//impact').find('.//economic').find('.//misc').text,
+                   
+                   orgrefs = [x.attrib['idref'] for x in crisis.findall('.//org')],
+                   personrefs = [x.attrib['idref'] for x in crisis.findall('.//person')]
+                   )
+        crisis_list.append(c)
+        #c.put
+    
+#adds a person to the list, where person is an element tree
+def addPerson(person):
+    if (person.find('.//info')):
+        grabLinks(person)
+        p = Person(
+                   elemid = person.attrib['id'],
+                   name_title = person.find('.//name').find('.//title').text,
+                   name_first = person.find('.//name').find('.//first').text,
+                   name_last = person.find('.//name').find('.//last').text,
+                   name_middle = person.find('.//name').find('.//middle').text,
+                   info_type = person.find('.//info').find('.//type').text,
+                   info_birthdate_time = person.find('.//info').find('.//birthdate').find('.//time').text,
+                   info_birthdate_day = int(person.find('.//info').find('.//birthdate').find('.//day').text),
+                   info_birthdate_month = int(person.find('.//info').find('.//birthdate').find('.//month').text),
+                   info_birthdate_year = int(person.find('.//info').find('.//birthdate').find('.//year').text),
+                   info_birthdate_misc = person.find('.//info').find('.//birthdate').find('.//misc').text,
+                   info_nationality = person.find('.//info').find('.//nationality').text,
+                   info_biography = person.find('.//info').find('.//biography').text,
+                   
+                   orgrefs = [x.attrib['idref'] for x in person.findall('.//org')],
+                   crisisrefs = [x.attrib['idref'] for x in person.findall('.//crisis')]
+                   )
+                   
+        person_list.append(p)
+        #p.put()
+        
+#adds an organization to the list, where org is an element tree
+def addOrganization(org):
+    if org.find('.//info'):
+        grabLinks(org)
+        info = org.find('.//info')
+        contact = info.find('.//contact')
+        mail = contact.find('.//mail')
+        loc = info.find('.//loc')
+        o = Organization(
+                         elemid = org.attrib['id'],
+                         name = org.find('.//name').text,
+                         misc = org.find('.//misc').text,
+                         
+                         info_type = info.find('.//type').text,
+                         info_history = info.find('.//history').text,
 
+                         info_contacts_phone = contact.find('.//phone').text,
+                         info_contacts_email = contact.find('.//email').text,
+                         info_contacts_address = mail.find('.//address').text,
+                         info_contacts_city = mail.find('.//city').text,
+                         info_contacts_state = mail.find('.//state').text,
+                         info_contacts_country = mail.find('.//country').text,
+                         info_contacts_zip = mail.find('.//zip').text,
 
+                         info_loc_city = loc.find('.//city').text,
+                         info_loc_region = loc.find('.//region').text,
+                         info_loc_country = loc.find('.//country').text,
+                         
+                         personrefs = [x.attrib['idref'] for x in org.findall('.//person')],
+                         crisisrefs = [x.attrib['idref'] for x in org.findall('.//crisis')]
+                         )
+        organization_list.append(o)
+        #o.put()
+    
 # a general model for links, used in other models
 class Link(db.Model):
     link_parent = db.StringProperty()
@@ -571,7 +676,7 @@ class Link(db.Model):
     description = db.StringProperty()
     vid_site = db.StringProperty()
 
-#a model for a Person
+# a model for a Person
 class Person(db.Model):
     elemid = db.StringProperty()
     
@@ -661,7 +766,7 @@ class Organization(db.Model):
     misc = db.StringProperty()
     
 
-#specify handlers for different urls
+# specify handlers for different urls
 application = webapp.WSGIApplication(
                                      [('/', MainPage), ('/import', ImportPage),
                                       ('/export', ExportPage)],
