@@ -480,10 +480,112 @@ class ExportTests(unittest.TestCase):
         self.assert_(new_link.link_parent == link1.link_parent)
         
 	def test_exportlinks2(self):
-	    return False
+	     tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
+        
+	     
+	     organization1 = Organization(elemid = "Franch",
+    
+                                    name = "French pride",
+    
+                                    info_type = "non-existant",
+                                    info_history = "white flags",
+                                    info_contacts_phone = "1234567890",
+                                    info_contacts_email = "omuledu@fromage.com",
+                                    info_contacts_address = "French",
+                                    info_contacts_city = "Paris",
+                                    info_contacts_state = "Canada",
+                                    info_contacts_country = "USA",
+                                    info_contacts_zip = "7890",
+    
+                                    info_loc_city = "Alaska",
+                                    info_loc_region = "Ukraine",
+                                    info_loc_country = "Antarctica",
+    
+                                    personrefs = ["baquettes", "crumpets"],
+                                    crisisrefs = ["war", "nazis"],
+    
+                                    misc = "")
+
+        otree = SubElement(tree, "organization", {"id" : "Franch"})     
+        XMLHelpers.buildOrganization(otree, organization1)
+        
+        
+        link1 = Link(link_parent = "franch",
+                    link_type = "salad",
+                    title = "don't click me!!!",
+                    link_url = "http://www.nevergohere.com",
+                    description = "you really shouldn't go there...",
+                    link_site = "a bad place")
+        XMLHelpers.link_list.append(link1)
+        
+        XMLHelpers.exportLinks(organization1, otree)
+        
+        for ref in otree.findall('.//ref'):
+            for l in ref:
+                new_link = Link()
+                if (l.tag):
+                    new_link.link_type = l.tag
+                if (l.find('./site') != None):
+                    new_link.link_site = l.find('./site').text
+                if (l.find('./title') != None):
+                    new_link.title = l.find('./title').text
+                if (l.find('./url') != None):
+                    new_link.link_url = db.Link(l.find('./url').text)
+                if (l.find('./description') != None):
+                    new_link.description = l.find('./description').text
+                new_link.link_parent = otree.attrib['id']
+                
+        self.assert_(new_link.link_type == link1.link_type)
+        self.assert_(new_link.link_site == link1.link_site)
+        self.assert_(new_link.title == link1.title)
+        self.assert_(new_link.link_url == link1.link_url)
+        self.assert_(new_link.description == link1.description)
+        self.assert_(new_link.link_parent == link1.link_parent)
+        
 	def test_exportlinks3(self):
-		return False
-		
+		tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
+        
+	     
+	     crisis1 = Crisis(
+	                            
+	     
+	                        )	
+	                        	
+	    ctree = SubElement(tree, "crisis", {"id" : "Franch"})     
+        XMLHelpers.buildOrganization(ctree, crisis1)
+        
+        
+        link1 = Link(link_parent = "franch",
+                    link_type = "salad",
+                    title = "don't click me!!!",
+                    link_url = "http://www.nevergohere.com",
+                    description = "you really shouldn't go there...",
+                    link_site = "a bad place")
+        XMLHelpers.link_list.append(link1)
+        
+        XMLHelpers.exportLinks(crisis1, ctree)
+        
+        for ref in ctree.findall('.//ref'):
+            for l in ref:
+                new_link = Link()
+                if (l.tag):
+                    new_link.link_type = l.tag
+                if (l.find('./site') != None):
+                    new_link.link_site = l.find('./site').text
+                if (l.find('./title') != None):
+                    new_link.title = l.find('./title').text
+                if (l.find('./url') != None):
+                    new_link.link_url = db.Link(l.find('./url').text)
+                if (l.find('./description') != None):
+                    new_link.description = l.find('./description').text
+                new_link.link_parent = ctree.attrib['id']
+                
+        self.assert_(new_link.link_type == link1.link_type)
+        self.assert_(new_link.link_site == link1.link_site)
+        self.assert_(new_link.title == link1.title)
+        self.assert_(new_link.link_url == link1.link_url)
+        self.assert_(new_link.description == link1.description)
+        self.assert_(new_link.link_parent == link1.link_parent)
 		
 
 		
