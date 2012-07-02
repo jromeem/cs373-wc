@@ -477,7 +477,7 @@ class ImportTests(unittest.TestCase):
         description.text = "i'm a description"
         
         temp = XMLHelpers.grabLinks(crisis)
-        assert (temp[0].link_site == "i'm a site")
+        self.assert_(temp[0].link_site == "i'm a site")
         XMLHelpers.clearGlobals()
         
     def test_grablinks2(self):
@@ -504,14 +504,12 @@ class ImportTests(unittest.TestCase):
         description2.text = "the cats are dancing!!!"
         
         temp = XMLHelpers.grabLinks(person)
-        assert (len(temp) == 2)
+        self.assert_(len(temp) == 2)
         XMLHelpers.clearGlobals()
         
     def test_grablinks3(self):
         person = Element("person", {"id" : "globetrotter"})
         temp = XMLHelpers.grabLinks(person)
-        assert (len(temp) == 0)
+        self.assert_(len(temp) == 0)
         XMLHelpers.clearGlobals()
-        
-        
         
