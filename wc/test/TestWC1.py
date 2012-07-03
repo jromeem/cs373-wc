@@ -133,6 +133,7 @@ class ExportTests(unittest.TestCase):
         orgrefs = [x.attrib['idref'] for x in ptree.findall('.//org')]
         crisisrefs = [x.attrib['idref'] for x in ptree.findall('.//crisis')]
        
+
         self.assertEqual(elemid, person3.elemid)
         self.assert_(name == person3.name)
         self.assert_(info_type == person3.info_type)
@@ -145,6 +146,7 @@ class ExportTests(unittest.TestCase):
         self.assert_(info_biography == person3.info_biography)
         self.assert_(orgrefs == person3.orgrefs)
         self.assert_(crisisrefs == person3.crisisrefs)
+
 		
 	def test_buildorg1(self):
 	    tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
@@ -347,6 +349,7 @@ class ExportTests(unittest.TestCase):
 	def test_buildcrisis1(self):
 	    tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
             crisis1 = Crisis(
+
                     elemid = "hunger",
                     name = "hunger",
                     misc = "na",
@@ -355,6 +358,8 @@ class ExportTests(unittest.TestCase):
                     info_help = "help",
                     info_resources = "awareness",
                     info_type = "hunger attack",
+
+
                     
                     date_time = "11 am",
                     date_day = 18,
@@ -362,13 +367,16 @@ class ExportTests(unittest.TestCase):
                     date_year = 2012,
                     date_misc = "still alive",
                     
+
                     location_city = "houston",
                     location_region = "texas",
+
                     location_country = "USA",
                     
                     impact_human_deaths = 200,
                     impact_human_displaced = 20,
                     impact_human_injured = 1,
+
                     impact_human_missing = 32,
                     impact_human_misc = "none",
                     
@@ -378,9 +386,12 @@ class ExportTests(unittest.TestCase):
                     
                     orgrefs = ["dea", "cia"],
                     personrefs = ["you", "me"]
+
+
                     )
             ctree = SubElement(tree, "crisis", {"id" : "bathsalts"})
             XMLHelpers.buildCrisis(ctree, crisis1)
+
 
             elemid = ctree.attrib['id']
             name = ctree.find('.//name').text
@@ -408,6 +419,7 @@ class ExportTests(unittest.TestCase):
             orgrefs = [x.attrib['idref'] for x in ctree.findall('.//org')]
             personrefs = [x.attrib['idref'] for x in ctree.findall('.//person')]
 
+
             self.assert_(elemid == crisis1.elemid)
             self.assert_(name == crisis1.name)
             self.assert_(misc == crisis1.misc)
@@ -421,6 +433,7 @@ class ExportTests(unittest.TestCase):
             self.assert_(date_year == crisis1.date_year)
             self.assert_(date_misc == crisis1.date_misc)
             self.assert_(location_city == crisis1.location_city)
+
             self.assert_(location_region == crisis1.location_region)
             self.assert_(location_country == crisis1.location_country)
             self.assert_(impact_human_deaths == crisis1.impact_human_deaths)
@@ -433,6 +446,7 @@ class ExportTests(unittest.TestCase):
             self.assert_(impact_economic_misc == crisis1.impact_economic_misc)
             self.assert_(orgrefs == crisis1.orgrefs)
             self.assert_(personrefs == crisis1.personrefs)
+
 	def test_buildcrisis2(self):
 	    return False
 	def test_buildcrisis3(self):
