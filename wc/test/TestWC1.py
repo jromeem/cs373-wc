@@ -464,7 +464,7 @@ class ExportTests(unittest.TestCase):
                     
                     date_time = "1 pm",
                     date_day = 1,
-                    date_month = 08,
+                    date_month = 8,
                     date_year = 1966,
                     date_misc = "still happening",
                     
@@ -693,7 +693,7 @@ class ExportTests(unittest.TestCase):
                     new_link.description = l.find('./description').text
                 new_link.link_parent = ptree.attrib['id']
                 
-        self.assert_(new_link.link_type == link1.link_type)
+        self.assertEqual(new_link.link_type , link1.link_type)
         self.assert_(new_link.link_site == link1.link_site)
         self.assert_(new_link.title == link1.title)
         self.assert_(new_link.link_url == link1.link_url)
@@ -737,6 +737,7 @@ class ExportTests(unittest.TestCase):
                     link_url = "http://www.nevergohere.com",
                     description = "you really shouldn't go there...",
                     link_site = "a bad place")
+        XMLHelpers.link_list = []
         XMLHelpers.link_list.append(link1)
         
         XMLHelpers.exportLinks(organization1, otree)
@@ -810,6 +811,8 @@ class ExportTests(unittest.TestCase):
                     link_url = "http://www.nevergohere.com",
                     description = "you really shouldn't go there...",
                     link_site = "a bad place")
+                    
+        XMLHelpers.link_list.clear()
         XMLHelpers.link_list.append(link1)
         
         XMLHelpers.exportLinks(crisis1, ctree)
