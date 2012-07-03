@@ -1,9 +1,13 @@
 import unittest
 import XMLHelpers
-from xml.etree import ElementTree
-from xml.etree.ElementTree import Element, SubElement, dump, ElementTree
-from DataModels import Link, Person, Organization, Crisis
+import cgi, os
+from google.appengine.ext import webapp
+from google.appengine.ext.webapp import template
+from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
+from xml.etree import ElementTree
+from xml.etree.ElementTree import Element, SubElement, dump
+from minixsv import pyxsval as xsv
 
 class ExportTests(unittest.TestCase):
     
@@ -53,8 +57,8 @@ class ExportTests(unittest.TestCase):
         self.assert_(orgrefs == person1.orgrefs)
         self.assert_(crisisrefs == person1.crisisrefs)
         
-	def test_buildperson2(self):
-	    tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
+    def test_buildperson2(self):
+        tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
         
         person2 = Person(elemid = "sally",
                    name = "Sally",
@@ -99,8 +103,8 @@ class ExportTests(unittest.TestCase):
         self.assert_(orgrefs == person2.orgrefs)
         self.assert_(crisisrefs == person2.crisisrefs)
         
-	def test_buildperson3(self):
-	    tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
+    def test_buildperson3(self):
+        tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
         
         person3 = Person(elemid = "null",
                    name = "nully",
@@ -145,9 +149,9 @@ class ExportTests(unittest.TestCase):
         self.assert_(info_biography == person3.info_biography)
         self.assert_(orgrefs == person3.orgrefs)
         self.assert_(crisisrefs == person3.crisisrefs)
-		
-	def test_buildorg1(self):
-	    tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
+        
+    def test_buildorg1(self):
+        tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
         
         organization1 = Organization(elemid = "Franch",
     
@@ -174,7 +178,7 @@ class ExportTests(unittest.TestCase):
 
         otree = SubElement(tree, "organization", {"id" : "Franch"})     
         XMLHelpers.buildOrganization(otree, organization1)
-	    
+        
         elemid = otree.attrib['id'],
         name = otree.find('.//name').text
         info_type = otree.find('.//info').find('.//type').text
@@ -211,9 +215,9 @@ class ExportTests(unittest.TestCase):
         self.assert_(misc == organization1.misc)
         self.assert_(personrefs == organization1.personrefs)
         self.assert_(crisisrefs == organization1.crisisrefs)
-	    
-	def test_buildorg2(self):
-	    tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
+        
+    def test_buildorg2(self):
+        tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
         
         organization2 = Organization(elemid = "crap",
     
@@ -240,7 +244,7 @@ class ExportTests(unittest.TestCase):
 
         otree = SubElement(tree, "organization", {"id" : "crap"})     
         XMLHelpers.buildOrganization(otree, organization2)
-	    
+        
         elemid = otree.attrib['id'],
         name = otree.find('.//name').text
         info_type = otree.find('.//info').find('.//type').text
@@ -259,7 +263,7 @@ class ExportTests(unittest.TestCase):
         personrefs = [x.attrib['idref'] for x in otree.findall('.//person')]
         crisisrefs = [x.attrib['idref'] for x in otree.findall('.//crisis')]
         misc = otree.find('.//misc').text
-	    
+        
         #self.assert_(elemid == organization2.elemid)
         self.assert_(name == organization2.name)
         self.assert_(info_type == organization2.info_type)
@@ -277,9 +281,9 @@ class ExportTests(unittest.TestCase):
         self.assert_(misc == organization2.misc)
         self.assert_(personrefs == organization2.personrefs)
         self.assert_(crisisrefs == organization2.crisisrefs)
-	    
-	def test_buildorg3(self):
-	    tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
+        
+    def test_buildorg3(self):
+        tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
         
         organization3 = Organization(elemid = "new1",
     
@@ -306,7 +310,7 @@ class ExportTests(unittest.TestCase):
 
         otree = SubElement(tree, "organization", {"id" : "new1"})     
         XMLHelpers.buildOrganization(otree, organization3)
-	    
+        
         elemid = otree.attrib['id'],
         name = otree.find('.//name').text
         info_type = otree.find('.//info').find('.//type').text
@@ -325,7 +329,7 @@ class ExportTests(unittest.TestCase):
         personrefs = [x.attrib['idref'] for x in otree.findall('.//person')]
         crisisrefs = [x.attrib['idref'] for x in otree.findall('.//crisis')]
         misc = otree.find('.//misc').text
-	    
+        
         #self.assert_(elemid == organization3.elemid)
         self.assert_(name == organization3.name)
         self.assert_(info_type == organization3.info_type)
@@ -343,16 +347,16 @@ class ExportTests(unittest.TestCase):
         self.assert_(misc == organization3.misc)
         self.assert_(personrefs == organization3.personrefs)
         self.assert_(crisisrefs == organization3.crisisrefs)
-		
-	def test_buildcrisis1(self):
-	    return False
-	def test_buildcrisis2(self):
-	    return False
-	def test_buildcrisis3(self):
-	    return False
+        
+    def test_buildcrisis1(self):
+        return False
+    def test_buildcrisis2(self):
+        return False
+    def test_buildcrisis3(self):
+        return False
 
-	def test_exportlinks1(self):
-	    tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
+    def test_exportlinks1(self):
+        tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
         
         organization1 = Person(elemid = "bobs",
                    name = "Bob",
@@ -402,61 +406,142 @@ class ExportTests(unittest.TestCase):
         self.assert_(new_link.description == link1.description)
         self.assert_(new_link.link_parent == link1.link_parent)
         
-	def test_exportlinks2(self):
-	    return False
-	def test_exportlinks3(self):
-		return False
-		
-		
-
-		
+    def test_exportlinks2(self):
+        return False
+    def test_exportlinks3(self):
+        return False
+        
 class ImportTests(unittest.TestCase):        
     
     def test_validxml1(self):
-        return False
+        xml_file = open("test/test_instance1.xml",'r')
+        file_contents = xml_file.read()
+
+        b = XMLHelpers.validXML(file_contents, 'wc.xsd')
+        self.assertTrue(b)
     def test_validxml2(self):
-        return False
+        xml_file = open("test/test_instance2.xml",'r')
+        file_contents = xml_file.read()
+
+        b = XMLHelpers.validXML(file_contents, 'wc.xsd')
+        self.assertEqual(b, True)
     def test_validxml3(self):
-        return False
+        xml_file = open("test/test_instance3.xml",'r')
+        file_contents = xml_file.read()
+
+        b = XMLHelpers.validXML(file_contents, 'wc.xsd')
+        self.assert_(b == True)
 
     
     def test_addperson1(self):
-        xml_file = open("test_instance1.xml", 'w')
+        xml_file = open("test/test_add1.xml", 'rb')
         tree = ElementTree.parse(xml_file)
 
         people = tree.findall(".//person")
+        for person in people:
+            if (person.find('.//info')):
+                test_list = XMLHelpers.addPerson(person)
+        
+        self.assertEqual(len(test_list),3)
+        test_list[:] = []
         
     def test_addperson2(self):
-        xml_file = open("test_instance1.xml", 'w')
+        xml_file = open("test/test_add2.xml", 'rb')
         tree = ElementTree.parse(xml_file)
 
         people = tree.findall(".//person")
+        for person in people:
+            if (person.find('.//info')):
+                test_list = XMLHelpers.addPerson(person)
         
+        self.assertEqual(len(test_list),2)
+        test_list[:] = []
         
     def test_addperson3(self):
-        xml_file = open("test_instance1.xml", 'w')
+        xml_file = open("test/test_add3.xml", 'rb')
+        tree = ElementTree.parse(xml_file)
+        test_list = []
+        people = tree.findall(".//person")
+        for person in people:
+            if (person.find('.//info')):
+                test_list = XMLHelpers.addPerson(person)
+        
+        self.assertEqual(len(test_list),0)
+        test_list[:] = []
+        
+        
+    def test_addorg1(self):
+        xml_file = open("test/test_add1.xml", 'rb')
         tree = ElementTree.parse(xml_file)
 
-        people = tree.findall(".//person")
-        
+        orgs = tree.findall(".//organization")
+        for org in orgs:
+            if (org.find('.//info')):
+                test_list = XMLHelpers.addOrganization(org)
+        self.assertEqual(len(test_list),3)
+        test_list[:] = []
 
-        
-            
-    def test_addorg1(self):
-        return False
     def test_addorg2(self):
-        return False
+        xml_file = open("test/test_add2.xml", 'rb')
+        tree = ElementTree.parse(xml_file)
+
+        orgs = tree.findall(".//organization")
+        for org in orgs:
+            if (org.find('.//info')):
+                test_list = XMLHelpers.addOrganization(org)
+        self.assertEqual(len(test_list),2)
+        test_list[:] = []
+    
     def test_addorg3(self):
-        return False
-            
+        xml_file = open("test/test_add3.xml", 'rb')
+        tree = ElementTree.parse(xml_file)
+        test_list = []
+        orgs = tree.findall(".//organization")
+        for org in orgs:
+            if (org.find('.//info')):
+                test_list = XMLHelpers.addOrganization(org)
+        self.assertEqual(len(test_list),0)
+        test_list[:] = []
+
+
     def test_addcrisis1(self):
-        return False
+        xml_file = open("test/test_add1.xml", 'rb')
+        tree = ElementTree.parse(xml_file)
+
+        crises = tree.findall(".//crisis")
+        for crisis in crises:
+            if (crisis.find('.//info')):
+                test_list = XMLHelpers.addCrisis(crisis)
+
+        self.assertEqual(len(test_list),3)
+        test_list[:] = []
+
     def test_addcrisis2(self):
-        return False
+        xml_file = open("test/test_add2.xml", 'rb')
+        tree = ElementTree.parse(xml_file)
+        crises = tree.findall(".//crisis")
+
+        for crisis in crises:
+            if (crisis.find('.//info')):
+                test_list = XMLHelpers.addCrisis(crisis)
+
+        self.assertEqual(len(test_list),2)
+        test_list[:] = []
+
     def test_addcrisis3(self):
-        return False
+        xml_file = open("test/test_add3.xml", 'rb')
+        tree = ElementTree.parse(xml_file)
+        crises = tree.findall(".//crisis")
+        test_list = []
+        for crisis in crises:
+            if (crisis.find('.//info')):
+                test_list = XMLHelpers.addCrisis(crisis)
+        self.assertEqual(len(test_list),0)
+        test_list[:] = []
+
             
     def test_grablinks1(self):
+        XMLHelpers.clearGlobals()
         crisis = Element("crisis", {"id" : "wow"})
         ref = SubElement(crisis, "ref")
         img = SubElement(ref, "image")
@@ -474,6 +559,7 @@ class ImportTests(unittest.TestCase):
         XMLHelpers.clearGlobals()
         
     def test_grablinks2(self):
+        XMLHelpers.clearGlobals()
         person = Element("person", {"id" : "globetrotter"})
         ref = SubElement(person, "ref")
         img = SubElement(ref, "image")
@@ -501,6 +587,7 @@ class ImportTests(unittest.TestCase):
         XMLHelpers.clearGlobals()
         
     def test_grablinks3(self):
+        XMLHelpers.clearGlobals()
         person = Element("person", {"id" : "globetrotter"})
         temp = XMLHelpers.grabLinks(person)
         self.assert_(len(temp) == 0)
