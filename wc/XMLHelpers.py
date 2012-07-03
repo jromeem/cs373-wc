@@ -159,6 +159,7 @@ def addOrganization(org):
         organization_list.append(o)
         #o.put()
 
+#clears the global lists (temporary fix until db integration)
 def clearGlobals():
     # to prevent multiple copy uploads
     global crisis_list
