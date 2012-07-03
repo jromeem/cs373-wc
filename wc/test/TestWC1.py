@@ -345,7 +345,94 @@ class ExportTests(unittest.TestCase):
         self.assert_(crisisrefs == organization3.crisisrefs)
 		
 	def test_buildcrisis1(self):
-	    return False
+	    tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
+            crisis1 = Crisis(
+                    elemid = "hunger",
+                    name = "hunger",
+                    misc = "na",
+                    
+                    info_history = "this year",
+                    info_help = "help",
+                    info_resources = "awareness",
+                    info_type = "hunger attack",
+                    
+                    date_time = "11 am",
+                    date_day = 18,
+                    date_month = 03,
+                    date_year = 2012,
+                    date_misc = "still alive",
+                    
+                    location_city = "houston",
+                    location_region = "texas",
+                    location_country = "USA",
+                    
+                    impact_human_deaths = 200,
+                    impact_human_displaced = 20,
+                    impact_human_injured = 1,
+                    impact_human_missing = 32,
+                    impact_human_misc = "none",
+                    
+                    impact_economic_amount = 400,
+                    impact_economic_currency = "yen",
+                    impact_economic_misc = "misc",
+                    
+                    orgrefs = ["dea", "cia"],
+                    personrefs = ["you", "me"]
+                    )
+            ctree = SubElement(tree, "crisis", {"id" : "bathsalts"})
+            XMLHelpers.buildCrisis(ctree, crisis1)
+
+            elemid = ctree.attrib['id']
+            name = ctree.find('.//name').text
+            misc = ctree.find('.//misc').text
+            info_history = ctree.find('.//history').text
+            info_help = ctree.find('.//help').text
+            info_resources = ctree.find('.//resources').text
+            info_type = ctree.find('.//type').text
+            date_time = ctree.find('.//time').find('.//time').text
+            date_day = int(ctree.find('.//time').find('.//day').text)
+            date_month = int(ctree.find('.//time').find('.//month').text)
+            date_year = int(ctree.find('.//time').find('.//year').text)
+            date_misc = ctree.find('.//time').find('.//misc').text
+            location_city = ctree.find('.//loc').find('.//city').text
+            location_region = ctree.find('.//loc').find('.//region').text
+            location_country = ctree.find('.//loc').find('.//country').text
+            impact_human_deaths = int(ctree.find('.//impact').find('.//human').find('.//deaths').text)
+            impact_human_displaced = int(ctree.find('.//impact').find('.//human').find('.//displaced').text)
+            impact_human_injured = int(ctree.find('.//impact').find('.//human').find('.//injured').text)
+            impact_human_missing = int(ctree.find('.//impact').find('.//human').find('.//missing').text)
+            impact_human_misc = ctree.find('.//impact').find('.//human').find('.//misc').text
+            impact_economic_amount = int(ctree.find('.//impact').find('.//economic').find('.//amount').text)
+            impact_economic_currency = ctree.find('.//impact').find('.//economic').find('.//currency').text
+            impact_economic_misc = ctree.find('.//impact').find('.//economic').find('.//misc').text
+            orgrefs = [x.attrib['idref'] for x in ctree.findall('.//org')]
+            personrefs = [x.attrib['idref'] for x in ctree.findall('.//person')]
+
+            self.assert_(elemid == crisis1.elemid)
+            self.assert_(name == crisis1.name)
+            self.assert_(misc == crisis1.misc)
+            self.assert_(info_history == crisis1.info_history)
+            self.assert_(info_help == crisis1.info_help)
+            self.assert_(info_resources == crisis1.info_resources)
+            self.assert_(info_type == crisis1.info_type)
+            self.assert_(date_time == crisis1.date_time)
+            self.assert_(date_day == crisis1.date_day)
+            self.assert_(date_month == crisis1.date_month)
+            self.assert_(date_year == crisis1.date_year)
+            self.assert_(date_misc == crisis1.date_misc)
+            self.assert_(location_city == crisis1.location_city)
+            self.assert_(location_region == crisis1.location_region)
+            self.assert_(location_country == crisis1.location_country)
+            self.assert_(impact_human_deaths == crisis1.impact_human_deaths)
+            self.assert_(impact_human_displaced == crisis1.impact_human_displaced)
+            self.assert_(impact_human_injured == crisis1.impact_human_injured)
+            self.assert_(impact_human_missing == crisis1.impact_human_missing)
+            self.assert_(impact_human_misc == crisis1.impact_human_misc)
+            self.assert_(impact_economic_amount == crisis1.impact_econmic_amount)
+            self.assert_(impact_economic_currency == crisis1.impact_economic_currency)
+            self.assert_(impact_economic_misc == crisis1.impact_economic_misc)
+            self.assert_(orgrefs == crisis1.orgrefs)
+            self.assert_(personrefs == crisis1.personrefs)
 	def test_buildcrisis2(self):
 	    return False
 	def test_buildcrisis3(self):
@@ -354,7 +441,7 @@ class ExportTests(unittest.TestCase):
 	def test_exportlinks1(self):
 	    tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
         
-        organization1 = Person(elemid = "bobs",
+        person1 = Person(elemid = "bobs",
                    name = "Bob",
                    info_type = "Salamander",
                    info_birthdate_time = "12:00PM",
@@ -367,8 +454,8 @@ class ExportTests(unittest.TestCase):
                    
                    orgrefs = ["salamanders united", "salamander liberation front"],
                    crisisrefs = ["swamp famine", "west swamp drought"])
-        otree = SubElement(tree, "person", {"id" : "bobs"})     
-        XMLHelpers.buildPerson(otree, organization1)
+        ptree = SubElement(tree, "person", {"id" : "bobs"})     
+        XMLHelpers.buildPerson(ptree, person1)
         
         link1 = Link(link_parent = "bobs",
                     link_type = "salad",
@@ -378,9 +465,9 @@ class ExportTests(unittest.TestCase):
                     link_site = "a bad place")
         XMLHelpers.link_list.append(link1)
         
-        XMLHelpers.exportLinks(organization1, otree)
+        XMLHelpers.exportLinks(person1, ptree)
         
-        for ref in otree.findall('.//ref'):
+        for ref in ptree.findall('.//ref'):
             for l in ref:
                 new_link = Link()
                 if (l.tag):
@@ -393,7 +480,7 @@ class ExportTests(unittest.TestCase):
                     new_link.link_url = db.Link(l.find('./url').text)
                 if (l.find('./description') != None):
                     new_link.description = l.find('./description').text
-                new_link.link_parent = otree.attrib['id']
+                new_link.link_parent = ptree.attrib['id']
                 
         self.assert_(new_link.link_type == link1.link_type)
         self.assert_(new_link.link_site == link1.link_site)
@@ -433,7 +520,7 @@ class ExportTests(unittest.TestCase):
         XMLHelpers.buildOrganization(otree, organization1)
         
         
-        link1 = Link(link_parent = "franch",
+        link1 = Link(link_parent = "Franch",
                     link_type = "salad",
                     title = "don't click me!!!",
                     link_url = "http://www.nevergohere.com",
@@ -463,22 +550,50 @@ class ExportTests(unittest.TestCase):
         self.assert_(new_link.title == link1.title)
         self.assert_(new_link.link_url == link1.link_url)
         self.assert_(new_link.description == link1.description)
-        self.assert_(new_link.link_parent == link1.link_parent)
+        self.assertEqual(new_link.link_parent, link1.link_parent)
         
 	def test_exportlinks3(self):
 		tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
-        
-	     
-	     crisis1 = Crisis(
+        crisis1 = Crisis(elemid = "hunger",
+                    name = "hunger",
+                    misc = "na",
+                    
+                    info_history = "this year",
+                    info_help = "help",
+                    info_resources = "awareness",
+                    info_type = "hunger attack",
+                    
+                    date_time = "11 am",
+                    date_day = 18,
+                    date_month = 03,
+                    date_year = 2012,
+                    date_misc = "still alive",
+                    
+                    location_city = "houston",
+                    location_region = "texas",
+                    location_country = "USA",
+                    
+                    impact_human_deaths = 200,
+                    impact_human_displaced = 20,
+                    impact_human_injured = 1,
+                    impact_human_missing = 32,
+                    impact_human_misc = "none",
+                    
+                    impact_economic_amount = 400,
+                    impact_economic_currency = "yen",
+                    impact_economic_misc = "misc",
+                    
+                    orgrefs = ["dea", "cia"],
+                    personrefs = ["you", "me"])
 	                            
 	     
-	                        )	
 	                        	
-	    ctree = SubElement(tree, "crisis", {"id" : "Franch"})     
-        XMLHelpers.buildOrganization(ctree, crisis1)
+	                        	
+        ctree = SubElement(tree, "crisis", {"id" : "hunger"})     
+        XMLHelpers.buildCrisis(ctree, crisis1)
         
         
-        link1 = Link(link_parent = "franch",
+        link1 = Link(link_parent = "hunger",
                     link_type = "salad",
                     title = "don't click me!!!",
                     link_url = "http://www.nevergohere.com",
@@ -508,7 +623,7 @@ class ExportTests(unittest.TestCase):
         self.assert_(new_link.title == link1.title)
         self.assert_(new_link.link_url == link1.link_url)
         self.assert_(new_link.description == link1.description)
-        self.assert_(new_link.link_parent == link1.link_parent)
+        self.assertEqual(new_link.link_parent, link1.link_parent)
 		
 
 		
