@@ -1,3 +1,6 @@
+Course Name: CS373
+Unique: 91055
+
 First Name: Jerome
 Last Name: Martinez
 EID: jm49674

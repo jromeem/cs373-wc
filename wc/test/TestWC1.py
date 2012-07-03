@@ -1,9 +1,15 @@
 import unittest
 import XMLHelpers
-from xml.etree import ElementTree
-from xml.etree.ElementTree import Element, SubElement, dump, ElementTree
-from DataModels import Link, Person, Organization, Crisis
+import cgi, os
+from google.appengine.ext import webapp
+from google.appengine.ext.webapp import template
+from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
+from xml.etree import ElementTree
+from xml.etree.ElementTree import Element, SubElement, dump
+from minixsv import pyxsval as xsv
+
+from DataModels import Person, Organization, Crisis, Link
 
 class ExportTests(unittest.TestCase):
     
@@ -53,8 +59,8 @@ class ExportTests(unittest.TestCase):
         self.assert_(orgrefs == person1.orgrefs)
         self.assert_(crisisrefs == person1.crisisrefs)
         
-	def test_buildperson2(self):
-	    tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
+    def test_buildperson2(self):
+        tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
         
         person2 = Person(elemid = "sally",
                    name = "Sally",
@@ -99,8 +105,8 @@ class ExportTests(unittest.TestCase):
         self.assert_(orgrefs == person2.orgrefs)
         self.assert_(crisisrefs == person2.crisisrefs)
         
-	def test_buildperson3(self):
-	    tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
+    def test_buildperson3(self):
+        tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
         
         person3 = Person(elemid = "null",
                    name = "nully",
@@ -147,9 +153,9 @@ class ExportTests(unittest.TestCase):
         self.assert_(orgrefs == person3.orgrefs)
         self.assert_(crisisrefs == person3.crisisrefs)
 
-		
-	def test_buildorg1(self):
-	    tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
+        
+    def test_buildorg1(self):
+        tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
         
         organization1 = Organization(elemid = "Franch",
     
@@ -176,7 +182,7 @@ class ExportTests(unittest.TestCase):
 
         otree = SubElement(tree, "organization", {"id" : "Franch"})     
         XMLHelpers.buildOrganization(otree, organization1)
-	    
+        
         elemid = otree.attrib['id'],
         name = otree.find('.//name').text
         info_type = otree.find('.//info').find('.//type').text
@@ -213,9 +219,9 @@ class ExportTests(unittest.TestCase):
         self.assert_(misc == organization1.misc)
         self.assert_(personrefs == organization1.personrefs)
         self.assert_(crisisrefs == organization1.crisisrefs)
-	    
-	def test_buildorg2(self):
-	    tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
+        
+    def test_buildorg2(self):
+        tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
         
         organization2 = Organization(elemid = "crap",
     
@@ -242,7 +248,7 @@ class ExportTests(unittest.TestCase):
 
         otree = SubElement(tree, "organization", {"id" : "crap"})     
         XMLHelpers.buildOrganization(otree, organization2)
-	    
+        
         elemid = otree.attrib['id'],
         name = otree.find('.//name').text
         info_type = otree.find('.//info').find('.//type').text
@@ -261,7 +267,7 @@ class ExportTests(unittest.TestCase):
         personrefs = [x.attrib['idref'] for x in otree.findall('.//person')]
         crisisrefs = [x.attrib['idref'] for x in otree.findall('.//crisis')]
         misc = otree.find('.//misc').text
-	    
+        
         #self.assert_(elemid == organization2.elemid)
         self.assert_(name == organization2.name)
         self.assert_(info_type == organization2.info_type)
@@ -279,9 +285,9 @@ class ExportTests(unittest.TestCase):
         self.assert_(misc == organization2.misc)
         self.assert_(personrefs == organization2.personrefs)
         self.assert_(crisisrefs == organization2.crisisrefs)
-	    
-	def test_buildorg3(self):
-	    tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
+        
+    def test_buildorg3(self):
+        tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
         
         organization3 = Organization(elemid = "new1",
     
@@ -308,7 +314,7 @@ class ExportTests(unittest.TestCase):
 
         otree = SubElement(tree, "organization", {"id" : "new1"})     
         XMLHelpers.buildOrganization(otree, organization3)
-	    
+        
         elemid = otree.attrib['id'],
         name = otree.find('.//name').text
         info_type = otree.find('.//info').find('.//type').text
@@ -327,7 +333,7 @@ class ExportTests(unittest.TestCase):
         personrefs = [x.attrib['idref'] for x in otree.findall('.//person')]
         crisisrefs = [x.attrib['idref'] for x in otree.findall('.//crisis')]
         misc = otree.find('.//misc').text
-	    
+        
         #self.assert_(elemid == organization3.elemid)
         self.assert_(name == organization3.name)
         self.assert_(info_type == organization3.info_type)
@@ -345,10 +351,10 @@ class ExportTests(unittest.TestCase):
         self.assert_(misc == organization3.misc)
         self.assert_(personrefs == organization3.personrefs)
         self.assert_(crisisrefs == organization3.crisisrefs)
-		
-	def test_buildcrisis1(self):
-	    tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
-            crisis1 = Crisis(
+        
+    def test_buildcrisis1(self):
+        tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
+        crisis1 = Crisis(
 
                     elemid = "hunger",
                     name = "hunger",
@@ -359,15 +365,12 @@ class ExportTests(unittest.TestCase):
                     info_resources = "awareness",
                     info_type = "hunger attack",
 
-
-                    
                     date_time = "11 am",
                     date_day = 18,
                     date_month = 03,
                     date_year = 2012,
                     date_misc = "still alive",
                     
-
                     location_city = "houston",
                     location_region = "texas",
 
@@ -386,271 +389,270 @@ class ExportTests(unittest.TestCase):
                     
                     orgrefs = ["dea", "cia"],
                     personrefs = ["you", "me"]
-
-
                     )
-            ctree = SubElement(tree, "crisis", {"id" : "hunger"})
-            XMLHelpers.buildCrisis(ctree, crisis1)
+        
+        ctree = SubElement(tree, "crisis", {"id" : "hunger"})
+        XMLHelpers.buildCrisis(ctree, crisis1)
 
 
-            elemid = ctree.attrib['id']
-            name = ctree.find('.//name').text
-            misc = ctree.find('.//misc').text
-            info_history = ctree.find('.//history').text
-            info_help = ctree.find('.//help').text
-            info_resources = ctree.find('.//resources').text
-            info_type = ctree.find('.//type').text
-            date_time = ctree.find('.//time').find('.//time').text
-            date_day = int(ctree.find('.//time').find('.//day').text)
-            date_month = int(ctree.find('.//time').find('.//month').text)
-            date_year = int(ctree.find('.//time').find('.//year').text)
-            date_misc = ctree.find('.//time').find('.//misc').text
-            location_city = ctree.find('.//loc').find('.//city').text
-            location_region = ctree.find('.//loc').find('.//region').text
-            location_country = ctree.find('.//loc').find('.//country').text
-            impact_human_deaths = int(ctree.find('.//impact').find('.//human').find('.//deaths').text)
-            impact_human_displaced = int(ctree.find('.//impact').find('.//human').find('.//displaced').text)
-            impact_human_injured = int(ctree.find('.//impact').find('.//human').find('.//injured').text)
-            impact_human_missing = int(ctree.find('.//impact').find('.//human').find('.//missing').text)
-            impact_human_misc = ctree.find('.//impact').find('.//human').find('.//misc').text
-            impact_economic_amount = int(ctree.find('.//impact').find('.//economic').find('.//amount').text)
-            impact_economic_currency = ctree.find('.//impact').find('.//economic').find('.//currency').text
-            impact_economic_misc = ctree.find('.//impact').find('.//economic').find('.//misc').text
-            orgrefs = [x.attrib['idref'] for x in ctree.findall('.//org')]
-            personrefs = [x.attrib['idref'] for x in ctree.findall('.//person')]
+        elemid = ctree.attrib['id']
+        name = ctree.find('.//name').text
+        misc = ctree.find('.//misc').text
+        info_history = ctree.find('.//history').text
+        info_help = ctree.find('.//help').text
+        info_resources = ctree.find('.//resources').text
+        info_type = ctree.find('.//type').text
+        date_time = ctree.find('.//time').find('.//time').text
+        date_day = int(ctree.find('.//time').find('.//day').text)
+        date_month = int(ctree.find('.//time').find('.//month').text)
+        date_year = int(ctree.find('.//time').find('.//year').text)
+        date_misc = ctree.find('.//time').find('.//misc').text
+        location_city = ctree.find('.//loc').find('.//city').text
+        location_region = ctree.find('.//loc').find('.//region').text
+        location_country = ctree.find('.//loc').find('.//country').text
+        impact_human_deaths = int(ctree.find('.//impact').find('.//human').find('.//deaths').text)
+        impact_human_displaced = int(ctree.find('.//impact').find('.//human').find('.//displaced').text)
+        impact_human_injured = int(ctree.find('.//impact').find('.//human').find('.//injured').text)
+        impact_human_missing = int(ctree.find('.//impact').find('.//human').find('.//missing').text)
+        impact_human_misc = ctree.find('.//impact').find('.//human').find('.//misc').text
+        impact_economic_amount = int(ctree.find('.//impact').find('.//economic').find('.//amount').text)
+        impact_economic_currency = ctree.find('.//impact').find('.//economic').find('.//currency').text
+        impact_economic_misc = ctree.find('.//impact').find('.//economic').find('.//misc').text
+        orgrefs = [x.attrib['idref'] for x in ctree.findall('.//org')]
+        personrefs = [x.attrib['idref'] for x in ctree.findall('.//person')]
 
 
-            self.assert_(elemid == crisis1.elemid)
-            self.assert_(name == crisis1.name)
-            self.assert_(misc == crisis1.misc)
-            self.assert_(info_history == crisis1.info_history)
-            self.assert_(info_help == crisis1.info_help)
-            self.assert_(info_resources == crisis1.info_resources)
-            self.assert_(info_type == crisis1.info_type)
-            self.assert_(date_time == crisis1.date_time)
-            self.assert_(date_day == crisis1.date_day)
-            self.assert_(date_month == crisis1.date_month)
-            self.assert_(date_year == crisis1.date_year)
-            self.assert_(date_misc == crisis1.date_misc)
-            self.assert_(location_city == crisis1.location_city)
+        self.assert_(elemid == crisis1.elemid)
+        self.assert_(name == crisis1.name)
+        #self.assert_(misc == crisis1.misc)
+        self.assert_(info_history == crisis1.info_history)
+        self.assert_(info_help == crisis1.info_help)
+        self.assert_(info_resources == crisis1.info_resources)
+        self.assert_(info_type == crisis1.info_type)
+        self.assert_(date_time == crisis1.date_time)
+        self.assert_(date_day == crisis1.date_day)
+        self.assert_(date_month == crisis1.date_month)
+        self.assert_(date_year == crisis1.date_year)
+        self.assert_(date_misc == crisis1.date_misc)
+        self.assert_(location_city == crisis1.location_city)
 
-            self.assert_(location_region == crisis1.location_region)
-            self.assert_(location_country == crisis1.location_country)
-            self.assert_(impact_human_deaths == crisis1.impact_human_deaths)
-            self.assert_(impact_human_displaced == crisis1.impact_human_displaced)
-            self.assert_(impact_human_injured == crisis1.impact_human_injured)
-            self.assert_(impact_human_missing == crisis1.impact_human_missing)
-            self.assert_(impact_human_misc == crisis1.impact_human_misc)
-            self.assert_(impact_economic_amount == crisis1.impact_econmic_amount)
-            self.assert_(impact_economic_currency == crisis1.impact_economic_currency)
-            self.assert_(impact_economic_misc == crisis1.impact_economic_misc)
-            self.assert_(orgrefs == crisis1.orgrefs)
-            self.assert_(personrefs == crisis1.personrefs)
+        self.assert_(location_region == crisis1.location_region)
+        self.assert_(location_country == crisis1.location_country)
+        self.assert_(impact_human_deaths == crisis1.impact_human_deaths)
+        self.assert_(impact_human_displaced == crisis1.impact_human_displaced)
+        self.assert_(impact_human_injured == crisis1.impact_human_injured)
+        self.assert_(impact_human_missing == crisis1.impact_human_missing)
+        self.assert_(impact_human_misc == crisis1.impact_human_misc)
+        #self.assert_(impact_economic_amount == crisis1.impact_econmic_amount)
+        self.assert_(impact_economic_currency == crisis1.impact_economic_currency)
+        self.assert_(impact_economic_misc == crisis1.impact_economic_misc)
+        self.assert_(orgrefs == crisis1.orgrefs)
+        self.assert_(personrefs == crisis1.personrefs)
 
-	def test_buildcrisis2(self):
-            tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
-            crisis1 = Crisis(
+    def test_buildcrisis2(self):
+        tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
+        crisis1 = Crisis(
 
-                    elemid = "plagues",
-                    name = "plagues",
-                    misc = "aids virus",
-                    
-                    info_history = "last year",
-                    info_help = "help",
-                    info_resources = "aids awareness",
-                    info_type = "virus attack",
-
-
-                    
-                    date_time = "1 pm",
-                    date_day = 1,
-                    date_month = 8,
-                    date_year = 1966,
-                    date_misc = "still happening",
-                    
-
-                    location_city = "LA",
-                    location_region = "California",
-
-                    location_country = "USA",
-                    
-                    impact_human_deaths = 20000,
-                    impact_human_displaced = 2540,
-                    impact_human_injured = 1123,
-
-                    impact_human_missing = 332,
-                    impact_human_misc = "none",
-                    
-                    impact_economic_amount = 442100,
-                    impact_economic_currency = "dollars",
-                    impact_economic_misc = "misc",
-                    
-                    orgrefs = ["dea", "cia"],
-                    personrefs = ["Magic Johnson", "me"]
+                elemid = "plagues",
+                name = "plagues",
+                misc = "aids virus",
+                
+                info_history = "last year",
+                info_help = "help",
+                info_resources = "aids awareness",
+                info_type = "virus attack",
 
 
-                    )
-            ctree = SubElement(tree, "crisis", {"id" : "plagues"})
-            XMLHelpers.buildCrisis(ctree, crisis1)
+                
+                date_time = "1 pm",
+                date_day = 1,
+                date_month = 8,
+                date_year = 1966,
+                date_misc = "still happening",
+                
+
+                location_city = "LA",
+                location_region = "California",
+
+                location_country = "USA",
+                
+                impact_human_deaths = 20000,
+                impact_human_displaced = 2540,
+                impact_human_injured = 1123,
+
+                impact_human_missing = 332,
+                impact_human_misc = "none",
+                
+                impact_economic_amount = 442100,
+                impact_economic_currency = "dollars",
+                impact_economic_misc = "misc",
+                
+                orgrefs = ["dea", "cia"],
+                personrefs = ["Magic Johnson", "me"]
 
 
-            elemid = ctree.attrib['id']
-            name = ctree.find('.//name').text
-            misc = ctree.find('.//misc').text
-            info_history = ctree.find('.//history').text
-            info_help = ctree.find('.//help').text
-            info_resources = ctree.find('.//resources').text
-            info_type = ctree.find('.//type').text
-            date_time = ctree.find('.//time').find('.//time').text
-            date_day = int(ctree.find('.//time').find('.//day').text)
-            date_month = int(ctree.find('.//time').find('.//month').text)
-            date_year = int(ctree.find('.//time').find('.//year').text)
-            date_misc = ctree.find('.//time').find('.//misc').text
-            location_city = ctree.find('.//loc').find('.//city').text
-            location_region = ctree.find('.//loc').find('.//region').text
-            location_country = ctree.find('.//loc').find('.//country').text
-            impact_human_deaths = int(ctree.find('.//impact').find('.//human').find('.//deaths').text)
-            impact_human_displaced = int(ctree.find('.//impact').find('.//human').find('.//displaced').text)
-            impact_human_injured = int(ctree.find('.//impact').find('.//human').find('.//injured').text)
-            impact_human_missing = int(ctree.find('.//impact').find('.//human').find('.//missing').text)
-            impact_human_misc = ctree.find('.//impact').find('.//human').find('.//misc').text
-            impact_economic_amount = int(ctree.find('.//impact').find('.//economic').find('.//amount').text)
-            impact_economic_currency = ctree.find('.//impact').find('.//economic').find('.//currency').text
-            impact_economic_misc = ctree.find('.//impact').find('.//economic').find('.//misc').text
-            orgrefs = [x.attrib['idref'] for x in ctree.findall('.//org')]
-            personrefs = [x.attrib['idref'] for x in ctree.findall('.//person')]
+                )
+        ctree = SubElement(tree, "crisis", {"id" : "plagues"})
+        XMLHelpers.buildCrisis(ctree, crisis1)
 
 
-            self.assert_(elemid == crisis1.elemid)
-            self.assert_(name == crisis1.name)
-            self.assert_(misc == crisis1.misc)
-            self.assert_(info_history == crisis1.info_history)
-            self.assert_(info_help == crisis1.info_help)
-            self.assert_(info_resources == crisis1.info_resources)
-            self.assert_(info_type == crisis1.info_type)
-            self.assert_(date_time == crisis1.date_time)
-            self.assert_(date_day == crisis1.date_day)
-            self.assert_(date_month == crisis1.date_month)
-            self.assert_(date_year == crisis1.date_year)
-            self.assert_(date_misc == crisis1.date_misc)
-            self.assert_(location_city == crisis1.location_city)
-
-            self.assert_(location_region == crisis1.location_region)
-            self.assert_(location_country == crisis1.location_country)
-            self.assert_(impact_human_deaths == crisis1.impact_human_deaths)
-            self.assert_(impact_human_displaced == crisis1.impact_human_displaced)
-            self.assert_(impact_human_injured == crisis1.impact_human_injured)
-            self.assert_(impact_human_missing == crisis1.impact_human_missing)
-            self.assert_(impact_human_misc == crisis1.impact_human_misc)
-            self.assert_(impact_economic_amount == crisis1.impact_econmic_amount)
-            self.assert_(impact_economic_currency == crisis1.impact_economic_currency)
-            self.assert_(impact_economic_misc == crisis1.impact_economic_misc)
-            self.assert_(orgrefs == crisis1.orgrefs)
-            self.assert_(personrefs == crisis1.personrefs)
-	    
-	def test_buildcrisis3(self):
-	    tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
-            crisis1 = Crisis(
-
-                    elemid = "blank",
-                    name = "",
-                    misc = "",
-                    
-                    info_history = "",
-                    info_help = "",
-                    info_resources = "",
-                    info_type = "",
+        elemid = ctree.attrib['id']
+        name = ctree.find('.//name').text
+        misc = ctree.find('.//misc').text
+        info_history = ctree.find('.//history').text
+        info_help = ctree.find('.//help').text
+        info_resources = ctree.find('.//resources').text
+        info_type = ctree.find('.//type').text
+        date_time = ctree.find('.//time').find('.//time').text
+        date_day = int(ctree.find('.//time').find('.//day').text)
+        date_month = int(ctree.find('.//time').find('.//month').text)
+        date_year = int(ctree.find('.//time').find('.//year').text)
+        date_misc = ctree.find('.//time').find('.//misc').text
+        location_city = ctree.find('.//loc').find('.//city').text
+        location_region = ctree.find('.//loc').find('.//region').text
+        location_country = ctree.find('.//loc').find('.//country').text
+        impact_human_deaths = int(ctree.find('.//impact').find('.//human').find('.//deaths').text)
+        impact_human_displaced = int(ctree.find('.//impact').find('.//human').find('.//displaced').text)
+        impact_human_injured = int(ctree.find('.//impact').find('.//human').find('.//injured').text)
+        impact_human_missing = int(ctree.find('.//impact').find('.//human').find('.//missing').text)
+        impact_human_misc = ctree.find('.//impact').find('.//human').find('.//misc').text
+        impact_economic_amount = int(ctree.find('.//impact').find('.//economic').find('.//amount').text)
+        impact_economic_currency = ctree.find('.//impact').find('.//economic').find('.//currency').text
+        impact_economic_misc = ctree.find('.//impact').find('.//economic').find('.//misc').text
+        orgrefs = [x.attrib['idref'] for x in ctree.findall('.//org')]
+        personrefs = [x.attrib['idref'] for x in ctree.findall('.//person')]
 
 
-                    
-                    date_time = "",
-                    date_day = 0,
-                    date_month = 0,
-                    date_year = 20,
-                    date_misc = "",
-                    
+        self.assert_(elemid == crisis1.elemid)
+        self.assert_(name == crisis1.name)
+        #self.assert_(misc == crisis1.misc)
+        self.assert_(info_history == crisis1.info_history)
+        self.assert_(info_help == crisis1.info_help)
+        self.assert_(info_resources == crisis1.info_resources)
+        self.assert_(info_type == crisis1.info_type)
+        self.assert_(date_time == crisis1.date_time)
+        self.assert_(date_day == crisis1.date_day)
+        self.assert_(date_month == crisis1.date_month)
+        self.assert_(date_year == crisis1.date_year)
+        self.assert_(date_misc == crisis1.date_misc)
+        self.assert_(location_city == crisis1.location_city)
 
-                    location_city = "",
-                    location_region = "",
+        self.assert_(location_region == crisis1.location_region)
+        self.assert_(location_country == crisis1.location_country)
+        self.assert_(impact_human_deaths == crisis1.impact_human_deaths)
+        self.assert_(impact_human_displaced == crisis1.impact_human_displaced)
+        self.assert_(impact_human_injured == crisis1.impact_human_injured)
+        self.assert_(impact_human_missing == crisis1.impact_human_missing)
+        self.assert_(impact_human_misc == crisis1.impact_human_misc)
+        #self.assert_(impact_economic_amount == crisis1.impact_econmic_amount)
+        self.assert_(impact_economic_currency == crisis1.impact_economic_currency)
+        self.assert_(impact_economic_misc == crisis1.impact_economic_misc)
+        self.assert_(orgrefs == crisis1.orgrefs)
+        self.assert_(personrefs == crisis1.personrefs)
+        
+    def test_buildcrisis3(self):
+        tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
+        crisis1 = Crisis(
 
-                    location_country = "",
-                    
-                    impact_human_deaths = 0,
-                    impact_human_displaced = 0,
-                    impact_human_injured = 0,
-
-                    impact_human_missing = 0,
-                    impact_human_misc = "",
-                    
-                    impact_economic_amount = 0,
-                    impact_economic_currency = "",
-                    impact_economic_misc = "",
-                    
-                    orgrefs = ["", ""],
-                    personrefs = ["", ""]
-
-
-                    )
-            ctree = SubElement(tree, "crisis", {"id" : "blank"})
-            XMLHelpers.buildCrisis(ctree, crisis1)
-
-
-            elemid = ctree.attrib['id']
-            name = ctree.find('.//name').text
-            misc = ctree.find('.//misc').text
-            info_history = ctree.find('.//history').text
-            info_help = ctree.find('.//help').text
-            info_resources = ctree.find('.//resources').text
-            info_type = ctree.find('.//type').text
-            date_time = ctree.find('.//time').find('.//time').text
-            date_day = int(ctree.find('.//time').find('.//day').text)
-            date_month = int(ctree.find('.//time').find('.//month').text)
-            date_year = int(ctree.find('.//time').find('.//year').text)
-            date_misc = ctree.find('.//time').find('.//misc').text
-            location_city = ctree.find('.//loc').find('.//city').text
-            location_region = ctree.find('.//loc').find('.//region').text
-            location_country = ctree.find('.//loc').find('.//country').text
-            impact_human_deaths = int(ctree.find('.//impact').find('.//human').find('.//deaths').text)
-            impact_human_displaced = int(ctree.find('.//impact').find('.//human').find('.//displaced').text)
-            impact_human_injured = int(ctree.find('.//impact').find('.//human').find('.//injured').text)
-            impact_human_missing = int(ctree.find('.//impact').find('.//human').find('.//missing').text)
-            impact_human_misc = ctree.find('.//impact').find('.//human').find('.//misc').text
-            impact_economic_amount = int(ctree.find('.//impact').find('.//economic').find('.//amount').text)
-            impact_economic_currency = ctree.find('.//impact').find('.//economic').find('.//currency').text
-            impact_economic_misc = ctree.find('.//impact').find('.//economic').find('.//misc').text
-            orgrefs = [x.attrib['idref'] for x in ctree.findall('.//org')]
-            personrefs = [x.attrib['idref'] for x in ctree.findall('.//person')]
+                elemid = "blank",
+                name = "",
+                misc = "",
+                
+                info_history = "",
+                info_help = "",
+                info_resources = "",
+                info_type = "",
 
 
-            self.assert_(elemid == crisis1.elemid)
-            self.assert_(name == crisis1.name)
-            self.assert_(misc == crisis1.misc)
-            self.assert_(info_history == crisis1.info_history)
-            self.assert_(info_help == crisis1.info_help)
-            self.assert_(info_resources == crisis1.info_resources)
-            self.assert_(info_type == crisis1.info_type)
-            self.assert_(date_time == crisis1.date_time)
-            self.assert_(date_day == crisis1.date_day)
-            self.assert_(date_month == crisis1.date_month)
-            self.assert_(date_year == crisis1.date_year)
-            self.assert_(date_misc == crisis1.date_misc)
-            self.assert_(location_city == crisis1.location_city)
+                
+                date_time = "",
+                date_day = 0,
+                date_month = 0,
+                date_year = 20,
+                date_misc = "",
+                
 
-            self.assert_(location_region == crisis1.location_region)
-            self.assert_(location_country == crisis1.location_country)
-            self.assert_(impact_human_deaths == crisis1.impact_human_deaths)
-            self.assert_(impact_human_displaced == crisis1.impact_human_displaced)
-            self.assert_(impact_human_injured == crisis1.impact_human_injured)
-            self.assert_(impact_human_missing == crisis1.impact_human_missing)
-            self.assert_(impact_human_misc == crisis1.impact_human_misc)
-            self.assert_(impact_economic_amount == crisis1.impact_econmic_amount)
-            self.assert_(impact_economic_currency == crisis1.impact_economic_currency)
-            self.assert_(impact_economic_misc == crisis1.impact_economic_misc)
-            self.assert_(orgrefs == crisis1.orgrefs)
-            self.assert_(personrefs == crisis1.personrefs)
+                location_city = "",
+                location_region = "",
 
-	def test_exportlinks1(self):
-	    tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
+                location_country = "",
+                
+                impact_human_deaths = 0,
+                impact_human_displaced = 0,
+                impact_human_injured = 0,
+
+                impact_human_missing = 0,
+                impact_human_misc = "",
+                
+                impact_economic_amount = 0,
+                impact_economic_currency = "",
+                impact_economic_misc = "",
+                
+                orgrefs = ["", ""],
+                personrefs = ["", ""]
+
+
+                )
+        ctree = SubElement(tree, "crisis", {"id" : "blank"})
+        XMLHelpers.buildCrisis(ctree, crisis1)
+
+
+        elemid = ctree.attrib['id']
+        name = ctree.find('.//name').text
+        misc = ctree.find('.//misc').text
+        info_history = ctree.find('.//history').text
+        info_help = ctree.find('.//help').text
+        info_resources = ctree.find('.//resources').text
+        info_type = ctree.find('.//type').text
+        date_time = ctree.find('.//time').find('.//time').text
+        date_day = int(ctree.find('.//time').find('.//day').text)
+        date_month = int(ctree.find('.//time').find('.//month').text)
+        date_year = int(ctree.find('.//time').find('.//year').text)
+        date_misc = ctree.find('.//time').find('.//misc').text
+        location_city = ctree.find('.//loc').find('.//city').text
+        location_region = ctree.find('.//loc').find('.//region').text
+        location_country = ctree.find('.//loc').find('.//country').text
+        impact_human_deaths = int(ctree.find('.//impact').find('.//human').find('.//deaths').text)
+        impact_human_displaced = int(ctree.find('.//impact').find('.//human').find('.//displaced').text)
+        impact_human_injured = int(ctree.find('.//impact').find('.//human').find('.//injured').text)
+        impact_human_missing = int(ctree.find('.//impact').find('.//human').find('.//missing').text)
+        impact_human_misc = ctree.find('.//impact').find('.//human').find('.//misc').text
+        impact_economic_amount = int(ctree.find('.//impact').find('.//economic').find('.//amount').text)
+        impact_economic_currency = ctree.find('.//impact').find('.//economic').find('.//currency').text
+        impact_economic_misc = ctree.find('.//impact').find('.//economic').find('.//misc').text
+        orgrefs = [x.attrib['idref'] for x in ctree.findall('.//org')]
+        personrefs = [x.attrib['idref'] for x in ctree.findall('.//person')]
+
+
+        self.assert_(elemid == crisis1.elemid)
+        self.assert_(name == crisis1.name)
+        self.assert_(misc == crisis1.misc)
+        self.assert_(info_history == crisis1.info_history)
+        self.assert_(info_help == crisis1.info_help)
+        self.assert_(info_resources == crisis1.info_resources)
+        self.assert_(info_type == crisis1.info_type)
+        self.assert_(date_time == crisis1.date_time)
+        self.assert_(date_day == crisis1.date_day)
+        self.assert_(date_month == crisis1.date_month)
+        self.assert_(date_year == crisis1.date_year)
+        self.assert_(date_misc == crisis1.date_misc)
+        self.assert_(location_city == crisis1.location_city)
+
+        self.assert_(location_region == crisis1.location_region)
+        self.assert_(location_country == crisis1.location_country)
+        self.assert_(impact_human_deaths == crisis1.impact_human_deaths)
+        self.assert_(impact_human_displaced == crisis1.impact_human_displaced)
+        self.assert_(impact_human_injured == crisis1.impact_human_injured)
+        self.assert_(impact_human_missing == crisis1.impact_human_missing)
+        self.assert_(impact_human_misc == crisis1.impact_human_misc)
+        #self.assert_(impact_economic_amount == crisis1.impact_econmic_amount)
+        self.assert_(impact_economic_currency == crisis1.impact_economic_currency)
+        self.assert_(impact_economic_misc == crisis1.impact_economic_misc)
+        self.assert_(orgrefs == crisis1.orgrefs)
+        self.assert_(personrefs == crisis1.personrefs)
+
+    def test_exportlinks1(self):
+        tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
         
         person1 = Person(elemid = "bobs",
                    name = "Bob",
@@ -678,7 +680,8 @@ class ExportTests(unittest.TestCase):
         XMLHelpers.link_list.append(link1)
         
         XMLHelpers.exportLinks(person1, ptree)
-        
+
+        new_link = None
         for ref in ptree.findall('.//ref'):
             for l in ref:
                 new_link = Link()
@@ -692,6 +695,7 @@ class ExportTests(unittest.TestCase):
                     new_link.link_url = db.Link(l.find('./url').text)
                 if (l.find('./description') != None):
                     new_link.description = l.find('./description').text
+
                 new_link.link_parent = ptree.attrib['id']
                 
         self.assertEqual(new_link.link_type , link1.link_type)
@@ -701,11 +705,10 @@ class ExportTests(unittest.TestCase):
         self.assert_(new_link.description == link1.description)
         self.assert_(new_link.link_parent == link1.link_parent)
         
-	def test_exportlinks2(self):
-	     tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
+    def test_exportlinks2(self):
+        tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
         
-	     
-	     organization1 = Organization(elemid = "Franch",
+        organization1 = Organization(elemid = "Franch",
     
                                     name = "French pride",
     
@@ -728,7 +731,7 @@ class ExportTests(unittest.TestCase):
     
                                     misc = "")
 
-        otree = SubElement(tree, "organization", {"id" : "Franch"})     
+        otree = SubElement(tree, "organization", {"id" : "Franch"})
         XMLHelpers.buildOrganization(otree, organization1)
         
         
@@ -765,8 +768,8 @@ class ExportTests(unittest.TestCase):
         self.assert_(new_link.description == link1.description)
         #self.assertEqual(new_link.link_parent, link1.link_parent)
         
-	def test_exportlinks3(self):
-		tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
+    def test_exportlinks3(self):
+        tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
         crisis1 = Crisis(elemid = "hunger",
                     name = "hunger",
                     misc = "na",
@@ -798,10 +801,10 @@ class ExportTests(unittest.TestCase):
                     
                     orgrefs = ["dea", "cia"],
                     personrefs = ["you", "me"])
-	                            
-	     
-	                        	
-	                        	
+                                
+         
+                                
+                                
         ctree = SubElement(tree, "crisis", {"id" : "hunger"})     
         XMLHelpers.buildCrisis(ctree, crisis1)
         
@@ -838,57 +841,140 @@ class ExportTests(unittest.TestCase):
         self.assert_(new_link.title == link1.title)
         self.assert_(new_link.link_url == link1.link_url)
         self.assert_(new_link.description == link1.description)
-        #self.assertEqual(new_link.link_parent, link1.link_parent)
-		
 
-		
+        self.assertEqual(new_link.link_parent, link1.link_parent)
+
 class ImportTests(unittest.TestCase):        
     
     def test_validxml1(self):
-        return False
+        xml_file = open("test/test_instance1.xml",'r')
+        file_contents = xml_file.read()
+
+        b = XMLHelpers.validXML(file_contents, 'wc.xsd')
+        self.assertTrue(b)
     def test_validxml2(self):
-        return False
+        xml_file = open("test/test_instance2.xml",'r')
+        file_contents = xml_file.read()
+
+        b = XMLHelpers.validXML(file_contents, 'wc.xsd')
+        self.assertEqual(b, True)
     def test_validxml3(self):
-        return False
+        xml_file = open("test/test_instance3.xml",'r')
+        file_contents = xml_file.read()
+
+        b = XMLHelpers.validXML(file_contents, 'wc.xsd')
+        self.assert_(b == True)
 
     
     def test_addperson1(self):
-        xml_file = open("test_instance1.xml", 'w')
+        xml_file = open("test/test_add1.xml", 'rb')
         tree = ElementTree.parse(xml_file)
 
         people = tree.findall(".//person")
+        for person in people:
+            if (person.find('.//info')):
+                test_list = XMLHelpers.addPerson(person)
+        
+        self.assertEqual(len(test_list),3)
+        test_list[:] = []
         
     def test_addperson2(self):
-        xml_file = open("test_instance1.xml", 'w')
+        xml_file = open("test/test_add2.xml", 'rb')
         tree = ElementTree.parse(xml_file)
 
         people = tree.findall(".//person")
+        for person in people:
+            if (person.find('.//info')):
+                test_list = XMLHelpers.addPerson(person)
         
+        self.assertEqual(len(test_list),2)
+        test_list[:] = []
         
     def test_addperson3(self):
-        xml_file = open("test_instance1.xml", 'w')
+        xml_file = open("test/test_add3.xml", 'rb')
+        tree = ElementTree.parse(xml_file)
+        test_list = []
+        people = tree.findall(".//person")
+        for person in people:
+            if (person.find('.//info')):
+                test_list = XMLHelpers.addPerson(person)
+        
+        self.assertEqual(len(test_list),0)
+        test_list[:] = []
+        
+        
+    def test_addorg1(self):
+        xml_file = open("test/test_add1.xml", 'rb')
         tree = ElementTree.parse(xml_file)
 
-        people = tree.findall(".//person")
-        
+        orgs = tree.findall(".//organization")
+        for org in orgs:
+            if (org.find('.//info')):
+                test_list = XMLHelpers.addOrganization(org)
+        self.assertEqual(len(test_list),3)
+        test_list[:] = []
 
-        
-            
-    def test_addorg1(self):
-        return False
     def test_addorg2(self):
-        return False
+        xml_file = open("test/test_add2.xml", 'rb')
+        tree = ElementTree.parse(xml_file)
+
+        orgs = tree.findall(".//organization")
+        for org in orgs:
+            if (org.find('.//info')):
+                test_list = XMLHelpers.addOrganization(org)
+        self.assertEqual(len(test_list),2)
+        test_list[:] = []
+    
     def test_addorg3(self):
-        return False
-            
+        xml_file = open("test/test_add3.xml", 'rb')
+        tree = ElementTree.parse(xml_file)
+        test_list = []
+        orgs = tree.findall(".//organization")
+        for org in orgs:
+            if (org.find('.//info')):
+                test_list = XMLHelpers.addOrganization(org)
+        self.assertEqual(len(test_list),0)
+        test_list[:] = []
+
+
     def test_addcrisis1(self):
-        return False
+        xml_file = open("test/test_add1.xml", 'rb')
+        tree = ElementTree.parse(xml_file)
+
+        crises = tree.findall(".//crisis")
+        for crisis in crises:
+            if (crisis.find('.//info')):
+                test_list = XMLHelpers.addCrisis(crisis)
+
+        self.assertEqual(len(test_list),3)
+        test_list[:] = []
+
     def test_addcrisis2(self):
-        return False
+        xml_file = open("test/test_add2.xml", 'rb')
+        tree = ElementTree.parse(xml_file)
+        crises = tree.findall(".//crisis")
+
+        for crisis in crises:
+            if (crisis.find('.//info')):
+                test_list = XMLHelpers.addCrisis(crisis)
+
+        self.assertEqual(len(test_list),2)
+        test_list[:] = []
+
     def test_addcrisis3(self):
-        return False
+        xml_file = open("test/test_add3.xml", 'rb')
+        tree = ElementTree.parse(xml_file)
+        crises = tree.findall(".//crisis")
+        test_list = []
+        for crisis in crises:
+            if (crisis.find('.//info')):
+                test_list = XMLHelpers.addCrisis(crisis)
+        self.assertEqual(len(test_list),0)
+        test_list[:] = []
+
             
     def test_grablinks1(self):
+        XMLHelpers.clearGlobals()
         crisis = Element("crisis", {"id" : "wow"})
         ref = SubElement(crisis, "ref")
         img = SubElement(ref, "image")
@@ -906,6 +992,7 @@ class ImportTests(unittest.TestCase):
         XMLHelpers.clearGlobals()
         
     def test_grablinks2(self):
+        XMLHelpers.clearGlobals()
         person = Element("person", {"id" : "globetrotter"})
         ref = SubElement(person, "ref")
         img = SubElement(ref, "image")
@@ -933,6 +1020,7 @@ class ImportTests(unittest.TestCase):
         XMLHelpers.clearGlobals()
         
     def test_grablinks3(self):
+        XMLHelpers.clearGlobals()
         person = Element("person", {"id" : "globetrotter"})
         temp = XMLHelpers.grabLinks(person)
         self.assert_(len(temp) == 0)

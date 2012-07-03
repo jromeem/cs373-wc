@@ -101,6 +101,7 @@ def addCrisis(crisis):
                    )
         crisis_list.append(c)
         #c.put
+        return crisis_list
     
 #adds a person to the list, where person is an element tree
 def addPerson(person):
@@ -124,6 +125,7 @@ def addPerson(person):
                    
         person_list.append(p)
         #p.put()
+        return person_list
         
 #adds an organization to the list, where org is an element tree
 def addOrganization(org):
@@ -158,6 +160,7 @@ def addOrganization(org):
                          )
         organization_list.append(o)
         #o.put()
+        return organization_list
 
 #clears the global lists (temporary fix until db integration)
 def clearGlobals():
