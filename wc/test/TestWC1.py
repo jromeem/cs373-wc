@@ -681,7 +681,7 @@ class ExportTests(unittest.TestCase):
         
         XMLHelpers.exportLinks(person1, ptree)
 
-        new_link = None
+        new_link = Link()
         for ref in ptree.findall('.//ref'):
             for l in ref:
                 new_link = Link()
@@ -698,12 +698,12 @@ class ExportTests(unittest.TestCase):
 
                 new_link.link_parent = ptree.attrib['id']
                 
-        self.assertEqual(new_link.link_type , link1.link_type)
-        self.assert_(new_link.link_site == link1.link_site)
-        self.assert_(new_link.title == link1.title)
-        self.assert_(new_link.link_url == link1.link_url)
-        self.assert_(new_link.description == link1.description)
-        self.assert_(new_link.link_parent == link1.link_parent)
+                self.assertEqual(new_link.link_type , link1.link_type)
+                self.assert_(new_link.link_site == link1.link_site)
+                self.assert_(new_link.title == link1.title)
+                self.assert_(new_link.link_url == link1.link_url)
+                self.assert_(new_link.description == link1.description)
+                self.assert_(new_link.link_parent == link1.link_parent)
         
     def test_exportlinks2(self):
         tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
@@ -761,12 +761,12 @@ class ExportTests(unittest.TestCase):
                     new_link.description = l.find('./description').text
                 new_link.link_parent = otree.attrib['id']
                 
-        self.assert_(new_link.link_type == link1.link_type)
-        self.assert_(new_link.link_site == link1.link_site)
-        self.assert_(new_link.title == link1.title)
-        self.assert_(new_link.link_url == link1.link_url)
-        self.assert_(new_link.description == link1.description)
-        #self.assertEqual(new_link.link_parent, link1.link_parent)
+                self.assert_(new_link.link_type == link1.link_type)
+                self.assert_(new_link.link_site == link1.link_site)
+                self.assert_(new_link.title == link1.title)
+                self.assert_(new_link.link_url == link1.link_url)
+                self.assert_(new_link.description == link1.description)
+                self.assertEqual(new_link.link_parent, link1.link_parent)
         
     def test_exportlinks3(self):
         tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
@@ -836,13 +836,13 @@ class ExportTests(unittest.TestCase):
                     new_link.description = l.find('./description').text
                 new_link.link_parent = ctree.attrib['id']
                 
-        self.assert_(new_link.link_type == link1.link_type)
-        self.assert_(new_link.link_site == link1.link_site)
-        self.assert_(new_link.title == link1.title)
-        self.assert_(new_link.link_url == link1.link_url)
-        self.assert_(new_link.description == link1.description)
+                self.assert_(new_link.link_type == link1.link_type)
+                self.assert_(new_link.link_site == link1.link_site)
+                self.assert_(new_link.title == link1.title)
+                self.assert_(new_link.link_url == link1.link_url)
+                self.assert_(new_link.description == link1.description)
 
-        self.assertEqual(new_link.link_parent, link1.link_parent)
+                self.assertEqual(new_link.link_parent, link1.link_parent)
 
 class ImportTests(unittest.TestCase):        
     
