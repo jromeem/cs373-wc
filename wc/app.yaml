@@ -4,15 +4,20 @@ runtime: python
 api_version: 1
 
 handlers:
-- url: /(import)
+- url: /import
   script: ImportHandler.py
   
-- url: /(export)
+- url: /export
   script: ExportHandler.py
+  
+- url: /(go.*)
+  script: MainHandler.py
+ 
+ 
   
 - url: /meow
   script: meow.py
-
+  
 - url: /test.*
   script: gaeunit.py  
 

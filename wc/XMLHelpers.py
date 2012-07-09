@@ -17,10 +17,11 @@ from DataModels import Link, Person, Organization, Crisis
 # XML HELPERS #
 ###############
 
-crisis_list = []
-person_list = []
-organization_list = []
-link_list = []
+# global lists used only for phase 1
+#crisis_list = []
+#person_list = []
+#organization_list = []
+#link_list = []
 
 ############################
 # IMPORT HANDLER FUNCTIONS #
@@ -99,8 +100,8 @@ def addCrisis(crisis):
                    orgrefs = [x.attrib['idref'] for x in crisis.findall('.//org')],
                    personrefs = [x.attrib['idref'] for x in crisis.findall('.//person')]
                    )
-        crisis_list.append(c)
-        #c.put
+        #crisis_list.append(c)
+        c.put
         return crisis_list
     
 #adds a person to the list, where person is an element tree
@@ -123,8 +124,8 @@ def addPerson(person):
                    crisisrefs = [x.attrib['idref'] for x in person.findall('.//crisis')]
                    )
                    
-        person_list.append(p)
-        #p.put()
+        #person_list.append(p)
+        p.put()
         return person_list
         
 #adds an organization to the list, where org is an element tree
@@ -158,8 +159,8 @@ def addOrganization(org):
                          personrefs = [x.attrib['idref'] for x in org.findall('.//person')],
                          crisisrefs = [x.attrib['idref'] for x in org.findall('.//crisis')]
                          )
-        organization_list.append(o)
-        #o.put()
+        #organization_list.append(o)
+        o.put()
         return organization_list
 
 #clears the global lists (temporary fix until db integration)
