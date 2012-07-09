@@ -4,6 +4,7 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
+import DataModels
 
 class MainPage(webapp.RequestHandler):
     def get(self):
@@ -15,7 +16,13 @@ class MainPage(webapp.RequestHandler):
 
 class TestPage(webapp.RequestHandler):
     def get(self):
-        self.response.out.write("go page -- hello world!")
+        crises_list = []
+        crises_list = db.GqlQuery("SELECT elemid FROM Crisis")
+        print "TESTING QUERIES..."
+        for cid in crises_list:
+            print cid
+            
+        #self.response.out.write()
         
 
 application = webapp.WSGIApplication([('/', MainPage), ('/go', TestPage)],

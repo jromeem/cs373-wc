@@ -57,8 +57,8 @@ def grabLinks(crisis):
             if (l.find('./description') != None):
                 new_link.description = l.find('./description').text
             new_link.link_parent = crisis.attrib['id']
-            #new_link.put()
-            link_list.append(new_link)
+            new_link.put()
+            #link_list.append(new_link)
     return link_list
 
 #adds a crisis to the list, where crisis is an element tree
@@ -101,7 +101,7 @@ def addCrisis(crisis):
                    personrefs = [x.attrib['idref'] for x in crisis.findall('.//person')]
                    )
         #crisis_list.append(c)
-        c.put
+        c.put()
         return crisis_list
     
 #adds a person to the list, where person is an element tree
