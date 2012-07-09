@@ -4,7 +4,8 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
-import DataModels
+from DataModels import Crisis, Organization, Person
+
 
 class MainPage(webapp.RequestHandler):
     def get(self):
@@ -14,18 +15,24 @@ class MainPage(webapp.RequestHandler):
         path = os.path.join(os.path.dirname(__file__), "index.html")
         self.response.out.write(template.render(path, template_values))
 
-class TestPage(webapp.RequestHandler):
-    def get(self):
-        crises_list = []
-        crises_list = db.GqlQuery("SELECT elemid FROM Crisis")
-        print "TESTING QUERIES..."
-        for cid in crises_list:
-            print cid
-            
-        #self.response.out.write()
+
+class CrisisPage(webapp.RequestHandler):
+    def get(self, crisis_id):
+        query_string = "SELECT * FROM Crisis WHERE elemid='" + crisis_id + "'"
+        query = db.GqlQuery(query_string)
+        output = ""
+        self.response.out.write(query)
+        
+class OrganizationPage(webapp.RequestHandler):
+    def get(self, organization_id):
+        q = db.GqlQuery("SELECT name FROM Organization WHERE elemid='" + organization_id + "'")
+        for x in q:
+            self.response.out.write(x.name + "<br />")
         
 
-application = webapp.WSGIApplication([('/', MainPage), ('/go', TestPage)],
+application = webapp.WSGIApplication([('/', MainPage),
+                                      ('/crisis/(.*)', CrisisPage),
+                                      ('/organization/(.*)', OrganizationPage)],
                                      debug=True)
 
 def main():
