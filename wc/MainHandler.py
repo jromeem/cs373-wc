@@ -20,16 +20,24 @@ class CrisisPage(webapp.RequestHandler):
         query = db.GqlQuery(query_string)
         output = ""
         self.response.out.write(query)
-        
+  
 class OrganizationPage(webapp.RequestHandler):
     def get(self, organization_id):
         q = db.GqlQuery("SELECT name FROM Organization WHERE elemid='" + organization_id + "'")
         for x in q:
             self.response.out.write(x.name + "<br />")
         
+class CrisisSplashPage(webapp.RequestHandler):
+    def get(self):
+        q = db.GqlQuery("SELECT * FROM Crisis")
+        template_values = { 'crises': q }
+        
+        path = os.path.join(os.path.dirname(__file__), "crises.html")
+        self.response.out.write(template.render(path, template_values))
 
 application = webapp.WSGIApplication([('/', MainPage),
                                       ('/crisis/(.*)', CrisisPage),
+                                      ('/crisis', CrisisSplashPage),
                                       ('/organization/(.*)', OrganizationPage)],
                                      debug=True)
 
