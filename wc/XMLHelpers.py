@@ -57,8 +57,10 @@ def grabLinks(crisis):
             if (l.find('./description') != None):
                 new_link.description = l.find('./description').text
             new_link.link_parent = crisis.attrib['id']
-            #new_link.put()
-            link_list.append(new_link)
+            
+            q = db.GqlQuery("SELECT title FROM Link WHERE link_url='" + new_link.link_url + "'")
+            if (q.count() == 0):
+                new_link.put()
     return link_list
 
 #adds a crisis to the list, where crisis is an element tree
@@ -100,8 +102,10 @@ def addCrisis(crisis):
                    orgrefs = [x.attrib['idref'] for x in crisis.findall('.//org')],
                    personrefs = [x.attrib['idref'] for x in crisis.findall('.//person')]
                    )
-        #crisis_list.append(c)
-        c.put
+        
+        q = db.GqlQuery("SELECT name FROM Crisis WHERE elemid='" + crisis.attrib['id'] + "'")
+        if (q.count() == 0):
+            c.put()
         return crisis_list
     
 #adds a person to the list, where person is an element tree
@@ -124,8 +128,9 @@ def addPerson(person):
                    crisisrefs = [x.attrib['idref'] for x in person.findall('.//crisis')]
                    )
                    
-        #person_list.append(p)
-        p.put()
+        q = db.GqlQuery("SELECT name FROM Person WHERE elemid='" + person.attrib['id'] + "'")
+        if (q.count() == 0):
+            p.put()
         return person_list
         
 #adds an organization to the list, where org is an element tree
@@ -159,8 +164,10 @@ def addOrganization(org):
                          personrefs = [x.attrib['idref'] for x in org.findall('.//person')],
                          crisisrefs = [x.attrib['idref'] for x in org.findall('.//crisis')]
                          )
-        #organization_list.append(o)
-        o.put()
+        
+        q = db.GqlQuery("SELECT name FROM Organization WHERE elemid='" + org.attrib['id'] + "'")
+        if (q.count() == 0):
+            o.put()
         return organization_list
 
 #clears the global lists (temporary fix until db integration)

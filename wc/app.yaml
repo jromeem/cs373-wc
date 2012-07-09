@@ -10,11 +10,6 @@ handlers:
 - url: /export
   script: ExportHandler.py
   
-- url: /(go.*)
-  script: MainHandler.py
- 
- 
-  
 - url: /meow
   script: meow.py
   
