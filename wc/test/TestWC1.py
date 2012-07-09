@@ -202,7 +202,7 @@ class ExportTests(unittest.TestCase):
         crisisrefs = [x.attrib['idref'] for x in otree.findall('.//crisis')]
         misc = otree.find('.//misc').text
         
-        #self.assert_(elemid == organization1.elemid)
+        self.assertEqual(elemid[0],organization1.elemid)
         self.assert_(name == organization1.name)
         self.assert_(info_type == organization1.info_type)
         self.assert_(info_history == organization1.info_history)
@@ -268,7 +268,7 @@ class ExportTests(unittest.TestCase):
         crisisrefs = [x.attrib['idref'] for x in otree.findall('.//crisis')]
         misc = otree.find('.//misc').text
         
-        #self.assert_(elemid == organization2.elemid)
+        self.assertEqual(elemid[0],organization2.elemid)
         self.assert_(name == organization2.name)
         self.assert_(info_type == organization2.info_type)
         self.assert_(info_history == organization2.info_history)
@@ -334,7 +334,7 @@ class ExportTests(unittest.TestCase):
         crisisrefs = [x.attrib['idref'] for x in otree.findall('.//crisis')]
         misc = otree.find('.//misc').text
         
-        #self.assert_(elemid == organization3.elemid)
+        self.assertEqual(elemid[0], organization3.elemid)
         self.assert_(name == organization3.name)
         self.assert_(info_type == organization3.info_type)
         self.assert_(info_history == organization3.info_history)
@@ -397,7 +397,7 @@ class ExportTests(unittest.TestCase):
 
         elemid = ctree.attrib['id']
         name = ctree.find('.//name').text
-        misc = ctree.find('.//misc').text
+        misc = ctree.find('./misc').text
         info_history = ctree.find('.//history').text
         info_help = ctree.find('.//help').text
         info_resources = ctree.find('.//resources').text
@@ -424,7 +424,7 @@ class ExportTests(unittest.TestCase):
 
         self.assert_(elemid == crisis1.elemid)
         self.assert_(name == crisis1.name)
-        #self.assert_(misc == crisis1.misc)
+        self.assertEqual(misc , crisis1.misc)
         self.assert_(info_history == crisis1.info_history)
         self.assert_(info_help == crisis1.info_help)
         self.assert_(info_resources == crisis1.info_resources)
@@ -443,7 +443,7 @@ class ExportTests(unittest.TestCase):
         self.assert_(impact_human_injured == crisis1.impact_human_injured)
         self.assert_(impact_human_missing == crisis1.impact_human_missing)
         self.assert_(impact_human_misc == crisis1.impact_human_misc)
-        #self.assert_(impact_economic_amount == crisis1.impact_econmic_amount)
+        self.assert_(impact_economic_amount == crisis1.impact_economic_amount)
         self.assert_(impact_economic_currency == crisis1.impact_economic_currency)
         self.assert_(impact_economic_misc == crisis1.impact_economic_misc)
         self.assert_(orgrefs == crisis1.orgrefs)
@@ -498,7 +498,7 @@ class ExportTests(unittest.TestCase):
 
         elemid = ctree.attrib['id']
         name = ctree.find('.//name').text
-        misc = ctree.find('.//misc').text
+        misc = ctree.find('./misc').text
         info_history = ctree.find('.//history').text
         info_help = ctree.find('.//help').text
         info_resources = ctree.find('.//resources').text
@@ -525,7 +525,7 @@ class ExportTests(unittest.TestCase):
 
         self.assert_(elemid == crisis1.elemid)
         self.assert_(name == crisis1.name)
-        #self.assert_(misc == crisis1.misc)
+        self.assertEqual(misc, crisis1.misc)
         self.assert_(info_history == crisis1.info_history)
         self.assert_(info_help == crisis1.info_help)
         self.assert_(info_resources == crisis1.info_resources)
@@ -544,7 +544,7 @@ class ExportTests(unittest.TestCase):
         self.assert_(impact_human_injured == crisis1.impact_human_injured)
         self.assert_(impact_human_missing == crisis1.impact_human_missing)
         self.assert_(impact_human_misc == crisis1.impact_human_misc)
-        #self.assert_(impact_economic_amount == crisis1.impact_econmic_amount)
+        self.assert_(impact_economic_amount == crisis1.impact_economic_amount)
         self.assert_(impact_economic_currency == crisis1.impact_economic_currency)
         self.assert_(impact_economic_misc == crisis1.impact_economic_misc)
         self.assert_(orgrefs == crisis1.orgrefs)
@@ -645,7 +645,7 @@ class ExportTests(unittest.TestCase):
         self.assert_(impact_human_injured == crisis1.impact_human_injured)
         self.assert_(impact_human_missing == crisis1.impact_human_missing)
         self.assert_(impact_human_misc == crisis1.impact_human_misc)
-        #self.assert_(impact_economic_amount == crisis1.impact_econmic_amount)
+        self.assert_(impact_economic_amount == crisis1.impact_economic_amount)
         self.assert_(impact_economic_currency == crisis1.impact_economic_currency)
         self.assert_(impact_economic_misc == crisis1.impact_economic_misc)
         self.assert_(orgrefs == crisis1.orgrefs)
@@ -679,94 +679,101 @@ class ExportTests(unittest.TestCase):
         
         XMLHelpers.link_list.append(link1)
         
-        XMLHelpers.exportLinks(person1, ptree)
+        r = ElementTree.SubElement(ptree, "ref")
+        
+        XMLHelpers.exportLinks(person1, r)
 
-        new_link = Link()
+        
         for ref in ptree.findall('.//ref'):
-            for l in ref:
-                new_link = Link()
-                if (l.tag):
-                    new_link.link_type = l.tag
-                if (l.find('./site') != None):
-                    new_link.link_site = l.find('./site').text
-                if (l.find('./title') != None):
-                    new_link.title = l.find('./title').text
-                if (l.find('./url') != None):
-                    new_link.link_url = db.Link(l.find('./url').text)
-                if (l.find('./description') != None):
-                    new_link.description = l.find('./description').text
+			for l in ref:
+				new_link = Link()
+				if (l.tag):
+					new_link.link_type = l.tag
+				if (l.find('./site') != None):
+					new_link.link_site = l.find('./site').text
+				if (l.find('./title') != None):
+					new_link.title = l.find('./title').text
+				if (l.find('./url') != None):
+					new_link.link_url = db.Link(l.find('./url').text)
+				if (l.find('./description') != None):
+					new_link.description = l.find('./description').text
 
-                new_link.link_parent = ptree.attrib['id']
-                
-                self.assertEqual(new_link.link_type , link1.link_type)
-                self.assert_(new_link.link_site == link1.link_site)
-                self.assert_(new_link.title == link1.title)
-                self.assert_(new_link.link_url == link1.link_url)
-                self.assert_(new_link.description == link1.description)
-                self.assert_(new_link.link_parent == link1.link_parent)
+				new_link.link_parent = ptree.attrib['id']
+
+				#self.assert_(False)
+				self.assertEqual(new_link.link_type , link1.link_type)
+				self.assert_(new_link.link_site == link1.link_site)
+				self.assert_(new_link.title == link1.title)
+				self.assert_(new_link.link_url == link1.link_url)
+				self.assert_(new_link.description == link1.description)
+				self.assert_(new_link.link_parent == link1.link_parent)
+		
         
     def test_exportlinks2(self):
-        tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
-        
-        organization1 = Organization(elemid = "Franch",
-    
-                                    name = "French pride",
-    
-                                    info_type = "non-existant",
-                                    info_history = "white flags",
-                                    info_contacts_phone = "1234567890",
-                                    info_contacts_email = "omuledu@fromage.com",
-                                    info_contacts_address = "French",
-                                    info_contacts_city = "Paris",
-                                    info_contacts_state = "Canada",
-                                    info_contacts_country = "USA",
-                                    info_contacts_zip = "7890",
-    
-                                    info_loc_city = "Alaska",
-                                    info_loc_region = "Ukraine",
-                                    info_loc_country = "Antarctica",
-    
-                                    personrefs = ["baquettes", "crumpets"],
-                                    crisisrefs = ["war", "nazis"],
-    
-                                    misc = "")
+		tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
 
-        otree = SubElement(tree, "organization", {"id" : "Franch"})
-        XMLHelpers.buildOrganization(otree, organization1)
-        
-        
-        link1 = Link(link_parent = "Franch",
-                    link_type = "salad",
-                    title = "don't click me!!!",
-                    link_url = "http://www.nevergohere.com",
-                    description = "you really shouldn't go there...",
-                    link_site = "a bad place")
-        XMLHelpers.link_list = []
-        XMLHelpers.link_list.append(link1)
-        
-        XMLHelpers.exportLinks(organization1, otree)
-        
-        for ref in otree.findall('.//ref'):
-            for l in ref:
-                new_link = Link()
-                if (l.tag):
-                    new_link.link_type = l.tag
-                if (l.find('./site') != None):
-                    new_link.link_site = l.find('./site').text
-                if (l.find('./title') != None):
-                    new_link.title = l.find('./title').text
-                if (l.find('./url') != None):
-                    new_link.link_url = db.Link(l.find('./url').text)
-                if (l.find('./description') != None):
-                    new_link.description = l.find('./description').text
-                new_link.link_parent = otree.attrib['id']
-                
-                self.assert_(new_link.link_type == link1.link_type)
-                self.assert_(new_link.link_site == link1.link_site)
-                self.assert_(new_link.title == link1.title)
-                self.assert_(new_link.link_url == link1.link_url)
-                self.assert_(new_link.description == link1.description)
-                self.assertEqual(new_link.link_parent, link1.link_parent)
+		organization1 = Organization(elemid = "Franch",
+
+									name = "French pride",
+
+									info_type = "non-existant",
+									info_history = "white flags",
+									info_contacts_phone = "1234567890",
+									info_contacts_email = "omuledu@fromage.com",
+									info_contacts_address = "French",
+									info_contacts_city = "Paris",
+									info_contacts_state = "Canada",
+									info_contacts_country = "USA",
+									info_contacts_zip = "7890",
+
+									info_loc_city = "Alaska",
+									info_loc_region = "Ukraine",
+									info_loc_country = "Antarctica",
+
+									personrefs = ["baquettes", "crumpets"],
+									crisisrefs = ["war", "nazis"],
+
+									misc = "")
+
+		otree = SubElement(tree, "organization", {"id" : "Franch"})
+		XMLHelpers.buildOrganization(otree, organization1)
+
+
+		link1 = Link(link_parent = "Franch",
+					link_type = "salad",
+					title = "don't click me!!!",
+					link_url = "http://www.nevergohere.com",
+					description = "you really shouldn't go there...",
+					link_site = "a bad place")
+
+		XMLHelpers.link_list.append(link1)
+
+		r = ElementTree.SubElement(otree, "ref")
+
+		XMLHelpers.exportLinks(organization1, r)
+
+		for ref in otree.findall('.//ref'):
+			for l in ref:
+				new_link = Link()
+				if (l.tag):
+					new_link.link_type = l.tag
+				if (l.find('./site') != None):
+					new_link.link_site = l.find('./site').text
+				if (l.find('./title') != None):
+					new_link.title = l.find('./title').text
+				if (l.find('./url') != None):
+					new_link.link_url = db.Link(l.find('./url').text)
+				if (l.find('./description') != None):
+					new_link.description = l.find('./description').text
+				new_link.link_parent = otree.attrib['id']
+
+				self.assert_(new_link.link_type == link1.link_type)
+				self.assert_(new_link.link_site == link1.link_site)
+				self.assert_(new_link.title == link1.title)
+				self.assert_(new_link.link_url == link1.link_url)
+				self.assert_(new_link.description == link1.description)
+				self.assertEqual(new_link.link_parent, link1.link_parent)
+				#self.assert_(False)
         
     def test_exportlinks3(self):
         tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
@@ -816,10 +823,12 @@ class ExportTests(unittest.TestCase):
                     description = "you really shouldn't go there...",
                     link_site = "a bad place")
                     
-        XMLHelpers.link_list = []
+        
         XMLHelpers.link_list.append(link1)
         
-        XMLHelpers.exportLinks(crisis1, ctree)
+        r = ElementTree.SubElement(ctree, "ref")
+       
+        XMLHelpers.exportLinks(crisis1, r)
         
         for ref in ctree.findall('.//ref'):
             for l in ref:
@@ -841,8 +850,8 @@ class ExportTests(unittest.TestCase):
                 self.assert_(new_link.title == link1.title)
                 self.assert_(new_link.link_url == link1.link_url)
                 self.assert_(new_link.description == link1.description)
-
                 self.assertEqual(new_link.link_parent, link1.link_parent)
+                #self.assert_(False)
 
 class ImportTests(unittest.TestCase):        
     
