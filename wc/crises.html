@@ -1,0 +1,9 @@
+<html>
+  <body>
+  	<ul>	
+		{% for crisis in crises %}
+			<li><a href="/crisis/{{crisis.elemid}}">{{ crisis.name }}</a></li> 
+		{% endfor %}
+  	</ul>
+  </body>
+</html>
