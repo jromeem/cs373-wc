@@ -56,26 +56,22 @@
 			<tr><th>Crises</th>
 				<td>
 					{% for ref in x.crisisrefs %}					
-						<a href="/crises/{{ref}}">
+
 						{% for item in crisis_references.items %}
-    						{% ifequal ref item.0 %}
-    							{{item.1}}
-    						{% endifequal %}
+    						<a href="/crises/{{item.0}}">{{item.1}}</a>
     					{% endfor %}
-						</a><br />
+						<br />
 					{% endfor %}
 				</td>
 			</tr>
 			<tr><th>Organizations</th>
 				<td>
 					{% for ref in x.orgrefs %}					
-						<a href="/organizations/{{ref}}">
+						
 						{% for item in org_references.items %}
-    						{% ifequal ref item.0 %}
-    							{{item.1}}
-    						{% endifequal %}
+    						<a href="/organizations/{{item.0}}">{{item.1}}</a>
     					{% endfor %}
-						</a><br />
+						<br />
 					{% endfor %}					
 				</td>
 			</tr>
