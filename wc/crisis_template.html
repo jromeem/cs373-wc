@@ -1,21 +1,22 @@
+{% for x in crisis %}
 <html>
 	<head>
-		<title>Haiti</title>
+		<title>{{ x.name }}</title>
 		<style>body {width:900px; margin:20px auto;} th { text-align:left; }</style>
 	</head>
 	<body>
 		<a href="/">Home</a><br /><br />
 		<table>
-			<tr><th>Name</th><td>Haiti</td></tr>
-			<tr><th>Kind</th><td>Haiti</td></tr>
-			<tr><th>Location</th><td>Haiti, Haiti</td></tr>
-			<tr><th>Date and Time</th><td>6:53 local time (21:53 UTC) 12 January 2010</td></tr>
+			<tr><th>Name</th><td>{{ x.name }}</td></tr>
+			<tr><th>Kind</th><td>{{ x.info_type }}</td></tr>
+			<tr><th>Location</th><td>{{ x.location_city }}, {{ x.location_country }}</td></tr>
+			<tr><th>Date and Time</th><td>{{ x.date_time}} 12 January 2010</td></tr>
 			<tr><th>Human Impact</th>
-				<td>316,000 people had died, 300,000 had been injured and 1,000,000 made homeless</td>
+				<td>{{x.impact_human_deaths}} people had died, {{x.impact_human_injured}} had been injured and {{x.impact_human_displaced}} made homeless</td>
 			</tr>
-			<tr><th>Economic Impact</th><td>2,300,000,000 USD</td></tr>
-			<tr><th>Resources Needed</th><td>Food, Volunteers, Donations</td></tr>
-			<tr><th>Ways to Help</th><td>Donations</td></tr>
+			<tr><th>Economic Impact</th><td>{{ x.elemid }}</td></tr>
+			<tr><th>Resources Needed</th><td>{{ x.elemid }}</td></tr>
+			<tr><th>Ways to Help</th><td>{{ x.elemid }}</td></tr>
 			<tr>
 				<th>Embedded Image</th>
 					<td>
@@ -34,7 +35,7 @@
 						</iframe>
 					</td>
 			</tr>
-			<tr><th>Social Networks</th><td></td></tr>
+			<tr><th>Social Networks</th><td>{{ x.elemid }}</td></tr>
 			<tr><th>External Links</th>
 				<td>
 					<a href="http://en.wikipedia.org/wiki/2010_Haiti_earthquake">Wikipedia</a><br /> 
@@ -46,3 +47,4 @@
 		</table>
 	</body>
 </html>
+{% endfor %}

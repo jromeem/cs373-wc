@@ -17,9 +17,15 @@ class MainPage(webapp.RequestHandler):
 class CrisisPage(webapp.RequestHandler):
     def get(self, crisis_id):
         query_string = "SELECT * FROM Crisis WHERE elemid='" + crisis_id + "'"
-        query = db.GqlQuery(query_string)
-        output = ""
-        self.response.out.write(query)
+        crisis = db.GqlQuery(query_string)
+
+        for x in crisis:
+            self.response.out.write(x.location_city + "<br />")
+        
+        template_values = { 'crisis': crisis }
+        
+        path = os.path.join(os.path.dirname(__file__), "crisis_template.html")
+        self.response.out.write(template.render(path, template_values))        
         
 class OrganizationPage(webapp.RequestHandler):
     def get(self, organization_id):
