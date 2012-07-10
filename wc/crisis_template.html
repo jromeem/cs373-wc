@@ -70,7 +70,7 @@
 				<th>Related Organizations</th>
 				<td>
 					{% for item in orgrefs.items %}
-						<a href="/organization/{{item.0}}">{{item.1}}</a>
+						<a href="/organizations/{{item.0}}">{{item.1}}</a>
 					{% endfor %}
 				</td>
 				
@@ -79,7 +79,7 @@
 				<th>Related People</th>
 				<td>
 					{% for item in personrefs.items %}
-					<a href="/person/{{item.0}}">{{item.1}}</a>
+					<a href="/people/{{item.0}}">{{item.1}}</a>
 					{% endfor %}
 				</td>
 			</tr>
