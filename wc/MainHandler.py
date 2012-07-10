@@ -164,9 +164,25 @@ class PersonPage(webapp.RequestHandler):
         link_query = "SELECT * FROM Link WHERE link_parent='" + person_id + "'"
         person = db.GqlQuery(person_query)
         link = db.GqlQuery(link_query)
+        
+        org_references = {}
+        crisis_references = {}
+        for p in person:
+            for org_ref in p.orgrefs:
+                query = db.GqlQuery("SELECT * FROM Organization WHERE elemid='" + org_ref + "'")
+		for org in query:
+                    org_references[org_ref] = org.name
+
+            for crisis_ref in p.crisisrefs:
+                query2 = db.GqlQuery("SELECT * FROM Crisis WHERE elemid='" + crisis_ref + "'")
+		for crisis in query2:
+		    crisis_references[crisis_ref] = crisis.name
 
         template_values = { 'person': person,
-                            'link'  : link    }
+                            'link'  : link,
+                            'org_references' : org_references,
+                            'crisis_references' : crisis_references}
+
 
         # categorize and populte links
         images = []
