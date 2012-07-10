@@ -1,0 +1,72 @@
+{% for x in person %}
+<html>
+	<head>
+		<title>{{ x.name }}</title>
+		<style>body {width:900px; margin:20px auto;} th { text-align:left; }</style>
+	</head>
+	<body>
+		<a href="/">Home</a><br /><br />
+		<table>
+			<tr><th>Name</th><td>{{ x.name }}</td></tr>
+			<tr><th>Kind</th><td>{{ x.info_type }}</td></tr>
+			<tr><th>Nationality</th><td>{{ x.info_nationality }}</td></tr>
+			<tr><th>Date of Birth</th><td>{{ x.info_birthdate_month }}-{{ x.info_birthdate_day }}-{{ x.info_birthdate_year }}</td></tr>
+			<tr><th>Info</th><td>{{ x.info_biography }}</td></tr>
+			<tr>
+				<th>Embedded Image</th>
+					<td>
+						{% for i in images %}
+						<img src="{{i.link_url}}" /><br />
+						{% endfor %}
+					</td>
+			</tr>
+			<tr>
+				<th>Embedded Video</th>
+					<td>
+						<iframe 
+							width="560" 
+							height="315" 
+							src="http://www.youtube.com/embed/{{ youtube_embed }}" 
+							frameborder="0" 
+							allowfullscreen>
+						</iframe><br />
+					</td>
+			</tr>
+			<tr><th>Social Networks</th><td>
+					{% for s in socials %}
+						<a href="{{s.link_url}}">{{s.title}}</a><br/>
+					{% endfor %}</td></tr>
+			<tr><th>External Links</th>
+				<td>
+					{% for e in externals %}
+						<a href="{{e.link_url}}">{{e.title}}</a><br />
+					{% endfor %}
+				</td>
+			</tr>
+			<tr>
+				{% if isEmpty_misc %}
+				<th>misc</th>
+				<td>
+					{% for m in misc_links %}
+						<a href="{{m.link_url}}">{{m.title}}</a><br />
+					{% endfor %}
+				</td>
+				{% endif %}
+			</tr>
+			<tr><th>Crises</th>
+				<td>
+					<a href="/haiti.html">Earthquake in Haiti</a><br />
+					<a>World Food Crisis</a><br />
+					<a>Gaza conflict</a><br />
+				</td>
+			</tr>
+			<tr><th>Organizations</th>
+				<td>
+					<a href="/unwfp.html">Earthquake in Haiti</a><br />
+					<a>World Economic Forum</a>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>
+{% endfor %}
