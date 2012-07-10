@@ -14,33 +14,57 @@
 			<tr><th>Human Impact</th>
 				<td>{{x.impact_human_deaths}} people had died, {{x.impact_human_injured}} had been injured and {{x.impact_human_displaced}} made homeless</td>
 			</tr>
-			<tr><th>Economic Impact</th><td>{{ x.elemid }}</td></tr>
-			<tr><th>Resources Needed</th><td>{{ x.elemid }}</td></tr>
-			<tr><th>Ways to Help</th><td>{{ x.elemid }}</td></tr>
+			<tr><th>Economic Impact</th><td>{{ x.impact_economic_amount }}</td></tr>
+			<tr><th>Resources Needed</th><td>{{ x.info_resources }}</td></tr>
+			<tr><th>Ways to Help</th><td>{{ x.info_help }}</td></tr>
 			<tr>
 				<th>Embedded Image</th>
-					<td>
-						<img src="http://img.timeinc.net/time/photoessays/2010/haiti_time_z/haiti_time_z_01.jpg" />
-					</td>
+				<td>
+					{% for i in images %}
+						<img src="{{i.link_url}}" /><br />
+					{% endfor %}
+				</td>	
 			</tr>
 			<tr>
 				<th>Embedded Video</th>
-					<td>
-						<iframe 
-							width="560" 
-							height="315" 
-							src="http://www.youtube.com/embed/3l9B1dvfT-o" 
-							frameborder="0" 
-							allowfullscreen>
-						</iframe>
-					</td>
-			</tr>
-			<tr><th>Social Networks</th><td>{{ x.elemid }}</td></tr>
-			<tr><th>External Links</th>
 				<td>
-					<a href="http://en.wikipedia.org/wiki/2010_Haiti_earthquake">Wikipedia</a><br /> 
-					<a href="http://www.dec.org.uk/haiti-earthquake-facts-and-figures">dec.org</a>
+					{% for v in videos %}
+					<iframe 
+						width="560" 
+						height="315" 
+						src="http://www.youtube.com/embed/{{ youtube_embed }}" 
+						frameborder="0" 
+						allowfullscreen>
+					</iframe><br />
+					{% endfor %}
 				</td>
+			</tr>
+			<tr>
+				<th>Social Networks</th>
+				<td>
+					{% for s in socials %}
+					<a href="{{s.link_url}}">{{s.title}}</a><br/>
+					{% endfor %}
+				</td>
+			</tr>
+			<tr>
+				<th>External Links</th>
+				<td>
+					{% for e in externals %}
+						<a href="{{e.link_url}}">{{e.title}}</a><br />
+					{% endfor %}
+				</td>
+			</tr>
+			
+			<tr>
+				{% if isEmpty_misc %}
+				<th>misc</th>
+				<td>
+					{% for m in misc_links %}
+						<a href="{{m.link_url}}">{{m.title}}</a><br />
+					{% endfor %}
+				</td>
+				{% endif %}
 			</tr>
 			<tr><th>Organizations</th><td><a href="/unwfp.html">World Food Programme</a></td></tr>
 			<tr><th>People</th><td><a href="/jsheeran.html">Josette Sheeran</a></td></tr>
