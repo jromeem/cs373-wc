@@ -25,6 +25,11 @@ indexes:
   - name: elemid
   - name: name
 
+- kind: Organization
+  properties:
+  - name: elemid
+  - name: title
+
 - kind: Person
   properties:
   - name: elemid

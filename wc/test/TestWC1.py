@@ -997,7 +997,7 @@ class ImportTests(unittest.TestCase):
         description.text = "i'm a description"
         
         temp = XMLHelpers.grabLinks(crisis)
-        self.assert_(temp[0].link_site == "i'm a site")
+        self.assertEqual(temp[0].link_site, "i'm a site")
         XMLHelpers.clearGlobals()
         
     def test_grablinks2(self):
