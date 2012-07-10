@@ -39,13 +39,14 @@ class CrisisPage(webapp.RequestHandler):
         link_query = "SELECT * FROM Link WHERE link_parent='" + crisis_id + "'"
         crisis = db.GqlQuery(crisis_query)
         link = db.GqlQuery(link_query)
-
-        # find titles in orgrefs/personrefs
+        
         # elemid : title
         dict_orgrefs = {}
         dict_personrefs = {}
-        # extract orgrefs list
+        
+        # extract refs
         for c in crisis:
+            
             # go through orgref list
             for org_elemid in c.orgrefs:
                 org_query = "SELECT * FROM Organization WHERE elemid='" + org_elemid + "'"
@@ -59,15 +60,13 @@ class CrisisPage(webapp.RequestHandler):
                 person = db.GqlQuery(ppl_query)
                 for p in person:
                     dict_personrefs[ppl_elemid] = p.name
-                    
-        self.response.out.write(dict_orgrefs)
 
         template_values = { 'crisis'     : crisis,
                             'link'       : link,
                             'orgrefs'    : dict_orgrefs,
                             'personrefs' : dict_personrefs }
 
-        # categorize and populate links
+        # categorize and populte links
         images = []
         videos = []
         socials = []
@@ -105,8 +104,28 @@ class OrganizationPage(webapp.RequestHandler):
         org = db.GqlQuery(org_query)
         link = db.GqlQuery(link_query)
 
+        # find refs
+        dict_crisisrefs = {}
+        dict_personrefs = {}
+        for o in org:    
+            # go though crisisrefs
+            for crisis_elemid in o.crisisrefs:
+                crisis_query = "SELECT * FROM Crisis WHERE elemid='" + crisis_elemid + "'"
+                crisis = db.GqlQuery(crisis_query)
+                for c in crisis:
+                    dict_crisisrefs[crisis_elemid] = c.name
+            
+            # go through personrefs
+            for ppl_elemid in o.personrefs:
+                ppl_query = "SELECT * FROM Person WHERE elemid='" + ppl_elemid + "'"
+                person = db.GqlQuery(ppl_query)
+                for p in person:
+                    dict_personrefs[ppl_elemid] = p.name
+        
         template_values = { 'organization': org,
-                            'link'  : link    }
+                            'link'        : link,
+                            'crisisrefs'  : dict_crisisrefs,
+                            'personrefs'  : dict_personrefs }
                             
         # categorize and populte links
         images = []
@@ -145,25 +164,10 @@ class PersonPage(webapp.RequestHandler):
         link_query = "SELECT * FROM Link WHERE link_parent='" + person_id + "'"
         person = db.GqlQuery(person_query)
         link = db.GqlQuery(link_query)
-        org_references = {}
-        crisis_references = {}
-        for p in person:
-			for org_ref in p.orgrefs:
-				query = db.GqlQuery("SELECT * FROM Organization WHERE elemid='" + org_ref + "'")
-				for org in query:
-					org_references[org_ref] = org.name
-			for crisis_ref in p.crisisrefs:
-				query2 = db.GqlQuery("SELECT * FROM Crisis WHERE elemid='" + crisis_ref + "'")
-				for crisis in query2:
-					crisis_references[crisis_ref] = crisis.name
-		
-        template_values = { 'person': person,
-                            'link'  : link,
-                            'org_references' : org_references,
-                            'crisis_references' : crisis_references}
 
-				
-				
+        template_values = { 'person': person,
+                            'link'  : link    }
+
         # categorize and populte links
         images = []
         videos = []

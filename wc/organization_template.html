@@ -44,7 +44,7 @@
 				<th>Social Networks</th>
 				<td>
 					{% for s in socials %}
-					<a href="{{s.link_url}}">{{s.title}}</a><br/>
+						<a href="{{s.link_url}}">{{s.title}}</a><br/>
 					{% endfor %}
 				</td>
 			</tr>
@@ -67,8 +67,22 @@
 				</td>
 				{% endif %}
 			</tr>
-			<tr><th>Organizations</th><td><a href="/unwfp.html">World Food Programme</a></td></tr>
-			<tr><th>People</th><td><a href="/jsheeran.html">Josette Sheeran</a></td></tr>
+			<tr>
+				<th>Related Crises</th>
+				<td>
+					{% for item in crisisrefs.items %}
+						<a href="/crises/{{item.0}}">{{item.1}}</a>
+					{% endfor %}
+				</td>
+			</tr>
+			<tr>
+				<th>Related People</th>
+				<td>
+				{% for item in personrefs.items %}
+					<a href="/people/{{item.0}}">{{item.1}}</a>
+				{% endfor %}
+				</td>
+			</tr>
 		</table>
 	</body>
 </html>
