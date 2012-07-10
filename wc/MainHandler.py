@@ -60,6 +60,12 @@ class OrganizationPage(webapp.RequestHandler):
         q = db.GqlQuery("SELECT name FROM Organization WHERE elemid='" + organization_id + "'")
         for x in q:
             self.response.out.write(x.name + "<br />")
+
+class PersonPage(webapp.RequestHandler):
+    def get(self, person_id):
+        q = db.GqlQuery("SELECT name FROM Person WHERE elemid='" + person_id + "'")
+        for x in q:
+            self.response.out.write(x.name + "<br />")
         
 class CrisisSplashPage(webapp.RequestHandler):
     def get(self):
@@ -69,10 +75,29 @@ class CrisisSplashPage(webapp.RequestHandler):
         path = os.path.join(os.path.dirname(__file__), "crises.html")
         self.response.out.write(template.render(path, template_values))
 
-application = webapp.WSGIApplication([('/', MainPage),
-                                      ('/crisis/(.*)', CrisisPage),
-                                      ('/crisis', CrisisSplashPage),
-                                      ('/organization/(.*)', OrganizationPage)],
+class OrganizationsSplashPage(webapp.RequestHandler):
+    def get(self):
+        q = db.GqlQuery("SELECT * FROM Organization")
+        template_values = { 'orgs': q }
+        
+        path = os.path.join(os.path.dirname(__file__), "organizations.html")
+        self.response.out.write(template.render(path, template_values))
+
+class PeopleSplashPage(webapp.RequestHandler):
+    def get(self):
+        q = db.GqlQuery("SELECT * FROM Person")
+        template_values = { 'people': q }
+        
+        path = os.path.join(os.path.dirname(__file__), "people.html")
+        self.response.out.write(template.render(path, template_values))
+
+application = webapp.WSGIApplication([('/', MainPage), 
+									  ('/crises', CrisisSplashPage),
+									  ('/people', PeopleSplashPage),
+									  ('/organizations', OrganizationsSplashPage),
+                                      ('/crises/(.*)', CrisisPage),
+                                      ('/organizations/(.*)', OrganizationPage),
+                                      ('/people/(.*)', PersonPage)],
                                      debug=True)
 
 def main():
