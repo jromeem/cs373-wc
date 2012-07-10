@@ -1,47 +1,31 @@
 <html>
-	<head>
-		<title>WORLD CRISES</title>
+    <head>
+		<title>{{ page_name }}</title>
 		<style>small {margin-top:0px;} body {width:900px; margin:20px auto;} th { text-align:left; }</style>
 	</head>
-  	<body>
-	  	<h1>WORLD CRISES</h1>
-	  	<small>GROUP NAME: IMPORT ANTIGRAVITY</small>
-		<h3>Crises</h3>
-		<ul>
-			<li><a href="/haiti.html">Haiti Earthquake</a></li>
-			<li><a href="/wafrica.html">West African Drought</a></li>
-			<li><a href="/chernobyl.html">Chernobyl Disaster</a></li>
-			<li><a href="/iraq.html">Iraqi Refugee Crisis</a></li>
-		</ul>
-		<h3>Organizations</h3>
-		<ul>
-			<li><a href="/unwfp.html">UN World Food Programme</a></li>
-			<li><a href="/oxfam.html">OxFam</a></li>
-			<li><a href="/ccpi.html">CCPI</a></li>
-			<li><a href="/redcrescent.html">Red Crescent</a></li>
-		</ul>
-		<h3>People</h3>
-		<ul>
-			<li><a href="/jsheeran.html">Josette Sheeran</a></li>
-			<li><a href="/roffenheiser.html">Raymond C. Offenheiser</a></li>
-			<li><a href="/mbarzani.html">Mustafa Barzani</a></li>
-			<li><a href="/aroche.html">Adi Roche</a></li>
-		</ul>
-		<hr />
-		<h3>Group Members</h3>
-		<ul>
-			<li>Joe Peacock</li>
-			<li>Andy Hsu</li>
-			<li>Harrison He</li>
-			<li>Jerome Martinez</li>
-			<li>Michael Pace</li>
-			<li>Justin Salazar</li>
-		</ul>
-		<h3>Tools</h3>
-		<ul>
-			<li><a href="/import">Import XML</a></li> 
-			<li><a href="/export">Export XML</a> </li>
-			<li><a href="/test">Run Unit Tests</a></li>
-		</ul>
-	</body>
+	<h1>{{ page_name }}</h1>
+	  	<small>GROUP NAME: {{ team_name }}</small>
+    <body>
+    
+    <ul>
+    <a href="/crises">Crises</a>
+    <a href="/people">People</a>
+    <a href="/organizations">Organizations</a>
+    </ul>
+    
+    <h3>Team Members</h3>
+    <ul>
+    {% for name in team_members %}
+      {{ name }}</br>
+    {% endfor %}
+    </ul>
+    
+    
+    <h3>Tools</h3>
+    <ul>
+    <a href="/import">Import</a>
+    <a href="/export">Export</a>
+    <a href="/test">Tests</a>
+    </ul>
+    </body>
 </html>
