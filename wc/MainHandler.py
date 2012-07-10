@@ -56,11 +56,46 @@ class CrisisPage(webapp.RequestHandler):
         self.response.out.write(template.render(path, template_values))     
 
 class OrganizationPage(webapp.RequestHandler):
-    def get(self, organization_id):
-        q = db.GqlQuery("SELECT name FROM Organization WHERE elemid='" + organization_id + "'")
-        for x in q:
-            self.response.out.write(x.name + "<br />")
+    def get(self, org_id):
+        org_query = "SELECT * FROM Organization WHERE elemid='" + org_id + "'"
+        link_query = "SELECT * FROM Link WHERE link_parent='" + org_id + "'"
+        org = db.GqlQuery(org_query)
+        link = db.GqlQuery(link_query)
 
+        template_values = { 'organization': org,
+                            'link'  : link    }
+
+        # categorize and populte links
+        images = []
+        videos = []
+        socials = []
+        externals = []
+        misc_links = []
+        for l in link:
+            if l.link_type == 'primaryImage':
+                images.append(l)
+            elif l.link_type == 'video':
+                videos.append(l)
+            elif l.link_type == 'social':
+                socials.append(l)
+            elif l.link_type == 'ext':
+                externals.append(l)
+            else:
+                misc_links.append(l)
+
+        template_values['images'] = images
+        template_values['videos'] = videos
+        for v in videos:
+            if v.link_site == "YouTube":
+                template_values['youtube_embed'] = v.link_url[-11:]
+        template_values['socials'] = socials
+        template_values['externals'] = externals
+        template_values['misc_links'] = misc_links
+        template_values['isNotEmpty_misc'] = misc_links != []
+                
+        path = os.path.join(os.path.dirname(__file__), "organization_template.html")
+        self.response.out.write(template.render(path, template_values))
+        
 class PersonPage(webapp.RequestHandler):
     def get(self, person_id):
         q = db.GqlQuery("SELECT name FROM Person WHERE elemid='" + person_id + "'")
