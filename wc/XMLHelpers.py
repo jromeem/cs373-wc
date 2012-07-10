@@ -58,9 +58,13 @@ def grabLinks(crisis):
                 new_link.description = l.find('./description').text
             new_link.link_parent = crisis.attrib['id']
             
-            q = db.GqlQuery("SELECT title FROM Link WHERE link_url='" + new_link.link_url + "'")
-            if (q.count() == 0):
+            try:
+                q = db.GqlQuery("SELECT title FROM Link WHERE link_url='" + (l.find('./url').text) + "'")
+                if (not q.count()):
+                    new_link.put()
+            except:
                 new_link.put()
+                
     return link_list
 
 #adds a crisis to the list, where crisis is an element tree
@@ -103,9 +107,13 @@ def addCrisis(crisis):
                    personrefs = [x.attrib['idref'] for x in crisis.findall('.//person')]
                    )
         
-        q = db.GqlQuery("SELECT name FROM Crisis WHERE elemid='" + crisis.attrib['id'] + "'")
-        if (q.count() == 0):
+        try:
+            q = db.GqlQuery("SELECT name FROM Crisis WHERE elemid='" + crisis.attrib['id'] + "'")
+            if (not q.count()):
+                c.put()
+        except:
             c.put()
+        
         return crisis_list
     
 #adds a person to the list, where person is an element tree
@@ -127,10 +135,14 @@ def addPerson(person):
                    orgrefs = [x.attrib['idref'] for x in person.findall('.//org')],
                    crisisrefs = [x.attrib['idref'] for x in person.findall('.//crisis')]
                    )
-                   
-        q = db.GqlQuery("SELECT name FROM Person WHERE elemid='" + person.attrib['id'] + "'")
-        if (q.count() == 0):
+            
+        try:       
+            q = db.GqlQuery("SELECT name FROM Person WHERE elemid='" + person.attrib['id'] + "'")
+            if (not q.count()):
+                p.put()
+        except:
             p.put()
+            
         return person_list
         
 #adds an organization to the list, where org is an element tree
@@ -165,9 +177,13 @@ def addOrganization(org):
                          crisisrefs = [x.attrib['idref'] for x in org.findall('.//crisis')]
                          )
         
-        q = db.GqlQuery("SELECT name FROM Organization WHERE elemid='" + org.attrib['id'] + "'")
-        if (q.count() == 0):
+        try:
+            q = db.GqlQuery("SELECT name FROM Organization WHERE elemid='" + org.attrib['id'] + "'")
+            if (not q.count()):
+                o.put()
+        except:
             o.put()
+            
         return organization_list
 
 #clears the global lists (temporary fix until db integration)
