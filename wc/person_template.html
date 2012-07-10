@@ -55,15 +55,24 @@
 			</tr>
 			<tr><th>Crises</th>
 				<td>
-					<a href="/haiti.html">Earthquake in Haiti</a><br />
-					<a>World Food Crisis</a><br />
-					<a>Gaza conflict</a><br />
+					{% for ref in x.crisisrefs %}					
+
+						{% for item in crisis_references.items %}
+    						<a href="/crises/{{item.0}}">{{item.1}}</a>
+    					{% endfor %}
+						<br />
+					{% endfor %}
 				</td>
 			</tr>
 			<tr><th>Organizations</th>
 				<td>
-					<a href="/unwfp.html">Earthquake in Haiti</a><br />
-					<a>World Economic Forum</a>
+					{% for ref in x.orgrefs %}					
+						
+						{% for item in org_references.items %}
+    						<a href="/organizations/{{item.0}}">{{item.1}}</a>
+    					{% endfor %}
+						<br />
+					{% endfor %}					
 				</td>
 			</tr>
 		</table>
