@@ -13,6 +13,9 @@ handlers:
 - url: /meow
   script: meow.py
   
+- url: /stylesheets
+  static_dir: stylesheets
+  
 - url: /test.*
   script: gaeunit.py  
 

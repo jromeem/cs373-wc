@@ -1,0 +1,9 @@
+<html>
+  <body>
+  	<ul>	
+		{% for person in people %}
+			<li><a href="/people/{{person.elemid}}">{{ person.name }}</a></li> 
+		{% endfor %}
+  	</ul>
+  </body>
+</html>
