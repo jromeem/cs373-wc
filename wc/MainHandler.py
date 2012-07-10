@@ -21,8 +21,32 @@ class CrisisPage(webapp.RequestHandler):
         crisis = db.GqlQuery(crisis_query)
         link = db.GqlQuery(link_query)
 
-        template_values = { 'crisis': crisis,
-                            'link'  : link    }
+        # find titles in orgrefs/personrefs
+        # elemid : title
+        dict_orgrefs = {}
+        dict_personrefs = {}
+        # extract orgrefs list
+        for c in crisis:
+            # go through orgref list
+            for org_elemid in c.orgrefs:
+                org_query = "SELECT * FROM Organization WHERE elemid='" + org_elemid + "'"
+                org = db.GqlQuery(org_query)
+                for o in org:
+                    dict_orgrefs[org_elemid] = o.name
+                    
+            # go through personrefs
+            for ppl_elemid in c.personrefs:
+                ppl_query = "SELECT * FROM Person WHERE elemid='" + ppl_elemid + "'"
+                person = db.GqlQuery(ppl_query)
+                for p in person:
+                    dict_personrefs[ppl_elemid] = p.name
+                    
+        self.response.out.write(dict_orgrefs)
+
+        template_values = { 'crisis'     : crisis,
+                            'link'       : link,
+                            'orgrefs'    : dict_orgrefs,
+                            'personrefs' : dict_personrefs }
 
         # categorize and populte links
         images = []

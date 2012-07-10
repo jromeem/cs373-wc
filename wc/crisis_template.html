@@ -14,7 +14,7 @@
 			<tr><th>Human Impact</th>
 				<td>{{x.impact_human_deaths}} people had died, {{x.impact_human_injured}} had been injured and {{x.impact_human_displaced}} made homeless</td>
 			</tr>
-			<tr><th>Economic Impact</th><td>{{ x.impact_economic_amount }}</td></tr>
+			<tr><th>Economic Impact</th><td>{{ x.impact_economic_amount }} {{ x.impact_economic_currency}}</td></tr>
 			<tr><th>Resources Needed</th><td>{{ x.info_resources }}</td></tr>
 			<tr><th>Ways to Help</th><td>{{ x.info_help }}</td></tr>
 			<tr>
@@ -66,8 +66,23 @@
 				</td>
 				{% endif %}
 			</tr>
-			<tr><th>Organizations</th><td><a href="/unwfp.html">World Food Programme</a></td></tr>
-			<tr><th>People</th><td><a href="/jsheeran.html">Josette Sheeran</a></td></tr>
+			<tr>
+				<th>Related Organizations</th>
+				<td>
+					{% for item in orgrefs.items %}
+						<a href="/organization/{{item.0}}">{{item.1}}</a>
+					{% endfor %}
+				</td>
+				
+			</tr>
+			<tr>
+				<th>Related People</th>
+				<td>
+					{% for item in personrefs.items %}
+					<a href="/person/{{item.0}}">{{item.1}}</a>
+					{% endfor %}
+				</td>
+			</tr>
 		</table>
 	</body>
 </html>
