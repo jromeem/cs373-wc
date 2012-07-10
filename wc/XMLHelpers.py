@@ -57,6 +57,7 @@ def grabLinks(crisis):
             if (l.find('./description') != None):
                 new_link.description = l.find('./description').text
             new_link.link_parent = crisis.attrib['id']
+
             
             try:
                 q = db.GqlQuery("SELECT title FROM Link WHERE link_url='" + (l.find('./url').text) + "'")
@@ -106,6 +107,7 @@ def addCrisis(crisis):
                    orgrefs = [x.attrib['idref'] for x in crisis.findall('.//org')],
                    personrefs = [x.attrib['idref'] for x in crisis.findall('.//person')]
                    )
+
         
         try:
             q = db.GqlQuery("SELECT name FROM Crisis WHERE elemid='" + crisis.attrib['id'] + "'")
@@ -113,7 +115,7 @@ def addCrisis(crisis):
                 c.put()
         except:
             c.put()
-        
+
         return crisis_list
     
 #adds a person to the list, where person is an element tree
