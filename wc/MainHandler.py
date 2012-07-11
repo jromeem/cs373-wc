@@ -239,11 +239,24 @@ class PeopleSplashPage(webapp.RequestHandler):
         path = os.path.join(os.path.dirname(__file__), "people.html")
         self.response.out.write(template.render(path, template_values))
 
+class TestPage(webapp.RequestHandler):
+    def get(self):
+        query = "SELECT * FROM Crisis"
+        crises = db.GqlQuery(query)
 
-application = webapp.WSGIApplication([('/', MainPage), 
-									  ('/crises', CrisisSplashPage),
-									  ('/people', PeopleSplashPage),
-									  ('/organizations', OrganizationsSplashPage),
+        crisis_properties = None
+        for c in crises:
+            crisis_properties = c.properties()
+
+        print crisis_properties
+
+
+
+application = webapp.WSGIApplication([('/foobar', TestPage),
+                                      ('/', MainPage), 
+                                      ('/crises', CrisisSplashPage),
+                                      ('/people', PeopleSplashPage),
+                                      ('/organizations', OrganizationsSplashPage),
                                       ('/crises/(.*)', CrisisPage),
                                       ('/organizations/(.*)', OrganizationPage),
                                       ('/people/(.*)', PersonPage)],
