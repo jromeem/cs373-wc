@@ -76,33 +76,33 @@ def addCrisis(crisis):
         
         c = Crisis(
                    elemid = crisis.attrib['id'],
-                   name = crisis.find('.//name').text,
-                   misc = crisis.find('.//misc').text,
+                   name = crisis.find('.//name').text if crisis.find('.//name').text != None else "",
+                   misc = crisis.find('.//misc').text if crisis.find('.//misc').text != None else "",
                    
-                   info_history = info.find('.//history').text,
-                   info_help = info.find('.//help').text,
-                   info_resources = info.find('.//resources').text,
-                   info_type = info.find('.//type').text,
+                   info_history = info.find('.//history').text if info.find('.//history').text != None else "",
+                   info_help = info.find('.//help').text if info.find('.//help').text != None else "",
+                   info_resources = info.find('.//resources').text if info.find('.//resources').text != None else "",
+                   info_type = info.find('.//type').text if info.find('.//type').text != None else "",
                    
-                   date_time = info.find('.//time').find('.//time').text,
+                   date_time = info.find('.//time').find('.//time').text if info.find('.//time').find('.//time').text != None else "",
                    date_day = int(info.find('.//time').find('.//day').text),
                    date_month = int(info.find('.//time').find('.//month').text),
                    date_year = int(info.find('.//time').find('.//year').text),
-                   date_misc = info.find('.//time').find('.//misc').text,
+                   date_misc = info.find('.//time').find('.//misc').text if info.find('.//time').find('.//misc').text != None else "",
                    
-                   location_city = info.find('.//loc').find('.//city').text,
-                   location_region = info.find('.//loc').find('.//region').text,
-                   location_country = info.find('.//loc').find('.//country').text,
+                   location_city = info.find('.//loc').find('.//city').text if info.find('.//loc').find('.//city').text != None else "",
+                   location_region = info.find('.//loc').find('.//region').text if info.find('.//loc').find('.//region').text != None else "",
+                   location_country = info.find('.//loc').find('.//country').text if info.find('.//loc').find('.//country').text != None else "",
                    
                    impact_human_deaths = int(info.find('.//impact').find('.//human').find('.//deaths').text),
                    impact_human_displaced = int(info.find('.//impact').find('.//human').find('.//displaced').text),
                    impact_human_injured = int(info.find('.//impact').find('.//human').find('.//injured').text),
                    impact_human_missing = int(info.find('.//impact').find('.//human').find('.//missing').text),
-                   impact_human_misc = info.find('.//impact').find('.//human').find('.//misc').text,
+                   impact_human_misc = info.find('.//impact').find('.//human').find('.//misc').text if info.find('.//impact').find('.//human').find('.//misc').text != None else "",
                    
                    impact_economic_amount = int(info.find('.//impact').find('.//economic').find('.//amount').text),
                    impact_economic_currency = info.find('.//impact').find('.//economic').find('.//currency').text,
-                   impact_economic_misc = info.find('.//impact').find('.//economic').find('.//misc').text,
+                   impact_economic_misc = info.find('.//impact').find('.//economic').find('.//misc').text if info.find('.//impact').find('.//economic').find('.//misc').text != None else "",
                    
                    orgrefs = [x.attrib['idref'] for x in crisis.findall('.//org')],
                    personrefs = [x.attrib['idref'] for x in crisis.findall('.//person')]
