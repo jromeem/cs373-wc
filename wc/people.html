@@ -1,9 +1,18 @@
 <html>
-  <body>
-  	<ul>	
-		{% for person in people %}
-			<li><a href="/people/{{person.elemid}}">{{ person.name }}</a></li> 
-		{% endfor %}
-  	</ul>
-  </body>
+	<head>
+		<title>PEOPLE LOL</title>
+		<link rel="stylesheet" type="text/css" href="stylesheets/main.css" />
+	</head>
+	<body>
+		<div id="wrapper">
+			<div id="content">
+				{% include "header.html" %}
+			  	<ul>	
+					{% for person in people %}
+						<li><a href="/people/{{person.elemid}}">{{ person.name }}</a></li> 
+					{% endfor %}
+			  	</ul>
+	  		</div>
+	  	</div>
+  	</body>
 </html>

@@ -17,6 +17,31 @@ indexes:
 
 - kind: Link
   properties:
+  - name: link_type
+  - name: ID
+
+- kind: Link
+  properties:
+  - name: link_type
+  - name: link_parent
+
+- kind: Link
+  properties:
+  - name: link_type
+  - name: link_url
+
+- kind: Link
+  properties:
+  - name: link_type
+  - name: name
+
+- kind: Link
+  properties:
+  - name: link_type
+  - name: title
+
+- kind: Link
+  properties:
   - name: link_url
   - name: title
 
