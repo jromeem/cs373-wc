@@ -39,23 +39,23 @@
 							<li>Dead: {% ifequal x.impact_human_deaths 0 %}
 										Unknown
 									  {% else %}
-									  	{{x.impact_human_deaths}} 
+									  	{{x.impact_human_deaths|intcomma}} 
 									  {% endifequal %}</li>
 							<li>Injured: {% ifequal x.impact_human_injured 0 %}
 										Unknown
 									  {% else %}
-									  	{{x.impact_human_injured}}
+									  	{{x.impact_human_injured|intcomma}}
 									  {% endifequal %} </li>
 							<li>Displaced: {% ifequal x.impact_human_displaced 0 %}
 										Unknown
 									  {% else %}
-									  	{{x.impact_human_displaced}}
+									  	{{x.impact_human_displaced|intcomma}}
 									  {% endifequal %}</li></ul></td>
 					</tr>
 					<tr><th>Economic Impact</th><td>{% ifequal x.impact_economic_amount 0 %}
 														Unknown
 									  				{% else %}
-													{{ x.impact_economic_amount }} {{ x.impact_economic_currency }}
+													{{ x.impact_economic_amount|intcomma }} {{ x.impact_economic_currency }}
 													{% endifequal %}</td></tr>
 					<tr><th>Resources Needed</th><td>{{ x.info_resources }}</td></tr>
 					<tr><th>Ways to Help</th><td>{{ x.info_help }}</td></tr>
