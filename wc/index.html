@@ -9,6 +9,14 @@
     	<div id="wrapper">
     		<div id="content">
     			{% include "header.html" %}
+    			<div id="tools">
+    				<h3>Tools</h3>
+    				<ul>
+					    <a href="/import">Import</a>
+					    <a href="/export">Export</a>
+					    <a href="/test">Tests</a>
+				    </ul>
+    			</div>
     			<h1>{{ page_name }}</h1>
 	  			<small>GROUP NAME: {{ team_name }}</small>
 			    <ul>
@@ -27,12 +35,6 @@
 				    <div class="item {{ img.link_parent }}"><img class="homePageImg" src="{{ img.link_url }}" /></div>
 				    {% endfor %}
 			    </div>
-			    <h3>Tools</h3>
-			    <ul>
-				    <a href="/import">Import</a>
-				    <a href="/export">Export</a>
-				    <a href="/test">Tests</a>
-			    </ul>
     	</div>
     </div>
     <script>
