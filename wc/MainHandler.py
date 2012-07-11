@@ -11,10 +11,8 @@ class MainPage(webapp.RequestHandler):
     def get(self):
         page = self.request.get('page')
         template_values = { 'page': page }
-        images = db.GqlQuery("SELECT * FROM Link WHERE link_type='primaryImage' ORDER BY link_url")
         
-        template_values={'page_name': 'World Crises','team_name': 'IMPORT ANTIGRAVITY','team_members': ['Joe Peacock', 'Andy Hsu','Harrison He','Jerome Martinez','Michael Pace','Justin Salazar',],
-                         'images' : images }
+        template_values={'page_name': 'World Crises','team_name': 'IMPORT ANTIGRAVITY','team_members': ['Joe Peacock', 'Andy Hsu','Harrison He','Jerome Martinez','Michael Pace','Justin Salazar',]}
         
         path = os.path.join(os.path.dirname(__file__), "index.html")
         self.response.out.write(template.render(path, template_values))
@@ -27,6 +25,7 @@ class OldMainPage(webapp.RequestHandler):
         
         path = os.path.join(os.path.dirname(__file__), "oldindex.html")
         self.response.out.write(template.render(path, template_values))
+
 
 class PersonPage(webapp.RequestHandler):
     def get(self, person_id):
@@ -219,7 +218,6 @@ class PersonPage(webapp.RequestHandler):
 class CrisisSplashPage(webapp.RequestHandler):
     def get(self):
         q = db.GqlQuery("SELECT * FROM Crisis")
-        ph = "<h1>lol!!!</h1>"
         template_values = { 'crises': q }
         
         path = os.path.join(os.path.dirname(__file__), "crises.html")
@@ -241,21 +239,7 @@ class PeopleSplashPage(webapp.RequestHandler):
         path = os.path.join(os.path.dirname(__file__), "people.html")
         self.response.out.write(template.render(path, template_values))
 
-class TestPage(webapp.RequestHandler):
-    def get(self):
-        query = "SELECT * FROM Crisis"
-        crises = db.GqlQuery(query)
-
-        crisis_properties = None
-        for c in crises:
-            crisis_properties = c.properties()
-
-        print crisis_properties
-
-
-
-application = webapp.WSGIApplication([('/foobar', TestPage),
-                                      ('/', MainPage), 
+application = webapp.WSGIApplication([('/', MainPage), 
                                       ('/crises', CrisisSplashPage),
                                       ('/people', PeopleSplashPage),
                                       ('/organizations', OrganizationsSplashPage),
