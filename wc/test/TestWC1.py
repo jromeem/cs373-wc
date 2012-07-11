@@ -14,16 +14,15 @@ from minixsv import pyxsval as xsv
 from DataModels import Person, Organization, Crisis, Link
 
 class ExportTests(unittest.TestCase):
-    """
-    def setUp(self):
-        #self.assert_(False)
+    @classmethod
+    def setUpClass(cls):
         # First, create an instance of the Testbed class.
-        self.testbed = testbed.Testbed()
+        cls.testbed = testbed.Testbed()
         # Then activate the testbed, which prepares the service stubs for use.
-        self.testbed.activate()
+        cls.testbed.activate()
         # Next, declare which service stubs you want to use.
-        self.testbed.init_datastore_v3_stub()
-        """
+        cls.testbed.init_datastore_v3_stub()
+          
     
     def test_buildperson1(self):
         tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
@@ -866,22 +865,26 @@ class ExportTests(unittest.TestCase):
                 self.assert_(new_link.description == link1.description)
                 self.assertEqual(new_link.link_parent, link1.link_parent)
                 #self.assert_(False)
-"""
-    def tearDown(self):
-        self.testbed.deactivate()
-        """
+                
+    @classmethod
+    def tearDownClass(cls):
+        #assert(False)
+        cls.testbed.deactivate()
+      
 class ImportTests(unittest.TestCase):
-    """
-    def setUp(self):
+    
+    
+     
+    @classmethod
+    def setUpClass(cls):
         # First, create an instance of the Testbed class.
-        self.testbed = testbed.Testbed()
+        cls.testbed = testbed.Testbed()
         # Then activate the testbed, which prepares the service stubs for use.
-        self.testbed.activate()
+        cls.testbed.activate()
         # Next, declare which service stubs you want to use.
-        self.testbed.init_datastore_v3_stub()
-     """
-        
-    db.delete(db.Query())
+        cls.testbed.init_datastore_v3_stub()
+    
+    
     def test_validxml1(self):
         xml_file = open("test/test_instance1.xml",'r')
         file_contents = xml_file.read()
@@ -921,7 +924,7 @@ class ImportTests(unittest.TestCase):
 
         people = tree.findall(".//person")
         for person in people:
-            if (person.find('.//info')):
+            if (person.find('.//info') is not None):
                 XMLHelpers.addPerson(person)
                 test_list = db.GqlQuery("SELECT * from Person")
         
@@ -1073,7 +1076,8 @@ class ImportTests(unittest.TestCase):
         temp = db.GqlQuery("SELECT * FROM Link WHERE link_parent ='"+person.attrib['id']+"'")
         self.assert_(temp.count() == 0)
         db.delete(db.Query())
-        """
-    def tearDown(self):
-        self.testbed.deactivate()
-        """
+        
+    @classmethod
+    def tearDownClass(cls):
+        #assert(False)
+        cls.testbed.deactivate()
