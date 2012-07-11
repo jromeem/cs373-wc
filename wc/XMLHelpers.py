@@ -76,33 +76,33 @@ def addCrisis(crisis):
         
         c = Crisis(
                    elemid = crisis.attrib['id'],
-                   name = crisis.find('.//name').text,
-                   misc = crisis.find('.//misc').text,
+                   name = crisis.find('.//name').text if crisis.find('.//name').text != None else "",
+                   misc = crisis.find('.//misc').text if crisis.find('.//misc').text != None else "",
                    
-                   info_history = info.find('.//history').text,
-                   info_help = info.find('.//help').text,
-                   info_resources = info.find('.//resources').text,
-                   info_type = info.find('.//type').text,
+                   info_history = info.find('.//history').text if info.find('.//history').text != None else "",
+                   info_help = info.find('.//help').text if info.find('.//help').text != None else "",
+                   info_resources = info.find('.//resources').text if info.find('.//resources').text != None else "",
+                   info_type = info.find('.//type').text if info.find('.//type').text != None else "",
                    
-                   date_time = info.find('.//time').find('.//time').text,
+                   date_time = info.find('.//time').find('.//time').text if info.find('.//time').find('.//time').text != None else "",
                    date_day = int(info.find('.//time').find('.//day').text),
                    date_month = int(info.find('.//time').find('.//month').text),
                    date_year = int(info.find('.//time').find('.//year').text),
-                   date_misc = info.find('.//time').find('.//misc').text,
+                   date_misc = info.find('.//time').find('.//misc').text if info.find('.//time').find('.//misc').text != None else "",
                    
-                   location_city = info.find('.//loc').find('.//city').text,
-                   location_region = info.find('.//loc').find('.//region').text,
-                   location_country = info.find('.//loc').find('.//country').text,
+                   location_city = info.find('.//loc').find('.//city').text if info.find('.//loc').find('.//city').text != None else "",
+                   location_region = info.find('.//loc').find('.//region').text if info.find('.//loc').find('.//region').text != None else "",
+                   location_country = info.find('.//loc').find('.//country').text if info.find('.//loc').find('.//country').text != None else "",
                    
                    impact_human_deaths = int(info.find('.//impact').find('.//human').find('.//deaths').text),
                    impact_human_displaced = int(info.find('.//impact').find('.//human').find('.//displaced').text),
                    impact_human_injured = int(info.find('.//impact').find('.//human').find('.//injured').text),
                    impact_human_missing = int(info.find('.//impact').find('.//human').find('.//missing').text),
-                   impact_human_misc = info.find('.//impact').find('.//human').find('.//misc').text,
+                   impact_human_misc = info.find('.//impact').find('.//human').find('.//misc').text if info.find('.//impact').find('.//human').find('.//misc').text != None else "",
                    
                    impact_economic_amount = int(info.find('.//impact').find('.//economic').find('.//amount').text),
                    impact_economic_currency = info.find('.//impact').find('.//economic').find('.//currency').text,
-                   impact_economic_misc = info.find('.//impact').find('.//economic').find('.//misc').text,
+                   impact_economic_misc = info.find('.//impact').find('.//economic').find('.//misc').text if info.find('.//impact').find('.//economic').find('.//misc').text != None else "",
                    
                    orgrefs = [x.attrib['idref'] for x in crisis.findall('.//org')],
                    personrefs = [x.attrib['idref'] for x in crisis.findall('.//person')]
@@ -124,15 +124,15 @@ def addPerson(person):
         grabLinks(person)
         p = Person(
                    elemid = person.attrib['id'],
-                   name = person.find('.//name').text,
-                   info_type = person.find('.//info').find('.//type').text,
-                   info_birthdate_time = person.find('.//info').find('.//birthdate').find('.//time').text,
-                   info_birthdate_day = int(person.find('.//info').find('.//birthdate').find('.//day').text),
-                   info_birthdate_month = int(person.find('.//info').find('.//birthdate').find('.//month').text),
-                   info_birthdate_year = int(person.find('.//info').find('.//birthdate').find('.//year').text),
-                   info_birthdate_misc = person.find('.//info').find('.//birthdate').find('.//misc').text,
-                   info_nationality = person.find('.//info').find('.//nationality').text,
-                   info_biography = person.find('.//info').find('.//biography').text,
+                   name = person.find('.//name').text if person.find('.//name').text != None else "",
+                   info_type = person.find('.//info').find('.//type').text if person.find('.//info').find('.//type').text != None else "",
+                   info_birthdate_time = person.find('.//info').find('.//birthdate').find('.//time').text if person.find('.//info').find('.//birthdate').find('.//time').text != None else "",
+                   info_birthdate_day = int(person.find('.//info').find('.//birthdate').find('.//day').text) if person.find('.//info').find('.//birthdate').find('.//day').text != None else "",
+                   info_birthdate_month = int(person.find('.//info').find('.//birthdate').find('.//month').text) if person.find('.//info').find('.//birthdate').find('.//month').text != None else "",
+                   info_birthdate_year = int(person.find('.//info').find('.//birthdate').find('.//year').text) if person.find('.//info').find('.//birthdate').find('.//year').text != None else "",
+                   info_birthdate_misc = person.find('.//info').find('.//birthdate').find('.//misc').text if person.find('.//info').find('.//birthdate').find('.//misc').text != None else "",
+                   info_nationality = person.find('.//info').find('.//nationality').text if person.find('.//info').find('.//nationality').text != None else "",
+                   info_biography = person.find('.//info').find('.//biography').text if person.find('.//info').find('.//biography').text != None else "",
                    
                    orgrefs = [x.attrib['idref'] for x in person.findall('.//org')],
                    crisisrefs = [x.attrib['idref'] for x in person.findall('.//crisis')]
@@ -157,23 +157,23 @@ def addOrganization(org):
         loc = info.find('.//loc')
         o = Organization(
                          elemid = org.attrib['id'],
-                         name = org.find('.//name').text,
-                         misc = org.find('.//misc').text,
+                         name = org.find('.//name').text if org.find('.//name').text != None else "",
+                         misc = org.find('.//misc').text if org.find('.//misc').text != None else "",
                          
-                         info_type = info.find('.//type').text,
-                         info_history = info.find('.//history').text,
+                         info_type = info.find('.//type').text if info.find('.//type').text != None else "",
+                         info_history = info.find('.//history').text if info.find('.//history').text != None else "",
 
-                         info_contacts_phone = contact.find('.//phone').text,
-                         info_contacts_email = contact.find('.//email').text,
-                         info_contacts_address = mail.find('.//address').text,
-                         info_contacts_city = mail.find('.//city').text,
-                         info_contacts_state = mail.find('.//state').text,
-                         info_contacts_country = mail.find('.//country').text,
-                         info_contacts_zip = mail.find('.//zip').text,
+                         info_contacts_phone = contact.find('.//phone').text if contact.find('.//phone').text != None else "",
+                         info_contacts_email = contact.find('.//email').text if contact.find('.//email').text != None else "",
+                         info_contacts_address = mail.find('.//address').text if mail.find('.//address').text != None else "",
+                         info_contacts_city = mail.find('.//city').text if mail.find('.//city').text != None else "",
+                         info_contacts_state = mail.find('.//state').text if mail.find('.//state').text != None else "",
+                         info_contacts_country = mail.find('.//country').text if mail.find('.//country').text != None else "",
+                         info_contacts_zip = mail.find('.//zip').text if mail.find('.//zip').text != None else "",
 
-                         info_loc_city = loc.find('.//city').text,
-                         info_loc_region = loc.find('.//region').text,
-                         info_loc_country = loc.find('.//country').text,
+                         info_loc_city = loc.find('.//city').text if loc.find('.//city').text != None else "",
+                         info_loc_region = loc.find('.//region').text if loc.find('.//region').text != None else "",
+                         info_loc_country = loc.find('.//country').text if loc.find('.//country').text != None else "",
                          
                          personrefs = [x.attrib['idref'] for x in org.findall('.//person')],
                          crisisrefs = [x.attrib['idref'] for x in org.findall('.//crisis')]

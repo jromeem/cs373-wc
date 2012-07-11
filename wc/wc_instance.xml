@@ -20,7 +20,7 @@
             </time>
             <loc>
                 <city>Leogane</city>
-                <region>region0</region>
+                <region></region>
                 <country>Haiti</country>
             </loc>
             <impact>
@@ -295,8 +295,7 @@
         <name>Red Crescent</name>
         <info>
             <type>Non-governmental, Humanitarian</type>
-            <history>http://en.wikipedia.org/wiki/Red_Crescent#History_of_Movement
-</history>
+            <history>In 1919, representatives from the national Red Cross societies of Britain, France, Italy, Japan, and the US came together in Paris to found the "League of Red Cross Societies". The original idea was Henry Davison's, then president of the American Red Cross. This move, led by the American Red Cross, expanded the international activities of the Red Cross movement beyond the strict mission of the ICRC to include relief assistance in response to emergency situations which were not caused by war (such as man-made or natural disasters). The ARC already had great disaster relief mission experience extending back to its foundation.</history>
             <contact>
                 <phone>(1) 800 RED CROSS</phone>
                 <email>secretariat@ifrc.org</email>
@@ -660,8 +659,8 @@
             <type>Humanitarian</type>
             <birthdate>
                 <time></time>
-                <day>0</day>
-                <month>0</month>
+                <day>11</day>
+                <month>07</month>
                 <year>1957</year>
                 <misc></misc>
             </birthdate>
@@ -705,7 +704,7 @@
         <org idref="ccpi"/>
     </person>
     <person id="roffenheiser">
-        <name>Raymond C. Offenheiser</name>
+        <name>Raymond C. Offenheiser Jr.</name>
         <info>
             <type>Humanitarian</type>
             <birthdate>
@@ -715,8 +714,8 @@
                 <year>0</year>
                 <misc></misc>
             </birthdate>
-            <nationality></nationality>
-            <biography></biography>
+            <nationality>American</nationality>
+            <biography>Offenheiser is the president of Oxfam America, a nonprofit international development and relief agency and the US affiliate of Oxfam International. Since Offenheiser joined the Boston-based organization in 1995, it has grown more than fourfold and has positioned itself as an expert on international development and global trade.</biography>
         </info>
         <ref>
         	<primaryImage>

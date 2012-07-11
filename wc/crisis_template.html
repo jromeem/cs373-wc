@@ -11,12 +11,52 @@
 				<table>
 					<tr><th>Name</th><td>{{ x.name }}</td></tr>
 					<tr><th>Kind</th><td>{{ x.info_type }}</td></tr>
-					<tr><th>Location</th><td>{{ x.location_city }}, {{ x.location_country }}</td></tr>
-					<tr><th>Date and Time</th><td>{{ x.date_time}} 12 January 2010</td></tr>
-					<tr><th>Human Impact</th>
-						<td>{{x.impact_human_deaths}} people had died, {{x.impact_human_injured}} had been injured and {{x.impact_human_displaced}} made homeless</td>
+					<tr><th>Location</th><td>{{ x.location_region }} {{ x.location_city }}
+					{% ifnotequal x.location_city "" %}
+						{% ifnotequal x.location_country "" %}
+							,
+						{% endifnotequal %}
+					{% endifnotequal %} {{ x.location_country }}</td></tr>
+					<tr><th>Date and Time</th>
+						<td>
+							{% ifnotequal x.date_year 0 %}
+								{{ x.date_time }} 
+							{% endifnotequal %}
+							{% ifnotequal x.date_year 0 %}
+								{% ifnotequal x.date_day 0 %}
+									{{ x.date_month }}-{{ x.date_day }}-{{ x.date_year }}
+								{% else %}
+									{{ x.date_year }}
+								{% endifnotequal %}
+							{% else %}
+								Unknown
+							{% endifnotequal %}
+							
+						</td>
 					</tr>
-					<tr><th>Economic Impact</th><td>{{ x.impact_economic_amount }}</td></tr>
+					<tr><th>Human Impact</th>
+						<td><ul>
+							<li>Dead: {% ifequal x.impact_human_deaths 0 %}
+										Unknown
+									  {% else %}
+									  	{{x.impact_human_deaths|intcomma}} 
+									  {% endifequal %}</li>
+							<li>Injured: {% ifequal x.impact_human_injured 0 %}
+										Unknown
+									  {% else %}
+									  	{{x.impact_human_injured|intcomma}}
+									  {% endifequal %} </li>
+							<li>Displaced: {% ifequal x.impact_human_displaced 0 %}
+										Unknown
+									  {% else %}
+									  	{{x.impact_human_displaced|intcomma}}
+									  {% endifequal %}</li></ul></td>
+					</tr>
+					<tr><th>Economic Impact</th><td>{% ifequal x.impact_economic_amount 0 %}
+														Unknown
+									  				{% else %}
+													{{ x.impact_economic_amount|intcomma }} {{ x.impact_economic_currency }}
+													{% endifequal %}</td></tr>
 					<tr><th>Resources Needed</th><td>{{ x.info_resources }}</td></tr>
 					<tr><th>Ways to Help</th><td>{{ x.info_help }}</td></tr>
 					<tr>
@@ -63,8 +103,23 @@
 						</td>
 						{% endif %}
 					</tr>
-					<tr><th>Organizations</th><td><a href="/unwfp.html">World Food Programme</a></td></tr>
-					<tr><th>People</th><td><a href="/jsheeran.html">Josette Sheeran</a></td></tr>
+			<tr>
+				<th>Related Organizations</th>
+				<td>
+					{% for item in orgrefs.items %}
+						<a href="/organizations/{{item.0}}">{{item.1}}</a>
+					{% endfor %}
+				</td>
+
+			</tr>
+			<tr>
+				<th>Related People</th>
+				<td>
+					{% for item in personrefs.items %}
+					<a href="/people/{{item.0}}">{{item.1}}</a>
+					{% endfor %}
+				</td>
+			</tr>
 				</table>
 			</div>
 		</div>
