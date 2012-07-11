@@ -22,7 +22,7 @@ class ImportPage(webapp.RequestHandler):
             <div id="wrapper"><div id="content">
             <form action="/import" method="post" enctype="multipart/form-data">
               <div>
-                <input id="myfile" name="myfile" type="file">
+                <input id="myfile" name="myfile" type="file"><br /><br />
                 <input value="Upload" type="submit">
               </div>
             </form>

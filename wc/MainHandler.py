@@ -20,21 +20,6 @@ class MainPage(webapp.RequestHandler):
         self.response.out.write(template.render(path, template_values))
 
 
-class OldMainPage(webapp.RequestHandler):
-    def get(self):
-        page = self.request.get('page')
-        template_values = { 'page': page }
-        
-        path = os.path.join(os.path.dirname(__file__), "oldindex.html")
-        self.response.out.write(template.render(path, template_values))
-
-
-class PersonPage(webapp.RequestHandler):
-    def get(self, person_id):
-        q = db.GqlQuery("SELECT * FROM Person WHERE elemid='" + person_id + "'")
-        for x in q:
-            self.response.out.write(x.name + "<br />")
-
 class CrisisPage(webapp.RequestHandler):
     def get(self, crisis_id):
         crisis_query = "SELECT * FROM Crisis WHERE elemid='" + crisis_id + "'"
