@@ -399,16 +399,19 @@ def buildPerson(person, p):
 def buildXML(worldCrises):
     
     #build sub-trees for each crisis
+    crisis_list = db.GqlQuery("SELECT * FROM Crisis")
     for c in crisis_list:
         crisis = ElementTree.SubElement(worldCrises, "crisis", {"id" : c.elemid})
         buildCrisis(crisis, c)
         
     #build sub-trees for each organization
+    organization_list = db.GqlQuery("SELECT * FROM Organization")
     for o in organization_list:
         organization = ElementTree.SubElement(worldCrises, "organization", {"id" : o.elemid})
         buildOrganization(organization, o)
 
     #build sub-trees for each person
+    person_list = db.GqlQuery("SELECT * FROM Person")
     for p in person_list:
         person = ElementTree.SubElement(worldCrises, "person", {"id" : p.elemid})
         buildPerson(person, p)
