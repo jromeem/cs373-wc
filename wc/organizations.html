@@ -1,9 +1,18 @@
 <html>
-  <body>
-  	<ul>	
-		{% for org in orgs %}
-			<li><a href="/organizations/{{org.elemid}}">{{ org.name }}</a></li> 
-		{% endfor %}
-  	</ul>
-  </body>
+	<head>
+		<title>ORGANIZATIONS LOL</title>
+		<link rel="stylesheet" type="text/css" href="stylesheets/main.css" />
+	</head>
+  	<body>
+  		<div id="wrapper">
+			<div id="content">
+				{% include "header.html" %}
+				<ul>	
+					{% for org in orgs %}
+						<li><a href="/organizations/{{org.elemid}}">{{ org.name }}</a></li> 
+					{% endfor %}
+			  	</ul>
+		  	</div>
+	  	</div>
+ 	</body>
 </html>

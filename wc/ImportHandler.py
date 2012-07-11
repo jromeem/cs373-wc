@@ -17,14 +17,17 @@ class ImportPage(webapp.RequestHandler):
     def get(self):
         self.response.out.write("""
         <html>
+            <head><link rel="stylesheet" type="text/css" href="stylesheets/main.css" /></head>
           <body>
+            <div id="wrapper"><div id="content">
             <form action="/import" method="post" enctype="multipart/form-data">
               <div>
                 <input id="myfile" name="myfile" type="file">
                 <input value="Upload" type="submit">
               </div>
             </form>
-            <a href="/">Home</a></br>
+            <a href="/">Home</a>
+            </div></div>
           </body>
         </html>""")
             
