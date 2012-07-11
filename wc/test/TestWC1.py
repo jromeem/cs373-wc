@@ -14,15 +14,16 @@ from minixsv import pyxsval as xsv
 from DataModels import Person, Organization, Crisis, Link
 
 class ExportTests(unittest.TestCase):
-    
+    """
     def setUp(self):
+        #self.assert_(False)
         # First, create an instance of the Testbed class.
         self.testbed = testbed.Testbed()
         # Then activate the testbed, which prepares the service stubs for use.
         self.testbed.activate()
         # Next, declare which service stubs you want to use.
         self.testbed.init_datastore_v3_stub()
-        self.testbed.init_memcache_stub()
+        """
     
     def test_buildperson1(self):
         tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
@@ -87,6 +88,7 @@ class ExportTests(unittest.TestCase):
                    orgrefs = ["seahorse united", "seahorse liberation front"],
                    crisisrefs = ["swamp famine", "west swamp drought"])
         ptree = SubElement(tree, "person", {"id" : "sally"})  
+        
         XMLHelpers.buildPerson(ptree, person2)
         
         elemid = ptree.attrib['id'],
@@ -323,7 +325,8 @@ class ExportTests(unittest.TestCase):
     
                                     misc = "")
 
-        otree = SubElement(tree, "organization", {"id" : "new1"})     
+        otree = SubElement(tree, "organization", {"id" : "new1"})
+             
         XMLHelpers.buildOrganization(otree, organization3)
         
         elemid = otree.attrib['id'],
@@ -688,7 +691,7 @@ class ExportTests(unittest.TestCase):
                     description = "you really shouldn't go there...",
                     link_site = "a bad place")
         
-        XMLHelpers.link_list.append(link1)
+        link1.put()
         
         r = ElementTree.SubElement(ptree, "ref")
         
@@ -757,7 +760,7 @@ class ExportTests(unittest.TestCase):
 					description = "you really shouldn't go there...",
 					link_site = "a bad place")
 
-		XMLHelpers.link_list.append(link1)
+		link1.put()
 
 		r = ElementTree.SubElement(otree, "ref")
 
@@ -835,7 +838,7 @@ class ExportTests(unittest.TestCase):
                     link_site = "a bad place")
                     
         
-        XMLHelpers.link_list.append(link1)
+        link1.put
         
         r = ElementTree.SubElement(ctree, "ref")
        
@@ -863,11 +866,12 @@ class ExportTests(unittest.TestCase):
                 self.assert_(new_link.description == link1.description)
                 self.assertEqual(new_link.link_parent, link1.link_parent)
                 #self.assert_(False)
-
+"""
     def tearDown(self):
         self.testbed.deactivate()
-        
+        """
 class ImportTests(unittest.TestCase):
+    """
     def setUp(self):
         # First, create an instance of the Testbed class.
         self.testbed = testbed.Testbed()
@@ -875,7 +879,7 @@ class ImportTests(unittest.TestCase):
         self.testbed.activate()
         # Next, declare which service stubs you want to use.
         self.testbed.init_datastore_v3_stub()
-        self.testbed.init_memcache_stub()
+     """
         
     db.delete(db.Query())
     def test_validxml1(self):
@@ -1069,7 +1073,7 @@ class ImportTests(unittest.TestCase):
         temp = db.GqlQuery("SELECT * FROM Link WHERE link_parent ='"+person.attrib['id']+"'")
         self.assert_(temp.count() == 0)
         db.delete(db.Query())
-        
+        """
     def tearDown(self):
         self.testbed.deactivate()
-        
+        """
