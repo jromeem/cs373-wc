@@ -10,7 +10,19 @@
 			<tr><th>Name</th><td>{{ x.name }}</td></tr>
 			<tr><th>Kind</th><td>{{ x.info_type }}</td></tr>
 			<tr><th>Nationality</th><td>{{ x.info_nationality }}</td></tr>
-			<tr><th>Date of Birth</th><td>{{ x.info_birthdate_month }}-{{ x.info_birthdate_day }}-{{ x.info_birthdate_year }}</td></tr>
+			<tr><th>Date of Birth</th>
+				<td>
+					{% ifnotequal x.info_birthdate_year 0 %}
+						{% ifnotequal x.info_birthdate_day 0 %}
+							{{ x.info_birthdate_month }}-{{ x.info_birthdate_day }}-{{ x.info_birthdate_year }}
+						{% else %}
+							{{ x.info_birthdate_year }}
+						{% endifnotequal %}
+					{% else %}
+						Unknown
+					{% endifnotequal %}
+				</td>
+			</tr>
 			<tr><th>Info</th><td>{{ x.info_biography }}</td></tr>
 			<tr>
 				<th>Embedded Image</th>
