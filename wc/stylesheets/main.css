@@ -1,5 +1,6 @@
 #wrapper		{ width:900px; margin:0 auto; }
-#content		{ margin-top:10px; }
+#content		{ margin-top:10px; position:relative; }
+#tools			{ position:absolute; right:0px; padding:7px; border-left:1px solid grey; border-bottom:1px solid grey; border-right:1px solid grey; }
 .homePageImg	{ max-width:200px; }
 
 th				{ text-align:left; }
