@@ -66,7 +66,7 @@ def grabLinks(crisis):
             except:
                 new_link.put()
                 
-    return link_list
+    #return link_list
 
 #adds a crisis to the list, where crisis is an element tree
 def addCrisis(crisis):
@@ -116,7 +116,7 @@ def addCrisis(crisis):
         except:
             c.put()
 
-        return crisis_list
+        #return crisis_list
     
 #adds a person to the list, where person is an element tree
 def addPerson(person):
@@ -145,7 +145,7 @@ def addPerson(person):
         except:
             p.put()
             
-        return person_list
+        #return person_list
         
 #adds an organization to the list, where org is an element tree
 def addOrganization(org):
@@ -186,7 +186,7 @@ def addOrganization(org):
         except:
             o.put()
             
-        return organization_list
+        #return organization_list
 
 #clears the global lists (temporary fix until db integration)
 def clearGlobals():
@@ -229,9 +229,8 @@ def parseXML(in_file):
 ############################
 #gets links for a crisis from the list and adds them to the element tree
 def exportLinks(c, ref):
+    link_list = db.GqlQuery("SELECT * FROM Link WHERE link_parent='" + c.elemid+"'")
     for l in link_list:
-        if not l.link_parent == c.elemid:
-            continue
         currRef = ElementTree.SubElement(ref, l.link_type)
         site = ElementTree.SubElement(currRef, "site")
         site.text = l.link_site
