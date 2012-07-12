@@ -21,6 +21,8 @@ class MainPage(webapp.RequestHandler):
 
 class CrisisPage(webapp.RequestHandler):
     def get(self, crisis_id):
+        assert(crisis_id is not None)
+    
         crisis_query = "SELECT * FROM Crisis WHERE elemid='" + crisis_id + "'"
         link_query = "SELECT * FROM Link WHERE link_parent='" + crisis_id + "'"
         crisis = db.GqlQuery(crisis_query)
@@ -53,7 +55,7 @@ class CrisisPage(webapp.RequestHandler):
                             'orgrefs'    : dict_orgrefs,
                             'personrefs' : dict_personrefs }
 
-        # categorize and populte links
+        # categorize and populate links
         images = []
         videos = []
         socials = []
@@ -87,6 +89,8 @@ class CrisisPage(webapp.RequestHandler):
 
 class OrganizationPage(webapp.RequestHandler):
     def get(self, org_id):
+        assert(org_id is not None)
+        
         org_query = "SELECT * FROM Organization WHERE elemid='" + org_id + "'"
         link_query = "SELECT * FROM Link WHERE link_parent='" + org_id + "'"
         org = db.GqlQuery(org_query)
@@ -116,7 +120,7 @@ class OrganizationPage(webapp.RequestHandler):
                             'crisisrefs'  : dict_crisisrefs,
                             'personrefs'  : dict_personrefs }
                             
-        # categorize and populte links
+        # categorize and populate links
         images = []
         videos = []
         socials = []
@@ -150,6 +154,8 @@ class OrganizationPage(webapp.RequestHandler):
         
 class PersonPage(webapp.RequestHandler):
     def get(self, person_id):
+        assert(person_id is not None)
+        
         person_query = "SELECT * FROM Person WHERE elemid='" + person_id + "'"
         link_query = "SELECT * FROM Link WHERE link_parent='" + person_id + "'"
         person = db.GqlQuery(person_query)
@@ -175,7 +181,7 @@ class PersonPage(webapp.RequestHandler):
                             'crisis_references' : crisis_references}
 
 
-        # categorize and populte links
+        # categorize and populate links
         images = []
         videos = []
         socials = []
@@ -262,6 +268,14 @@ application = webapp.WSGIApplication([('/', MainPage),
                                       ('/crises', CrisisSplashPage),
                                       ('/people', PeopleSplashPage),
                                       ('/organizations', OrganizationsSplashPage),
+                                      ('/crises/', CrisisSplashPage),
+                                      ('/people/', PeopleSplashPage),
+                                      ('/organizations/', OrganizationsSplashPage),
+                                      
+                                      
+                                      ('/crises/(.*)/', CrisisPage),
+                                      ('/organizations/(.*)/', OrganizationPage),
+                                      ('/people/(.*)/', PersonPage),
                                       ('/crises/(.*)', CrisisPage),
                                       ('/organizations/(.*)', OrganizationPage),
                                       ('/people/(.*)', PersonPage)],
