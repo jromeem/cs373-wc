@@ -32,6 +32,9 @@ from DataModels import Link, Person, Organization, Crisis
 # xml_schema_filename : string
 # the file name of the xml_schema in the project directory
 def validXML (xml_instance, xml_schema_filename):
+    assert(xml_instance is not None)
+    assert(xml_schema_filename is not None)
+    
     try:
         etw = xsv.parseAndValidateXmlInputString(xml_instance, xml_schema_filename,xmlIfClass=xsv.XMLIF_ELEMENTTREE)
         et = etw.getTree()
@@ -43,6 +46,8 @@ def validXML (xml_instance, xml_schema_filename):
 # used for creating the list of links for a given crisis/ppl/org
 # crisis : Elementtree object
 def grabLinks(crisis):
+    assert(crisis is not None)
+    
     for ref in crisis.findall('.//ref'):
         for l in ref:
             new_link = Link()
@@ -70,6 +75,8 @@ def grabLinks(crisis):
 
 #adds a crisis to the list, where crisis is an element tree
 def addCrisis(crisis):
+    assert(crisis is not None)
+    
     if (crisis.find('.//info')):
         info = crisis.find('.//info')
         grabLinks(crisis)
@@ -120,6 +127,8 @@ def addCrisis(crisis):
     
 #adds a person to the list, where person is an element tree
 def addPerson(person):
+    assert(person is not None)
+    
     if (person.find('.//info')):
         grabLinks(person)
         p = Person(
@@ -149,6 +158,8 @@ def addPerson(person):
         
 #adds an organization to the list, where org is an element tree
 def addOrganization(org):
+    assert (org is not None)    
+    
     if org.find('.//info'):
         grabLinks(org)
         info = org.find('.//info')
@@ -188,21 +199,11 @@ def addOrganization(org):
             
         #return organization_list
 
-#clears the global lists (temporary fix until db integration)
-def clearGlobals():
-    # to prevent multiple copy uploads
-    global crisis_list
-    global person_list
-    global organization_list
-    global link_list
-    crisis_list = []
-    person_list = []
-    organization_list = []
-    link_list = []
 
 # in_file : file (XML-validated file)
 # parse and store the XML data in the GAE datastore
 def parseXML(in_file):
+    assert(in_file is not None)
     
     db.delete(db.Query())
 
@@ -229,6 +230,9 @@ def parseXML(in_file):
 ############################
 #gets links for a crisis from the list and adds them to the element tree
 def exportLinks(c, ref):
+    assert(c is not None)
+    assert(ref is not None)
+
     link_list = db.GqlQuery("SELECT * FROM Link WHERE link_parent='" + c.elemid+"'")
     for l in link_list:
         currRef = ElementTree.SubElement(ref, l.link_type)
@@ -243,6 +247,9 @@ def exportLinks(c, ref):
 
 # fills a crisis subtree, where crisis is the root element, and c is a Crisis object
 def buildCrisis(crisis, c):
+    assert(crisis is not None)
+    assert(c is not None)
+
     name = ElementTree.SubElement(crisis, "name")
     name.text = c.name
 
@@ -312,6 +319,9 @@ def buildCrisis(crisis, c):
 
 # fills an organization subtree, where organization is the root element, and o is an Organization object
 def buildOrganization(organization, o):
+    assert(organization is not None)
+    assert(o is not None)    
+    
     name = ElementTree.SubElement(organization, "name")
     name.text = o.name
 
@@ -360,6 +370,9 @@ def buildOrganization(organization, o):
 
 # fills a person subtree, where person is the root element, and p is a person object
 def buildPerson(person, p):
+    assert(person is not None)
+    assert(p is not None)
+    
     name = ElementTree.SubElement(person, "name")
     name.text = p.name
     
@@ -397,6 +410,7 @@ def buildPerson(person, p):
 
 # main function that builds xml
 def buildXML(worldCrises):
+    assert(worldCrises is not None)
     
     #build sub-trees for each crisis
     crisis_list = db.GqlQuery("SELECT * FROM Crisis")
