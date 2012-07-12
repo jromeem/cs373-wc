@@ -67,7 +67,9 @@
 							<th>Embedded Image</th>
 							<td>
 								{% for i in cImages %}
-									<img src="{{i.link_url}}" /><br />
+									{% ifnotequal i.link_url None %}
+										<img src="{{i.link_url}}" /><br />
+									{% endifnotequal %}
 								{% endfor %}
 							</td>	
 						</tr>
