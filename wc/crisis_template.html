@@ -1,126 +1,131 @@
 {% for x in crisis %}
 <html>
 	<head>
-		<title>{{ x.name }}</title>
+		<title>{{ x.name }}{{ headerNote }}</title>
 		<link rel="stylesheet" type="text/css" href="/stylesheets/main.css" />
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/fadeStuff.js"></script>
+		<script src="/js/jquery.isotope.min.js"></script>
 	</head>
 	<body>
 		<div id="wrapper">
 			<div id="content">
 				{% include "header.html" %}
-				<table>
-					<tr><th>Name</th><td>{{ x.name }}</td></tr>
-					<tr><th>Kind</th><td>{{ x.info_type }}</td></tr>
-					<tr><th>Location</th><td>{{ x.location_region }} {{ x.location_city }}
-					{% ifnotequal x.location_city "" %}
-						{% ifnotequal x.location_country "" %}
-							,
-						{% endifnotequal %}
-					{% endifnotequal %} {{ x.location_country }}</td></tr>
-					<tr><th>Date and Time</th>
-						<td>
-							{% ifnotequal x.date_year 0 %}
-								{{ x.date_time }} 
+				<div id="fadeContent">
+					<table>
+						<tr><th>Name</th><td>{{ x.name }}</td></tr>
+						<tr><th>Kind</th><td>{{ x.info_type }}</td></tr>
+						<tr><th>Location</th><td>{{ x.location_region }} {{ x.location_city }}
+						{% ifnotequal x.location_city "" %}
+							{% ifnotequal x.location_country "" %}
+								,
 							{% endifnotequal %}
-							{% ifnotequal x.date_year 0 %}
-								{% ifnotequal x.date_day 0 %}
-									{{ x.date_month }}-{{ x.date_day }}-{{ x.date_year }}
-								{% else %}
-									{{ x.date_year }}
+						{% endifnotequal %} {{ x.location_country }}</td></tr>
+						<tr><th>Date and Time</th>
+							<td>
+								{% ifnotequal x.date_year 0 %}
+									{{ x.date_time }} 
 								{% endifnotequal %}
-							{% else %}
-								Unknown
-							{% endifnotequal %}
-							
-						</td>
-					</tr>
-					<tr><th>Human Impact</th>
-						<td><ul>
-							<li>Dead: {% ifequal x.impact_human_deaths 0 %}
-										Unknown
-									  {% else %}
-									  	{{x.impact_human_deaths|intcomma}} 
-									  {% endifequal %}</li>
-							<li>Injured: {% ifequal x.impact_human_injured 0 %}
-										Unknown
-									  {% else %}
-									  	{{x.impact_human_injured|intcomma}}
-									  {% endifequal %} </li>
-							<li>Displaced: {% ifequal x.impact_human_displaced 0 %}
-										Unknown
-									  {% else %}
-									  	{{x.impact_human_displaced|intcomma}}
-									  {% endifequal %}</li></ul></td>
-					</tr>
-					<tr><th>Economic Impact</th><td>{% ifequal x.impact_economic_amount 0 %}
-														Unknown
-									  				{% else %}
-													{{ x.impact_economic_amount|intcomma }} {{ x.impact_economic_currency }}
-													{% endifequal %}</td></tr>
-					<tr><th>Resources Needed</th><td>{{ x.info_resources }}</td></tr>
-					<tr><th>Ways to Help</th><td>{{ x.info_help }}</td></tr>
-					<tr>
-						<th>Embedded Image</th>
-						<td>
-							{% for i in images %}
-								<img src="{{i.link_url}}" /><br />
-							{% endfor %}
-						</td>	
-					</tr>
-					<tr>
-						<th>Embedded Video</th>
-						<td>
-							{% for v in videos %}
-							<iframe  width="560" height="315" src="http://www.youtube.com/embed/{{ youtube_embed }}" frameborder="0" allowfullscreen>
-							</iframe><br />
-							{% endfor %}
-						</td>
-					</tr>
-					<tr>
-						<th>Social Networks</th>
-						<td>
-							{% for s in socials %}
-							<a href="{{s.link_url}}">{{s.title}}</a><br/>
-							{% endfor %}
-						</td>
-					</tr>
-					<tr>
-						<th>External Links</th>
-						<td>
-							{% for e in externals %}
-								<a href="{{e.link_url}}">{{e.title}}</a><br />
-							{% endfor %}
-						</td>
-					</tr>
-					
-					<tr>
-						{% if isEmpty_misc %}
-						<th>misc</th>
-						<td>
-							{% for m in misc_links %}
-								<a href="{{m.link_url}}">{{m.title}}</a><br />
-							{% endfor %}
-						</td>
-						{% endif %}
-					</tr>
-			<tr>
-				<th>Related Organizations</th>
-				<td>
-					{% for item in orgrefs.items %}
-						<a href="/organizations/{{item.0}}">{{item.1}}</a>
-					{% endfor %}
-				</td>
-
-			</tr>
-			<tr>
-				<th>Related People</th>
-				<td>
-					{% for item in personrefs.items %}
-					<a href="/people/{{item.0}}">{{item.1}}</a>
-					{% endfor %}
-				</td>
-			</tr>
-				</table>
+								{% ifnotequal x.date_year 0 %}
+									{% ifnotequal x.date_day 0 %}
+										{{ x.date_month }}-{{ x.date_day }}-{{ x.date_year }}
+									{% else %}
+										{{ x.date_year }}
+									{% endifnotequal %}
+								{% else %}
+									Unknown
+								{% endifnotequal %}
+								
+							</td>
+						</tr>
+						<tr><th>Human Impact</th>
+							<td>
+								Dead: {% ifequal x.impact_human_deaths 0 %}
+											Unknown
+										  {% else %}
+										  	{{x.impact_human_deaths|intcomma}} 
+										  {% endifequal %}<br />
+								Injured: {% ifequal x.impact_human_injured 0 %}
+											Unknown
+										  {% else %}
+										  	{{x.impact_human_injured|intcomma}}
+										  {% endifequal %}<br />
+								Displaced: {% ifequal x.impact_human_displaced 0 %}
+											Unknown
+										  {% else %}
+										  	{{x.impact_human_displaced|intcomma}}
+										  {% endifequal %}</td>
+						</tr>
+						<tr><th>Economic Impact</th><td>{% ifequal x.impact_economic_amount 0 %}
+															Unknown
+										  				{% else %}
+														{{ x.impact_economic_amount|intcomma }} {{ x.impact_economic_currency }}
+														{% endifequal %}</td></tr>
+						<tr><th>Resources Needed</th><td>{{ x.info_resources }}</td></tr>
+						<tr><th>Ways to Help</th><td>{{ x.info_help }}</td></tr>
+						<tr>
+							<th>Embedded Image</th>
+							<td>
+								{% for i in cImages %}
+									<img src="{{i.link_url}}" /><br />
+								{% endfor %}
+							</td>	
+						</tr>
+						<tr>
+							<th>Embedded Video</th>
+							<td>
+								{% for v in videos %}
+								<iframe  width="560" height="315" src="http://www.youtube.com/embed/{{ youtube_embed }}" frameborder="0" allowfullscreen>
+								</iframe><br />
+								{% endfor %}
+							</td>
+						</tr>
+						<tr>
+							<th>Social Networks</th>
+							<td>
+								{% for s in socials %}
+								<a href="{{s.link_url}}">{{s.title}}</a><br/>
+								{% endfor %}
+							</td>
+						</tr>
+						<tr>
+							<th>External Links</th>
+							<td>
+								{% for e in externals %}
+									<a href="{{e.link_url}}">{{e.title}}</a><br />
+								{% endfor %}
+							</td>
+						</tr>
+						
+						<tr>
+							{% if isEmpty_misc %}
+							<th>misc</th>
+							<td>
+								{% for m in misc_links %}
+									<a href="{{m.link_url}}">{{m.title}}</a><br />
+								{% endfor %}
+							</td>
+							{% endif %}
+						</tr>
+				<tr>
+					<th>Related Organizations</th>
+					<td>
+						{% for item in orgrefs.items %}
+							<a href="/organizations/{{item.0}}">{{item.1}}</a>
+						{% endfor %}
+					</td>
+	
+				</tr>
+				<tr>
+					<th>Related People</th>
+					<td>
+						{% for item in personrefs.items %}
+						<a href="/people/{{item.0}}">{{item.1}}</a>
+						{% endfor %}
+					</td>
+				</tr>
+					</table>
+				</div>
 			</div>
 		</div>
 	</body>

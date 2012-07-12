@@ -1,11 +1,20 @@
 <div id="header">
-	<a href="/">HOME!</a>
-	<div id="tools">
-		<h3>Tools</h3>
-		<ul>
-		    <a href="/import">Import</a>
-		    <a href="/export">Export</a>
-		    <a href="/test">Tests</a>
-	    </ul>
-	</div>
+	<div class="headerLinks" id="navLinks">
+		<a href="/">HOME!</a> | 
+	    <a class="categoryLink" id="crises" href="/crises">Crises</a> | 
+	    <a class="categoryLink" id="people" href="/people">People</a> | 
+	    <a class="categoryLink" id="organizations" href="/organizations">Organizations</a>
+   </div>
+	<div id="tools" class="headerLinks">
+	    <a href="/import">Import</a> | 
+	    <a href="/export">Export</a> | 
+	    <a href="/test">Tests</a>
+    </div>
+    <div id="iso">
+    	<div id="opaqueLayer">
+		    {% for img in images %}
+		    <div class="item {{ img.link_parent }}"><img class="isoImg" src="{{ img.link_url }}" /></div>
+		    {% endfor %}
+	    </div>
+    </div>
 </div>

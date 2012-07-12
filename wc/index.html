@@ -1,71 +1,61 @@
 <html>
     <head>
-		<title>{{ page_name }}</title>
+		<title>World Crises{{headerNote}}</title>
 		<link rel="stylesheet" type="text/css" href="stylesheets/main.css" />
 		<script src="js/jquery-1.7.2.min.js"></script>
+		<script src="js/fadeStuff.js"></script>
 		<script src="js/jquery.isotope.min.js"></script>
 	</head>
     <body>
     	<div id="wrapper">
     		<div id="content">
     			{% include "header.html" %}
-    			<h1>{{ page_name }}</h1>
-	  			<small>GROUP NAME: {{ team_name }}</small>
-			    <ul>
-				    <a class="categoryLink" id="crises" href="/crises">Crises</a>
-				    <a class="categoryLink" id="people" href="/people">People</a>
-				    <a class="categoryLink" id="organizations" href="/organizations">Organizations</a>
-			    </ul>
-			    <h3>Team Members</h3>
-			    <ul>
-				    {% for name in team_members %}
-				      {{ name }}</br>
-				    {% endfor %}
-			    </ul>
-			    <div id="iso">
-			    	<div id="opaqueLayer">
-				    {% for img in images %}
-				    <div class="item {{ img.link_parent }}"><img class="homePageImg" src="{{ img.link_url }}" /></div>
-				    {% endfor %}
+    			<div id="fadeContent">
+	    			<div id="pageInfoBox">
+		    			<h1>World Crises</h1>
+		    			<hr />
+			  			<small>GROUP NAME: IMPORT ANTIGRAVITY</small>
+			  			<hr />
+					    <h3>Team Members</h3>
+					    <ul>
+						    Joe Peacock<br />
+						    Andy Hsu<br />
+						    Harrison He<br />
+						    Jerome Martinez<br />
+						    Michael Pace<br />
+						    Justin Salazar
+					    </ul>
 				    </div>
 			    </div>
-    	</div>
-    </div>
-    <script>
-    	$(document).ready(function(){
-    		addTypeClasses();
-    		
-    		$('.categoryLink').hover(function(){
-    			$('#iso').isotope({ 
-    				filter: "." + $(this).attr('id'),
-    				animationEngine: 'best-available'
-					   });
-    		}, function(){
-    			$('#iso').isotope({ 
-    				filter: '*',
-    				animationEngine: 'best-available'
-    				});
-    		});
-    		
-    		
-    		$('#iso').imagesLoaded(function(){
-	    		$('#iso').isotope({
-				  // options
-				  itemSelector : '.item'
-				});
-			});
-			
-			function addTypeClasses(){
-    			typeLookup = {  'crises' : ['wafrica', 'haiti', 'iraq', 'chernobyl'],
-    						'people' : ['mbarzani', 'jsheeran', 'aroche', 'roffenheiser'],
-    						'organizations' : ['redcrescent', 'oxfam', 'wfp', 'ccpi'] }
-	    		$.each(typeLookup, function(t, l){
-	    			$.each(l, function(){
-	    				$("." + this).addClass(t);
-	    			});
+	    	</div>
+	    </div>
+	    <script>
+	    	$(document).ready(function(){
+	    		addTypeClasses();
+	    		
+	    		$('.categoryLink').hover(function(){
+	    			$('#iso').isotope({ 
+	    				filter: "." + $(this).attr('id'),
+	    				animationEngine: 'best-available'
+						   });
+	    		}, function(){
+	    			$('#iso').isotope({ 
+	    				filter: '*',
+	    				animationEngine: 'best-available'
+	    				});
 	    		});
-    		}
-		});
-    </script>
+				
+				function addTypeClasses(){
+	    			typeLookup = {  'crises' : ['wafrica', 'haiti', 'iraq', 'chernobyl'],
+	    						'people' : ['mbarzani', 'jsheeran', 'aroche', 'roffenheiser'],
+	    						'organizations' : ['redcrescent', 'oxfam', 'wfp', 'ccpi'] }
+		    		$.each(typeLookup, function(t, l){
+		    			$.each(l, function(){
+		    				$("." + this).addClass(t);
+		    			});
+		    		});
+	    		}
+			});
+	    </script>
     </body>
 </html>

@@ -10,11 +10,10 @@ import django.contrib.humanize.templatetags.humanize
 
 class MainPage(webapp.RequestHandler):
     def get(self):
-        page = self.request.get('page')
-        template_values = { 'page': page }
+        headerNote = " - Import Antigravity"
         images = db.GqlQuery("SELECT * FROM Link WHERE link_type='primaryImage' ORDER BY link_url")
         
-        template_values={'page_name': 'World Crises','team_name': 'IMPORT ANTIGRAVITY','team_members': ['Joe Peacock', 'Andy Hsu','Harrison He','Jerome Martinez','Michael Pace','Justin Salazar',], 'images' : images}
+        template_values={'page_name': 'World Crises','team_name': 'IMPORT ANTIGRAVITY','team_members': ['Joe Peacock', 'Andy Hsu','Harrison He','Jerome Martinez','Michael Pace','Justin Salazar',], 'images' : images, 'headerNote': headerNote}
         
         path = os.path.join(os.path.dirname(__file__), "index.html")
         self.response.out.write(template.render(path, template_values))
@@ -26,6 +25,7 @@ class CrisisPage(webapp.RequestHandler):
         link_query = "SELECT * FROM Link WHERE link_parent='" + crisis_id + "'"
         crisis = db.GqlQuery(crisis_query)
         link = db.GqlQuery(link_query)
+        headerNote = " - Import Antigravity"
         
         # elemid : title
         dict_orgrefs = {}
@@ -71,7 +71,7 @@ class CrisisPage(webapp.RequestHandler):
             else:
                 misc_links.append(l)
 
-        template_values['images'] = images
+        template_values['cImages'] = images
         template_values['videos'] = videos
         for v in videos:
             if v.link_site == "YouTube":
@@ -80,6 +80,7 @@ class CrisisPage(webapp.RequestHandler):
         template_values['externals'] = externals
         template_values['misc_links'] = misc_links
         template_values['isNotEmpty_misc'] = misc_links != []
+        template_values['headerNote'] = headerNote
                 
         path = os.path.join(os.path.dirname(__file__), "crisis_template.html")
         self.response.out.write(template.render(path, template_values))     
@@ -90,6 +91,7 @@ class OrganizationPage(webapp.RequestHandler):
         link_query = "SELECT * FROM Link WHERE link_parent='" + org_id + "'"
         org = db.GqlQuery(org_query)
         link = db.GqlQuery(link_query)
+        headerNote = " - Import Antigravity"
 
         # find refs
         dict_crisisrefs = {}
@@ -132,7 +134,7 @@ class OrganizationPage(webapp.RequestHandler):
             else:
                 misc_links.append(l)
 
-        template_values['images'] = images
+        template_values['oImages'] = images
         template_values['videos'] = videos
         for v in videos:
             if v.link_site == "YouTube":
@@ -141,6 +143,7 @@ class OrganizationPage(webapp.RequestHandler):
         template_values['externals'] = externals
         template_values['misc_links'] = misc_links
         template_values['isNotEmpty_misc'] = misc_links != []
+        template_values['headerNote'] = headerNote
                 
         path = os.path.join(os.path.dirname(__file__), "organization_template.html")
         self.response.out.write(template.render(path, template_values))
@@ -151,6 +154,7 @@ class PersonPage(webapp.RequestHandler):
         link_query = "SELECT * FROM Link WHERE link_parent='" + person_id + "'"
         person = db.GqlQuery(person_query)
         link = db.GqlQuery(link_query)
+        headerNote = " - Import Antigravity"
         
         org_references = {}
         crisis_references = {}
@@ -189,7 +193,7 @@ class PersonPage(webapp.RequestHandler):
             else:
                 misc_links.append(l)
 
-        template_values['images'] = images
+        template_values['pImages'] = images
         template_values['videos'] = videos
         for v in videos:
             if v.link_site == "YouTube":
@@ -198,6 +202,7 @@ class PersonPage(webapp.RequestHandler):
         template_values['externals'] = externals
         template_values['misc_links'] = misc_links
         template_values['isNotEmpty_misc'] = misc_links != []
+        template_values['headerNote'] = headerNote
                 
         path = os.path.join(os.path.dirname(__file__), "person_template.html")
         self.response.out.write(template.render(path, template_values))  
@@ -205,7 +210,16 @@ class PersonPage(webapp.RequestHandler):
 class CrisisSplashPage(webapp.RequestHandler):
     def get(self):
         q = db.GqlQuery("SELECT * FROM Crisis")
-        template_values = { 'crises': q }
+        allImages = db.GqlQuery("SELECT * FROM Link WHERE link_type='primaryImage' ORDER BY link_url")
+        images = []
+        for c in q:
+            for i in allImages:
+                if c.elemid == i.link_parent:
+                    images.append(i)
+                    
+        headerNote = " - Import Antigravity"
+        
+        template_values = { 'crises': q, 'images': images, 'headerNote': headerNote }
         
         path = os.path.join(os.path.dirname(__file__), "crises.html")
         self.response.out.write(template.render(path, template_values))
@@ -213,7 +227,16 @@ class CrisisSplashPage(webapp.RequestHandler):
 class OrganizationsSplashPage(webapp.RequestHandler):
     def get(self):
         q = db.GqlQuery("SELECT * FROM Organization")
-        template_values = { 'orgs': q }
+        allImages = db.GqlQuery("SELECT * FROM Link WHERE link_type='primaryImage' ORDER BY link_url")
+        images = []
+        for o in q:
+            for i in allImages:
+                if o.elemid == i.link_parent:
+                    images.append(i)
+        
+        headerNote = " - Import Antigravity"
+        
+        template_values = { 'orgs': q, 'images': images, 'headerNote': headerNote }
         
         path = os.path.join(os.path.dirname(__file__), "organizations.html")
         self.response.out.write(template.render(path, template_values))
@@ -221,7 +244,16 @@ class OrganizationsSplashPage(webapp.RequestHandler):
 class PeopleSplashPage(webapp.RequestHandler):
     def get(self):
         q = db.GqlQuery("SELECT * FROM Person")
-        template_values = { 'people': q }
+        allImages = db.GqlQuery("SELECT * FROM Link WHERE link_type='primaryImage' ORDER BY link_url")
+        images = []
+        for p in q:
+            for i in allImages:
+                if p.elemid == i.link_parent:
+                    images.append(i)
+                    
+        headerNote = " - Import Antigravity"
+        
+        template_values = { 'people': q, 'images': images, 'headerNote': headerNote }
         
         path = os.path.join(os.path.dirname(__file__), "people.html")
         self.response.out.write(template.render(path, template_values))
