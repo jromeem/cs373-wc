@@ -2,7 +2,7 @@ $(document).ready(function(){
 $.fn.exists = function(){return this.length>0;}
 if ($('#iso').exists()){
 $('#iso').imagesLoaded(function(){
-$('.isoImg').fadeIn(400);
+$('.isoImg').fadeIn(600);
 $('#iso').isotope({
 itemSelector : '.item'
 });
