@@ -61,15 +61,22 @@ class ImportPage(webapp.RequestHandler):
         
         self.response.out.write("""
         <html>
+        <head>
+                <link rel="stylesheet" type="text/css" href="stylesheets/main.css" />
+                <script src="js/jquery-1.7.2.min.js"></script>
+                <script src="js/fadeStuff.js"></script>
+            </head>
           <body>
+          <div id="wrapper"><div id="content"><div id="fadeContent">
             <form action="/import" method="post" enctype="multipart/form-data">
               <div>
                 <input id="myfile" name="myfile" type="file">
                 <input value="Upload" type="submit">
               </div>
-            </form>
+            </form><br />
             <p>%s</p>
             <a href="/">Home</a></br>
+            </div></div></div>
           </body>
         </html>""" % message)
         
