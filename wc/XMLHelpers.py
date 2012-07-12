@@ -204,7 +204,7 @@ def clearGlobals():
 # parse and store the XML data in the GAE datastore
 def parseXML(in_file):
     
-    clearGlobals()
+    db.delete(db.Query())
 
     tree = ElementTree.parse(in_file)
         
