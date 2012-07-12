@@ -17,17 +17,18 @@ class ImportPage(webapp.RequestHandler):
     def get(self):
         self.response.out.write("""
         <html>
-            <head><link rel="stylesheet" type="text/css" href="stylesheets/main.css" /></head>
+            <head><link rel="stylesheet" type="text/css" href="stylesheets/main.css" /><script src="js/jquery-1.7.2.min.js"></script><script src="js/fadeStuff.js"></script></head>
           <body>
-            <div id="wrapper"><div id="content">
+            <div id="wrapper"><div id="content"><div id="fadeContent>
             <form action="/import" method="post" enctype="multipart/form-data">
               <div>
                 <input id="myfile" name="myfile" type="file"><br /><br />
                 <input value="Upload" type="submit">
               </div>
-            </form>
+            </form><br />
             <a href="/">Home</a>
-            </div></div>
+            </div></div></div>
+            <script>$(document).ready(function(){$('#fadeContent').fadeIn(400);$('a').click(function(){$('#fadeContent').fadeOut(400);});});</script>
           </body>
         </html>""")
             

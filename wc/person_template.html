@@ -2,92 +2,101 @@
 <html>
 	<head>
 		<title>{{ x.name }}</title>
-		<link rel="stylesheet" type="text/css" href="stylesheets/main.css" />
+		<link rel="stylesheet" type="text/css" href="/stylesheets/main.css" />
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/fadeStuff.js"></script>
+		<script src="/js/jquery.isotope.min.js"></script>
 	</head>
 	<body>
-		<a href="/">Home</a><br /><br />
-		<table>
-			<tr><th>Name</th><td>{{ x.name }}</td></tr>
-			<tr><th>Kind</th><td>{{ x.info_type }}</td></tr>
-			<tr><th>Nationality</th><td>{{ x.info_nationality }}</td></tr>
-			<tr><th>Date of Birth</th>
-				<td>
-					{% ifnotequal x.info_birthdate_year 0 %}
-						{% ifnotequal x.info_birthdate_day 0 %}
-							{{ x.info_birthdate_month }}-{{ x.info_birthdate_day }}-{{ x.info_birthdate_year }}
-						{% else %}
-							{{ x.info_birthdate_year }}
-						{% endifnotequal %}
-					{% else %}
-						Unknown
-					{% endifnotequal %}
-				</td>
-			</tr>
-			<tr><th>Info</th><td>{{ x.info_biography }}</td></tr>
-			<tr>
-				<th>Embedded Image</th>
-					<td>
-						{% for i in images %}
-						<img src="{{i.link_url}}" /><br />
-						{% endfor %}
-					</td>
-			</tr>
-			<tr>
-				<th>Embedded Video</th>
-					<td>
-						<iframe 
-							width="560" 
-							height="315" 
-							src="http://www.youtube.com/embed/{{ youtube_embed }}" 
-							frameborder="0" 
-							allowfullscreen>
-						</iframe><br />
-					</td>
-			</tr>
-			<tr><th>Social Networks</th><td>
-					{% for s in socials %}
-						<a href="{{s.link_url}}">{{s.title}}</a><br/>
-					{% endfor %}</td></tr>
-			<tr><th>External Links</th>
-				<td>
-					{% for e in externals %}
-						<a href="{{e.link_url}}">{{e.title}}</a><br />
-					{% endfor %}
-				</td>
-			</tr>
-			<tr>
-				{% if isEmpty_misc %}
-				<th>misc</th>
-				<td>
-					{% for m in misc_links %}
-						<a href="{{m.link_url}}">{{m.title}}</a><br />
-					{% endfor %}
-				</td>
-				{% endif %}
-			</tr>
-			<tr><th>Crises</th>
-				<td>
-					{% for ref in x.crisisrefs %}					
-						
-						{% for item in crisis_references.items %}
-    						<a href="/crises/{{item.0}}">{{item.1}}</a>
-    					{% endfor %}
-						<br />
-					{% endfor %}
-				</td>
-			</tr>
-			<tr><th>Organizations</th>
-				<td>
-					{% for ref in x.orgrefs %}					
-						
-						{% for item in org_references.items %}
-    						<a href="/organizations/{{item.0}}">{{item.1}}</a>
-    					{% endfor %}
-						<br />
-					{% endfor %}					
-				</td>
-			</tr>
-		</table>
+		<div id="wrapper">
+			<div id="content">
+				{% include "header.html" %}
+				<div id="fadeContent">
+					<table>
+						<tr><th>Name</th><td>{{ x.name }}</td></tr>
+						<tr><th>Kind</th><td>{{ x.info_type }}</td></tr>
+						<tr><th>Nationality</th><td>{{ x.info_nationality }}</td></tr>
+						<tr><th>Date of Birth</th>
+							<td>
+								{% ifnotequal x.info_birthdate_year 0 %}
+									{% ifnotequal x.info_birthdate_day 0 %}
+										{{ x.info_birthdate_month }}-{{ x.info_birthdate_day }}-{{ x.info_birthdate_year }}
+									{% else %}
+										{{ x.info_birthdate_year }}
+									{% endifnotequal %}
+								{% else %}
+									Unknown
+								{% endifnotequal %}
+							</td>
+						</tr>
+						<tr><th>Info</th><td>{{ x.info_biography }}</td></tr>
+						<tr>
+							<th>Embedded Image</th>
+								<td>
+									{% for i in pImages %}
+									<img src="{{i.link_url}}" /><br />
+									{% endfor %}
+								</td>
+						</tr>
+						<tr>
+							<th>Embedded Video</th>
+								<td>
+									<iframe 
+										width="560" 
+										height="315" 
+										src="http://www.youtube.com/embed/{{ youtube_embed }}" 
+										frameborder="0" 
+										allowfullscreen>
+									</iframe><br />
+								</td>
+						</tr>
+						<tr><th>Social Networks</th><td>
+								{% for s in socials %}
+									<a href="{{s.link_url}}">{{s.title}}</a><br/>
+								{% endfor %}</td></tr>
+						<tr><th>External Links</th>
+							<td>
+								{% for e in externals %}
+									<a href="{{e.link_url}}">{{e.title}}</a><br />
+								{% endfor %}
+							</td>
+						</tr>
+						<tr>
+							{% if isEmpty_misc %}
+							<th>misc</th>
+							<td>
+								{% for m in misc_links %}
+									<a href="{{m.link_url}}">{{m.title}}</a><br />
+								{% endfor %}
+							</td>
+							{% endif %}
+						</tr>
+						<tr><th>Crises</th>
+							<td>
+								{% for ref in x.crisisrefs %}					
+									
+									{% for item in crisis_references.items %}
+			    						<a href="/crises/{{item.0}}">{{item.1}}</a>
+			    					{% endfor %}
+									<br />
+								{% endfor %}
+							</td>
+						</tr>
+						<tr><th>Organizations</th>
+							<td>
+								{% for ref in x.orgrefs %}					
+									
+									{% for item in org_references.items %}
+			    						<a href="/organizations/{{item.0}}">{{item.1}}</a>
+			    					{% endfor %}
+									<br />
+								{% endfor %}					
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
 	</body>
 </html>
 {% endfor %}

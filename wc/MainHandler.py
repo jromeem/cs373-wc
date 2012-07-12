@@ -71,7 +71,7 @@ class CrisisPage(webapp.RequestHandler):
             else:
                 misc_links.append(l)
 
-        template_values['images'] = images
+        template_values['cImages'] = images
         template_values['videos'] = videos
         for v in videos:
             if v.link_site == "YouTube":
@@ -132,7 +132,7 @@ class OrganizationPage(webapp.RequestHandler):
             else:
                 misc_links.append(l)
 
-        template_values['images'] = images
+        template_values['oImages'] = images
         template_values['videos'] = videos
         for v in videos:
             if v.link_site == "YouTube":
@@ -189,7 +189,7 @@ class PersonPage(webapp.RequestHandler):
             else:
                 misc_links.append(l)
 
-        template_values['images'] = images
+        template_values['pImages'] = images
         template_values['videos'] = videos
         for v in videos:
             if v.link_site == "YouTube":
@@ -205,7 +205,14 @@ class PersonPage(webapp.RequestHandler):
 class CrisisSplashPage(webapp.RequestHandler):
     def get(self):
         q = db.GqlQuery("SELECT * FROM Crisis")
-        template_values = { 'crises': q }
+        allImages = db.GqlQuery("SELECT * FROM Link WHERE link_type='primaryImage' ORDER BY link_url")
+        images = []
+        for c in q:
+            for i in allImages:
+                if c.elemid == i.link_parent:
+                    images.append(i)
+        
+        template_values = { 'crises': q, 'images': images }
         
         path = os.path.join(os.path.dirname(__file__), "crises.html")
         self.response.out.write(template.render(path, template_values))
@@ -213,7 +220,14 @@ class CrisisSplashPage(webapp.RequestHandler):
 class OrganizationsSplashPage(webapp.RequestHandler):
     def get(self):
         q = db.GqlQuery("SELECT * FROM Organization")
-        template_values = { 'orgs': q }
+        allImages = db.GqlQuery("SELECT * FROM Link WHERE link_type='primaryImage' ORDER BY link_url")
+        images = []
+        for o in q:
+            for i in allImages:
+                if o.elemid == i.link_parent:
+                    images.append(i)
+                    
+        template_values = { 'orgs': q, 'images': images }
         
         path = os.path.join(os.path.dirname(__file__), "organizations.html")
         self.response.out.write(template.render(path, template_values))
@@ -221,7 +235,14 @@ class OrganizationsSplashPage(webapp.RequestHandler):
 class PeopleSplashPage(webapp.RequestHandler):
     def get(self):
         q = db.GqlQuery("SELECT * FROM Person")
-        template_values = { 'people': q }
+        allImages = db.GqlQuery("SELECT * FROM Link WHERE link_type='primaryImage' ORDER BY link_url")
+        images = []
+        for p in q:
+            for i in allImages:
+                if p.elemid == i.link_parent:
+                    images.append(i)
+                    
+        template_values = { 'people': q, 'images': images }
         
         path = os.path.join(os.path.dirname(__file__), "people.html")
         self.response.out.write(template.render(path, template_values))

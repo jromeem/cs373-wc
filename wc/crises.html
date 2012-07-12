@@ -1,17 +1,22 @@
 <html>
 	<head>
-		<title>CRISES LOL</title>
+		<title>CRISES</title>
 		<link rel="stylesheet" type="text/css" href="stylesheets/main.css" />
+		<script src="js/jquery-1.7.2.min.js"></script>
+		<script src="js/fadeStuff.js"></script>
+		<script src="js/jquery.isotope.min.js"></script>
 	</head>
 	<body>
 		<div id="wrapper">
 			<div id="content">
 				{% include "header.html" %}
-			  	<ul>	
-					{% for crisis in crises %}
-						<li><a href="/crises/{{crisis.elemid}}">{{ crisis.name }}</a></li> 
-					{% endfor %}
-			  	</ul>
+				<div id="fadeContent">
+				  	<ul>	
+						{% for crisis in crises %}
+							<li><a href="/crises/{{crisis.elemid}}">{{ crisis.name }}</a></li> 
+						{% endfor %}
+				  	</ul>
+			   </div>
 		  	</div>
 	  	</div>
 	</body>
