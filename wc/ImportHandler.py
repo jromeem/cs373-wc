@@ -70,11 +70,11 @@ class ImportPage(webapp.RequestHandler):
           <div id="wrapper"><div id="content"><div id="fadeContent">
             <form action="/import" method="post" enctype="multipart/form-data">
               <div>
-                <input id="myfile" name="myfile" type="file">
+                <input id="myfile" name="myfile" type="file"><br /><br />
                 <input value="Upload" type="submit">
               </div>
             </form><br />
-            <p>%s</p>
+            <p>%s</p><br />
             <a href="/">Home</a></br>
             </div></div></div>
           </body>
