@@ -7,7 +7,7 @@
 #iso 					{ z-index:-1; position:relative; top:20px; width:850px; margin:0 auto; }
 #header					{ height:60px; position:relative; }
 .isoImg					{ max-width:200px; display:none; opacity:.5; }
-#indexStuff				{ background:white; width:240px; border:1px solid grey; padding:7px; position:absolute; right:0px; top:60px; right:10px; }
+#pageInfoBox			{ background:white; width:240px; border:1px solid grey; padding:7px; position:absolute; right:0px; top:60px; right:10px; }
 
 th						{ text-align:left; }
 #fadeContent			{ display:none; padding:0 40px; }
