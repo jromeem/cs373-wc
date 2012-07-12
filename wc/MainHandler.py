@@ -62,7 +62,7 @@ class CrisisPage(webapp.RequestHandler):
         externals = []
         misc_links = []
         for l in link:
-            if l.link_type == 'primaryImage':
+            if l.link_type == 'primaryImage' or l.link_type == 'image':
                 images.append(l)
             elif l.link_type == 'video':
                 videos.append(l)
@@ -127,7 +127,7 @@ class OrganizationPage(webapp.RequestHandler):
         externals = []
         misc_links = []
         for l in link:
-            if l.link_type == 'primaryImage':
+            if l.link_type == 'primaryImage' or l.link_type == 'image':
                 images.append(l)
             elif l.link_type == 'video':
                 videos.append(l)
@@ -188,7 +188,7 @@ class PersonPage(webapp.RequestHandler):
         externals = []
         misc_links = []
         for l in link:
-            if l.link_type == 'primaryImage':
+            if l.link_type == 'primaryImage' or l.link_type == 'image':
                 images.append(l)
             elif l.link_type == 'video':
                 videos.append(l)
