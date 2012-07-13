@@ -125,6 +125,7 @@ class OrganizationPage(webapp.RequestHandler):
                             
         # categorize and populate links
         images = []
+        imageset = set()
         videos = []
         socials = []
         externals = []
@@ -132,6 +133,7 @@ class OrganizationPage(webapp.RequestHandler):
         for l in link:
             if l.link_type == 'primaryImage' or l.link_type == 'image':
                 images.append(l)
+                imageset.add(l.link_url)
             elif l.link_type == 'video':
                 videos.append(l)
             elif l.link_type == 'social':
@@ -142,6 +144,7 @@ class OrganizationPage(webapp.RequestHandler):
                 misc_links.append(l)
 
         template_values['oImages'] = images
+        template_values['oImagesSet'] = imageset
         template_values['videos'] = videos
         for v in videos:
             if v.link_site == "YouTube":
@@ -186,6 +189,7 @@ class PersonPage(webapp.RequestHandler):
 
         # categorize and populate links
         images = []
+        imageset = set()
         videos = []
         socials = []
         externals = []
@@ -193,6 +197,7 @@ class PersonPage(webapp.RequestHandler):
         for l in link:
             if l.link_type == 'primaryImage' or l.link_type == 'image':
                 images.append(l)
+                imageset.add(l.link_url)
             elif l.link_type == 'video':
                 videos.append(l)
             elif l.link_type == 'social':
@@ -203,6 +208,7 @@ class PersonPage(webapp.RequestHandler):
                 misc_links.append(l)
 
         template_values['pImages'] = images
+        template_values['pImagesSet'] = imageset
         template_values['videos'] = videos
         for v in videos:
             if v.link_site == "YouTube":

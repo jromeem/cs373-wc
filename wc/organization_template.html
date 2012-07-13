@@ -28,8 +28,8 @@
 							<th>Embedded Image</th>
 							<td>
 								{% for i in oImages %}
-									{% ifnotequal i.link_url None %}
-										<img src="{{i.link_url}}" /><br />
+									{% ifnotequal i None %}
+										<img src="{{i}}" /><br />
 									{% endifnotequal %}
 								{% endfor %}
 							</td>	
