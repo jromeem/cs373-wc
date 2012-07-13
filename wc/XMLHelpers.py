@@ -13,6 +13,10 @@ from minixsv import pyxsval as xsv
 
 from DataModels import Link, Person, Organization, Crisis
 
+from google.appengine.api.urlfetch import DownloadError 
+import httplib
+import urlparse
+import urllib
 ###############
 # XML HELPERS #
 ###############
@@ -43,11 +47,38 @@ def validXML (xml_instance, xml_schema_filename):
     except:
         return False
 
+def get_server_status_code(url):
+    """
+    Download just the header of a URL and
+    return the server's status code.
+    """
+
+    host, path = urlparse.urlparse(url)[1:3]    # elems [1] and [2]
+    try:
+        conn = httplib.HTTPConnection(host)
+        conn.request('HEAD', path)
+        return conn.getresponse().status
+    except StandardError:
+        return None
+        
+# Uses HTTP request to see if the url given is valid
+# url : url
+def check_url(url):
+    """
+    Check if a URL exists without downloading the whole file.
+    We only check the URL header.
+    """
+    # see also http://stackoverflow.com/questions/2924422
+    good_codes = [httplib.OK, httplib.FOUND]
+    return get_server_status_code(url) in good_codes
+
+
+
 # used for creating the list of links for a given crisis/ppl/org
 # crisis : Elementtree object
 def grabLinks(crisis):
     assert(crisis is not None)
-    
+    imgvid_tags = ["primaryImage","image"]
     for ref in crisis.findall('.//ref'):
         for l in ref:
             new_link = Link()
@@ -57,19 +88,22 @@ def grabLinks(crisis):
                 new_link.link_site = l.find('./site').text
             if (l.find('./title') != None):
                 new_link.title = l.find('./title').text
-            if (l.find('./url') != None):
-                new_link.link_url = l.find('./url').text
+            try:
+				if (l.find('./url') != None):
+					if (l.tag in imgvid_tags):
+						if (check_url(l.find('./url').text)):
+							new_link.link_url = l.find('./url').text
+						else:
+							new_link.link_url = None
+					else:
+						new_link.link_url = l.find('./url').text            
+            except DownloadError:
+            	new_link.link_url = None
+
             if (l.find('./description') != None):
                 new_link.description = l.find('./description').text
             new_link.link_parent = crisis.attrib['id']
 
-            
-            try:
-                q = db.GqlQuery("SELECT title FROM Link WHERE link_url='" + (l.find('./url').text) + "'")
-                if (not q.count()):
-                    new_link.put()
-            except:
-                new_link.put()
                 
     #return link_list
 

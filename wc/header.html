@@ -13,7 +13,9 @@
     <div id="iso">
     	<div id="opaqueLayer">
 		    {% for img in images %}
-		    <div class="item {{ img.link_parent }}"><img class="isoImg" src="{{ img.link_url }}" /></div>
+		    	{% ifnotequal img.link_url None %}
+		    		<div class="item {{ img.link_parent }}"><img class="isoImg" src="{{ img.link_url }}" /></div>
+	    		{% endifnotequal %}
 		    {% endfor %}
 	    </div>
     </div>

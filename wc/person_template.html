@@ -33,9 +33,11 @@
 						<tr>
 							<th>Embedded Image</th>
 								<td>
-									{% for i in pImages %}
-									<img src="{{i.link_url}}" /><br />
-									{% endfor %}
+								{% for i in pImagesSet %}
+									{% ifnotequal i None %}
+										<img src="{{i}}" /><br />
+									{% endifnotequal %}
+								{% endfor %}
 								</td>
 						</tr>
 						<tr>
