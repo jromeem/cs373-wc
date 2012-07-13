@@ -104,13 +104,6 @@ def grabLinks(crisis):
                 new_link.description = l.find('./description').text
             new_link.link_parent = crisis.attrib['id']
 
-            
-            try:
-                q = db.GqlQuery("SELECT title FROM Link WHERE link_url='" + (l.find('./url').text) + "'")
-                if (not q.count()):
-                    new_link.put()
-            except:
-                new_link.put()
                 
     #return link_list
 
