@@ -1,0 +1,58 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module XMLHelpers</title>
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>XMLHelpers</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/joe/Downloads/google_appengine/cs373-wc/wc/XMLHelpers.py">/home/joe/Downloads/google_appengine/cs373-wc/wc/XMLHelpers.py</a></font></td></tr></table>
+    <p><tt>#&nbsp;Group&nbsp;Import&nbsp;Antigravity<br>
+#&nbsp;XMLHelpers.py<br>
+#&nbsp;contains&nbsp;the&nbsp;methods&nbsp;to&nbsp;validate,&nbsp;parse,&nbsp;and&nbsp;build&nbsp;XML<br>
+#&nbsp;it&nbsp;also&nbsp;contains&nbsp;the&nbsp;code&nbsp;to&nbsp;populate&nbsp;the&nbsp;GAE&nbsp;datastore</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="xml.etree.ElementTree.html">xml.etree.ElementTree</a><br>
+</td><td width="25%" valign=top><a href="google.appengine.ext.db.html">google.appengine.ext.db</a><br>
+</td><td width="25%" valign=top><a href="google.appengine.ext.webapp.html">google.appengine.ext.webapp</a><br>
+</td><td width="25%" valign=top><a href="minixsv.pyxsval.html">minixsv.pyxsval</a><br>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-addCrisis"><strong>addCrisis</strong></a>(crisis)</dt><dd><tt>#adds&nbsp;a&nbsp;crisis&nbsp;to&nbsp;the&nbsp;list,&nbsp;where&nbsp;crisis&nbsp;is&nbsp;an&nbsp;element&nbsp;tree</tt></dd></dl>
+ <dl><dt><a name="-addOrganization"><strong>addOrganization</strong></a>(org)</dt><dd><tt>#adds&nbsp;an&nbsp;organization&nbsp;to&nbsp;the&nbsp;list,&nbsp;where&nbsp;org&nbsp;is&nbsp;an&nbsp;element&nbsp;tree</tt></dd></dl>
+ <dl><dt><a name="-addPerson"><strong>addPerson</strong></a>(person)</dt><dd><tt>#adds&nbsp;a&nbsp;person&nbsp;to&nbsp;the&nbsp;list,&nbsp;where&nbsp;person&nbsp;is&nbsp;an&nbsp;element&nbsp;tree</tt></dd></dl>
+ <dl><dt><a name="-buildCrisis"><strong>buildCrisis</strong></a>(crisis, c)</dt><dd><tt>#&nbsp;fills&nbsp;a&nbsp;crisis&nbsp;subtree,&nbsp;where&nbsp;crisis&nbsp;is&nbsp;the&nbsp;root&nbsp;element,&nbsp;and&nbsp;c&nbsp;is&nbsp;a&nbsp;Crisis&nbsp;object</tt></dd></dl>
+ <dl><dt><a name="-buildOrganization"><strong>buildOrganization</strong></a>(organization, o)</dt><dd><tt>#&nbsp;fills&nbsp;an&nbsp;organization&nbsp;subtree,&nbsp;where&nbsp;organization&nbsp;is&nbsp;the&nbsp;root&nbsp;element,&nbsp;and&nbsp;o&nbsp;is&nbsp;an&nbsp;Organization&nbsp;object</tt></dd></dl>
+ <dl><dt><a name="-buildPerson"><strong>buildPerson</strong></a>(person, p)</dt><dd><tt>#&nbsp;fills&nbsp;a&nbsp;person&nbsp;subtree,&nbsp;where&nbsp;person&nbsp;is&nbsp;the&nbsp;root&nbsp;element,&nbsp;and&nbsp;p&nbsp;is&nbsp;a&nbsp;person&nbsp;object</tt></dd></dl>
+ <dl><dt><a name="-buildXML"><strong>buildXML</strong></a>(worldCrises)</dt><dd><tt>#&nbsp;main&nbsp;function&nbsp;that&nbsp;builds&nbsp;xml</tt></dd></dl>
+ <dl><dt><a name="-exportLinks"><strong>exportLinks</strong></a>(c, ref)</dt><dd><tt>############################<br>
+#&nbsp;EXPORT&nbsp;HANDLER&nbsp;FUNCTIONS&nbsp;#<br>
+############################<br>
+#gets&nbsp;links&nbsp;for&nbsp;a&nbsp;crisis&nbsp;from&nbsp;the&nbsp;list&nbsp;and&nbsp;adds&nbsp;them&nbsp;to&nbsp;the&nbsp;element&nbsp;tree</tt></dd></dl>
+ <dl><dt><a name="-grabLinks"><strong>grabLinks</strong></a>(crisis)</dt><dd><tt>#&nbsp;used&nbsp;for&nbsp;creating&nbsp;the&nbsp;list&nbsp;of&nbsp;links&nbsp;for&nbsp;a&nbsp;given&nbsp;crisis/ppl/org<br>
+#&nbsp;crisis&nbsp;:&nbsp;Elementtree&nbsp;object</tt></dd></dl>
+ <dl><dt><a name="-parseXML"><strong>parseXML</strong></a>(in_file)</dt><dd><tt>#&nbsp;in_file&nbsp;:&nbsp;file&nbsp;(XML-validated&nbsp;file)<br>
+#&nbsp;parse&nbsp;and&nbsp;store&nbsp;the&nbsp;XML&nbsp;data&nbsp;in&nbsp;the&nbsp;GAE&nbsp;datastore</tt></dd></dl>
+ <dl><dt><a name="-validXML"><strong>validXML</strong></a>(xml_instance, xml_schema_filename)</dt><dd><tt>############################<br>
+#&nbsp;IMPORT&nbsp;HANDLER&nbsp;FUNCTIONS&nbsp;#<br>
+############################<br>
+#&nbsp;xml_instance&nbsp;:&nbsp;string<br>
+#&nbsp;a&nbsp;string&nbsp;contains&nbsp;the&nbsp;contents&nbsp;of&nbsp;an&nbsp;xml&nbsp;file<br>
+#<br>
+#&nbsp;xml_schema_filename&nbsp;:&nbsp;string<br>
+#&nbsp;the&nbsp;file&nbsp;name&nbsp;of&nbsp;the&nbsp;xml_schema&nbsp;in&nbsp;the&nbsp;project&nbsp;directory</tt></dd></dl>
+</td></tr></table>
+</body></html>
