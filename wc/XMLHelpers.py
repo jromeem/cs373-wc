@@ -206,6 +206,7 @@ def exportLinks(c, ref):
     for l in link_list:
         if not l.link_parent == c.elemid:
             continue
+        
         currRef = ElementTree.SubElement(ref, l.link_type)
         site = ElementTree.SubElement(currRef, "site")
         site.text = l.link_site
