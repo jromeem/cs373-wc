@@ -1,4 +1,6 @@
 import unittest
+from google.appengine.ext import testbed
+
 import XMLHelpers
 import cgi, os
 from google.appengine.ext import webapp
@@ -12,6 +14,15 @@ from minixsv import pyxsval as xsv
 from DataModels import Person, Organization, Crisis, Link
 
 class ExportTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        # First, create an instance of the Testbed class.
+        cls.testbed = testbed.Testbed()
+        # Then activate the testbed, which prepares the service stubs for use.
+        cls.testbed.activate()
+        # Next, declare which service stubs you want to use.
+        cls.testbed.init_datastore_v3_stub()
+          
     
     def test_buildperson1(self):
         tree = Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
@@ -76,6 +87,7 @@ class ExportTests(unittest.TestCase):
                    orgrefs = ["seahorse united", "seahorse liberation front"],
                    crisisrefs = ["swamp famine", "west swamp drought"])
         ptree = SubElement(tree, "person", {"id" : "sally"})  
+        
         XMLHelpers.buildPerson(ptree, person2)
         
         elemid = ptree.attrib['id'],
@@ -312,7 +324,8 @@ class ExportTests(unittest.TestCase):
     
                                     misc = "")
 
-        otree = SubElement(tree, "organization", {"id" : "new1"})     
+        otree = SubElement(tree, "organization", {"id" : "new1"})
+             
         XMLHelpers.buildOrganization(otree, organization3)
         
         elemid = otree.attrib['id'],
@@ -677,7 +690,7 @@ class ExportTests(unittest.TestCase):
                     description = "you really shouldn't go there...",
                     link_site = "a bad place")
         
-        XMLHelpers.link_list.append(link1)
+        link1.put()
         
         r = ElementTree.SubElement(ptree, "ref")
         
@@ -746,7 +759,7 @@ class ExportTests(unittest.TestCase):
 					description = "you really shouldn't go there...",
 					link_site = "a bad place")
 
-		XMLHelpers.link_list.append(link1)
+		link1.put()
 
 		r = ElementTree.SubElement(otree, "ref")
 
@@ -824,7 +837,7 @@ class ExportTests(unittest.TestCase):
                     link_site = "a bad place")
                     
         
-        XMLHelpers.link_list.append(link1)
+        link1.put
         
         r = ElementTree.SubElement(ctree, "ref")
        
@@ -852,8 +865,25 @@ class ExportTests(unittest.TestCase):
                 self.assert_(new_link.description == link1.description)
                 self.assertEqual(new_link.link_parent, link1.link_parent)
                 #self.assert_(False)
-
-class ImportTests(unittest.TestCase):        
+                
+    @classmethod
+    def tearDownClass(cls):
+        #assert(False)
+        cls.testbed.deactivate()
+      
+class ImportTests(unittest.TestCase):
+    
+    
+     
+    @classmethod
+    def setUpClass(cls):
+        # First, create an instance of the Testbed class.
+        cls.testbed = testbed.Testbed()
+        # Then activate the testbed, which prepares the service stubs for use.
+        cls.testbed.activate()
+        # Next, declare which service stubs you want to use.
+        cls.testbed.init_datastore_v3_stub()
+    
     
     def test_validxml1(self):
         xml_file = open("test/test_instance1.xml",'r')
@@ -882,10 +912,11 @@ class ImportTests(unittest.TestCase):
         people = tree.findall(".//person")
         for person in people:
             if (person.find('.//info')):
-                test_list = XMLHelpers.addPerson(person)
+                XMLHelpers.addPerson(person)
+                test_list = db.GqlQuery("SELECT * from Person")
         
-        self.assertEqual(len(test_list),3)
-        test_list[:] = []
+        self.assertEqual(test_list.count(),3)
+        db.delete(db.Query())
         
     def test_addperson2(self):
         xml_file = open("test/test_add2.xml", 'rb')
@@ -893,23 +924,24 @@ class ImportTests(unittest.TestCase):
 
         people = tree.findall(".//person")
         for person in people:
-            if (person.find('.//info')):
-                test_list = XMLHelpers.addPerson(person)
+            if (person.find('.//info') is not None):
+                XMLHelpers.addPerson(person)
+                test_list = db.GqlQuery("SELECT * from Person")
         
-        self.assertEqual(len(test_list),2)
-        test_list[:] = []
+        self.assertEqual(test_list.count(),2)
+        db.delete(db.Query())
         
     def test_addperson3(self):
         xml_file = open("test/test_add3.xml", 'rb')
         tree = ElementTree.parse(xml_file)
-        test_list = []
+        test_list = db.GqlQuery("SELECT * FROM Crisis")
         people = tree.findall(".//person")
         for person in people:
             if (person.find('.//info')):
-                test_list = XMLHelpers.addPerson(person)
-        
-        self.assertEqual(len(test_list),0)
-        test_list[:] = []
+                XMLHelpers.addPerson(person)
+                test_list = db.GqlQuery("SELECT * from Person")
+        self.assertEqual(test_list.count(),0)
+        db.delete(db.Query())
         
         
     def test_addorg1(self):
@@ -919,9 +951,10 @@ class ImportTests(unittest.TestCase):
         orgs = tree.findall(".//organization")
         for org in orgs:
             if (org.find('.//info')):
-                test_list = XMLHelpers.addOrganization(org)
-        self.assertEqual(len(test_list),3)
-        test_list[:] = []
+                XMLHelpers.addOrganization(org)
+                test_list = db.GqlQuery("SELECT * from Organization")
+        self.assertEqual(test_list.count(),3)
+        db.delete(db.Query())
 
     def test_addorg2(self):
         xml_file = open("test/test_add2.xml", 'rb')
@@ -930,20 +963,22 @@ class ImportTests(unittest.TestCase):
         orgs = tree.findall(".//organization")
         for org in orgs:
             if (org.find('.//info')):
-                test_list = XMLHelpers.addOrganization(org)
-        self.assertEqual(len(test_list),2)
-        test_list[:] = []
+                XMLHelpers.addOrganization(org)
+                test_list = db.GqlQuery("SELECT * from Organization")
+        self.assertEqual(test_list.count(),2)
+        db.delete(db.Query())
     
     def test_addorg3(self):
         xml_file = open("test/test_add3.xml", 'rb')
         tree = ElementTree.parse(xml_file)
-        test_list = []
+        test_list = db.GqlQuery("SELECT * FROM Crisis")
         orgs = tree.findall(".//organization")
         for org in orgs:
             if (org.find('.//info')):
-                test_list = XMLHelpers.addOrganization(org)
-        self.assertEqual(len(test_list),0)
-        test_list[:] = []
+                XMLHelpers.addOrganization(org)
+                test_list = db.GqlQuery("SELECT * from Organization")
+        self.assertEqual(test_list.count(),0)
+        db.delete(db.Query())
 
 
     def test_addcrisis1(self):
@@ -953,10 +988,11 @@ class ImportTests(unittest.TestCase):
         crises = tree.findall(".//crisis")
         for crisis in crises:
             if (crisis.find('.//info')):
-                test_list = XMLHelpers.addCrisis(crisis)
+                XMLHelpers.addCrisis(crisis)
+                test_list = db.GqlQuery("SELECT * FROM Crisis")
 
-        self.assertEqual(len(test_list),3)
-        test_list[:] = []
+        self.assertEqual(test_list.count(),3)
+        db.delete(db.Query())
 
     def test_addcrisis2(self):
         xml_file = open("test/test_add2.xml", 'rb')
@@ -965,43 +1001,47 @@ class ImportTests(unittest.TestCase):
 
         for crisis in crises:
             if (crisis.find('.//info')):
-                test_list = XMLHelpers.addCrisis(crisis)
+                XMLHelpers.addCrisis(crisis)
+                test_list = db.GqlQuery("SELECT * FROM Crisis")
 
-        self.assertEqual(len(test_list),2)
-        test_list[:] = []
+        self.assertEqual(test_list.count(),2)
+        db.delete(db.Query())
 
     def test_addcrisis3(self):
         xml_file = open("test/test_add3.xml", 'rb')
         tree = ElementTree.parse(xml_file)
         crises = tree.findall(".//crisis")
-        test_list = []
+        
+        test_list = db.GqlQuery("SELECT * FROM Crisis")
         for crisis in crises:
             if (crisis.find('.//info')):
-                test_list = XMLHelpers.addCrisis(crisis)
-        self.assertEqual(len(test_list),0)
-        test_list[:] = []
+                XMLHelpers.addCrisis(crisis)
+                test_list = db.GqlQuery("SELECT * FROM Crisis")
+        self.assertEqual(test_list.count(),0)
+        db.delete(db.Query())
 
             
     def test_grablinks1(self):
-        XMLHelpers.clearGlobals()
+        db.delete(db.Query())
         crisis = Element("crisis", {"id" : "wow"})
         ref = SubElement(crisis, "ref")
         img = SubElement(ref, "image")
         site = SubElement(img, "site")
-        site.text = "i'm a site"
+        site.text = "http://img.timeinc.net"
         title = SubElement(img, "title")
         title.text = "i'm a title"
         url = SubElement(img, "url")
-        url.text = "i'm a url"
+        url.text = "http://img.timeinc.net/time/photoessays/2010/haiti_time_z/haiti_time_z_01.jpg"
         description = SubElement(img, "description")
         description.text = "i'm a description"
         
-        temp = XMLHelpers.grabLinks(crisis)
-        self.assert_(temp[0].link_site == "i'm a site")
-        XMLHelpers.clearGlobals()
+        XMLHelpers.grabLinks(crisis)
+        temp = db.GqlQuery("SELECT * FROM Link WHERE link_parent ='"+crisis.attrib['id']+"'")
+        self.assertEqual(temp[0].link_site, "http://img.timeinc.net")
+        db.delete(db.Query())
         
     def test_grablinks2(self):
-        XMLHelpers.clearGlobals()
+        db.delete(db.Query())
         person = Element("person", {"id" : "globetrotter"})
         ref = SubElement(person, "ref")
         img = SubElement(ref, "image")
@@ -1010,7 +1050,7 @@ class ImportTests(unittest.TestCase):
         title = SubElement(img, "title")
         title.text = "i'm a title"
         url = SubElement(img, "url")
-        url.text = "i'm a url"
+        url.text = "http://img.timeinc.net/time/photoessays/2010/haiti_time_z/haiti_time_z_01.jpg"
         description = SubElement(img, "description")
         description.text = "i'm a description"
         
@@ -1024,14 +1064,20 @@ class ImportTests(unittest.TestCase):
         description2 = SubElement(img, "description")
         description2.text = "the cats are dancing!!!"
         
-        temp = XMLHelpers.grabLinks(person)
-        self.assert_(len(temp) == 2)
-        XMLHelpers.clearGlobals()
+        XMLHelpers.grabLinks(person)
+        temp = db.GqlQuery("SELECT * FROM Link WHERE link_parent ='"+person.attrib['id']+"'")
+        self.assert_(temp.count() == 2)
+        db.delete(db.Query())
         
     def test_grablinks3(self):
-        XMLHelpers.clearGlobals()
+        db.delete(db.Query())
         person = Element("person", {"id" : "globetrotter"})
-        temp = XMLHelpers.grabLinks(person)
-        self.assert_(len(temp) == 0)
-        XMLHelpers.clearGlobals()
+        XMLHelpers.grabLinks(person)
+        temp = db.GqlQuery("SELECT * FROM Link WHERE link_parent ='"+person.attrib['id']+"'")
+        self.assert_(temp.count() == 0)
+        db.delete(db.Query())
         
+    @classmethod
+    def tearDownClass(cls):
+        #assert(False)
+        cls.testbed.deactivate()

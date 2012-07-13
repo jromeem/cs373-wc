@@ -13,14 +13,19 @@ from minixsv import pyxsval as xsv
 
 from DataModels import Link, Person, Organization, Crisis
 
+from google.appengine.api.urlfetch import DownloadError 
+import httplib
+import urlparse
+import urllib
 ###############
 # XML HELPERS #
 ###############
 
-crisis_list = []
-person_list = []
-organization_list = []
-link_list = []
+# global lists used only for phase 1
+#crisis_list = []
+#person_list = []
+#organization_list = []
+#link_list = []
 
 ############################
 # IMPORT HANDLER FUNCTIONS #
@@ -31,6 +36,9 @@ link_list = []
 # xml_schema_filename : string
 # the file name of the xml_schema in the project directory
 def validXML (xml_instance, xml_schema_filename):
+    assert(xml_instance is not None)
+    assert(xml_schema_filename is not None)
+    
     try:
         etw = xsv.parseAndValidateXmlInputString(xml_instance, xml_schema_filename,xmlIfClass=xsv.XMLIF_ELEMENTTREE)
         et = etw.getTree()
@@ -39,9 +47,38 @@ def validXML (xml_instance, xml_schema_filename):
     except:
         return False
 
+def get_server_status_code(url):
+    """
+    Download just the header of a URL and
+    return the server's status code.
+    """
+
+    host, path = urlparse.urlparse(url)[1:3]    # elems [1] and [2]
+    try:
+        conn = httplib.HTTPConnection(host)
+        conn.request('HEAD', path)
+        return conn.getresponse().status
+    except StandardError:
+        return None
+        
+# Uses HTTP request to see if the url given is valid
+# url : url
+def check_url(url):
+    """
+    Check if a URL exists without downloading the whole file.
+    We only check the URL header.
+    """
+    # see also http://stackoverflow.com/questions/2924422
+    good_codes = [httplib.OK, httplib.FOUND]
+    return get_server_status_code(url) in good_codes
+
+
+
 # used for creating the list of links for a given crisis/ppl/org
 # crisis : Elementtree object
 def grabLinks(crisis):
+    assert(crisis is not None)
+    imgvid_tags = ["primaryImage","image"]
     for ref in crisis.findall('.//ref'):
         for l in ref:
             new_link = Link()
@@ -51,84 +88,112 @@ def grabLinks(crisis):
                 new_link.link_site = l.find('./site').text
             if (l.find('./title') != None):
                 new_link.title = l.find('./title').text
-            if (l.find('./url') != None):
-                new_link.link_url = l.find('./url').text
+            try:
+				if (l.find('./url') != None):
+					if (l.tag in imgvid_tags):
+						if (check_url(l.find('./url').text)):
+							new_link.link_url = l.find('./url').text
+						else:
+							new_link.link_url = None
+					else:
+						new_link.link_url = l.find('./url').text            
+            except DownloadError:
+            	new_link.link_url = None
+
             if (l.find('./description') != None):
                 new_link.description = l.find('./description').text
             new_link.link_parent = crisis.attrib['id']
-            #new_link.put()
-            link_list.append(new_link)
-    return link_list
+
+            new_link.put()
+    #return link_list
 
 #adds a crisis to the list, where crisis is an element tree
 def addCrisis(crisis):
+    assert(crisis is not None)
+    
     if (crisis.find('.//info')):
         info = crisis.find('.//info')
         grabLinks(crisis)
         
         c = Crisis(
                    elemid = crisis.attrib['id'],
-                   name = crisis.find('.//name').text,
-                   misc = crisis.find('.//misc').text,
+                   name = crisis.find('.//name').text if crisis.find('.//name').text != None else "",
+                   misc = crisis.find('.//misc').text if crisis.find('.//misc').text != None else "",
                    
-                   info_history = info.find('.//history').text,
-                   info_help = info.find('.//help').text,
-                   info_resources = info.find('.//resources').text,
-                   info_type = info.find('.//type').text,
+                   info_history = info.find('.//history').text if info.find('.//history').text != None else "",
+                   info_help = info.find('.//help').text if info.find('.//help').text != None else "",
+                   info_resources = info.find('.//resources').text if info.find('.//resources').text != None else "",
+                   info_type = info.find('.//type').text if info.find('.//type').text != None else "",
                    
-                   date_time = info.find('.//time').find('.//time').text,
+                   date_time = info.find('.//time').find('.//time').text if info.find('.//time').find('.//time').text != None else "",
                    date_day = int(info.find('.//time').find('.//day').text),
                    date_month = int(info.find('.//time').find('.//month').text),
                    date_year = int(info.find('.//time').find('.//year').text),
-                   date_misc = info.find('.//time').find('.//misc').text,
+                   date_misc = info.find('.//time').find('.//misc').text if info.find('.//time').find('.//misc').text != None else "",
                    
-                   location_city = info.find('.//loc').find('.//city').text,
-                   location_region = info.find('.//loc').find('.//region').text,
-                   location_country = info.find('.//loc').find('.//country').text,
+                   location_city = info.find('.//loc').find('.//city').text if info.find('.//loc').find('.//city').text != None else "",
+                   location_region = info.find('.//loc').find('.//region').text if info.find('.//loc').find('.//region').text != None else "",
+                   location_country = info.find('.//loc').find('.//country').text if info.find('.//loc').find('.//country').text != None else "",
                    
                    impact_human_deaths = int(info.find('.//impact').find('.//human').find('.//deaths').text),
                    impact_human_displaced = int(info.find('.//impact').find('.//human').find('.//displaced').text),
                    impact_human_injured = int(info.find('.//impact').find('.//human').find('.//injured').text),
                    impact_human_missing = int(info.find('.//impact').find('.//human').find('.//missing').text),
-                   impact_human_misc = info.find('.//impact').find('.//human').find('.//misc').text,
+                   impact_human_misc = info.find('.//impact').find('.//human').find('.//misc').text if info.find('.//impact').find('.//human').find('.//misc').text != None else "",
                    
                    impact_economic_amount = int(info.find('.//impact').find('.//economic').find('.//amount').text),
                    impact_economic_currency = info.find('.//impact').find('.//economic').find('.//currency').text,
-                   impact_economic_misc = info.find('.//impact').find('.//economic').find('.//misc').text,
+                   impact_economic_misc = info.find('.//impact').find('.//economic').find('.//misc').text if info.find('.//impact').find('.//economic').find('.//misc').text != None else "",
                    
                    orgrefs = [x.attrib['idref'] for x in crisis.findall('.//org')],
                    personrefs = [x.attrib['idref'] for x in crisis.findall('.//person')]
                    )
-        crisis_list.append(c)
-        #c.put
-        return crisis_list
+
+        
+        try:
+            q = db.GqlQuery("SELECT name FROM Crisis WHERE elemid='" + crisis.attrib['id'] + "'")
+            if (not q.count()):
+                c.put()
+        except:
+            c.put()
+
+        #return crisis_list
     
 #adds a person to the list, where person is an element tree
 def addPerson(person):
+    assert(person is not None)
+    
     if (person.find('.//info')):
         grabLinks(person)
         p = Person(
                    elemid = person.attrib['id'],
-                   name = person.find('.//name').text,
-                   info_type = person.find('.//info').find('.//type').text,
-                   info_birthdate_time = person.find('.//info').find('.//birthdate').find('.//time').text,
-                   info_birthdate_day = int(person.find('.//info').find('.//birthdate').find('.//day').text),
-                   info_birthdate_month = int(person.find('.//info').find('.//birthdate').find('.//month').text),
-                   info_birthdate_year = int(person.find('.//info').find('.//birthdate').find('.//year').text),
-                   info_birthdate_misc = person.find('.//info').find('.//birthdate').find('.//misc').text,
-                   info_nationality = person.find('.//info').find('.//nationality').text,
-                   info_biography = person.find('.//info').find('.//biography').text,
+                   name = person.find('.//name').text if person.find('.//name').text != None else "",
+                   info_type = person.find('.//info').find('.//type').text if person.find('.//info').find('.//type').text != None else "",
+                   info_birthdate_time = person.find('.//info').find('.//birthdate').find('.//time').text if person.find('.//info').find('.//birthdate').find('.//time').text != None else "",
+                   info_birthdate_day = int(person.find('.//info').find('.//birthdate').find('.//day').text) if person.find('.//info').find('.//birthdate').find('.//day').text != None else "",
+                   info_birthdate_month = int(person.find('.//info').find('.//birthdate').find('.//month').text) if person.find('.//info').find('.//birthdate').find('.//month').text != None else "",
+                   info_birthdate_year = int(person.find('.//info').find('.//birthdate').find('.//year').text) if person.find('.//info').find('.//birthdate').find('.//year').text != None else "",
+                   info_birthdate_misc = person.find('.//info').find('.//birthdate').find('.//misc').text if person.find('.//info').find('.//birthdate').find('.//misc').text != None else "",
+                   info_nationality = person.find('.//info').find('.//nationality').text if person.find('.//info').find('.//nationality').text != None else "",
+                   info_biography = person.find('.//info').find('.//biography').text if person.find('.//info').find('.//biography').text != None else "",
                    
                    orgrefs = [x.attrib['idref'] for x in person.findall('.//org')],
                    crisisrefs = [x.attrib['idref'] for x in person.findall('.//crisis')]
                    )
-                   
-        person_list.append(p)
-        #p.put()
-        return person_list
+            
+        try:       
+            q = db.GqlQuery("SELECT name FROM Person WHERE elemid='" + person.attrib['id'] + "'")
+            if (not q.count()):
+                p.put()
+        except:
+            p.put()
+            
+        #return person_list
         
 #adds an organization to the list, where org is an element tree
 def addOrganization(org):
+    assert (org is not None)    
+    
     if org.find('.//info'):
         grabLinks(org)
         info = org.find('.//info')
@@ -137,48 +202,44 @@ def addOrganization(org):
         loc = info.find('.//loc')
         o = Organization(
                          elemid = org.attrib['id'],
-                         name = org.find('.//name').text,
-                         misc = org.find('.//misc').text,
+                         name = org.find('.//name').text if org.find('.//name').text != None else "",
+                         misc = org.find('.//misc').text if org.find('.//misc').text != None else "",
                          
-                         info_type = info.find('.//type').text,
-                         info_history = info.find('.//history').text,
+                         info_type = info.find('.//type').text if info.find('.//type').text != None else "",
+                         info_history = info.find('.//history').text if info.find('.//history').text != None else "",
 
-                         info_contacts_phone = contact.find('.//phone').text,
-                         info_contacts_email = contact.find('.//email').text,
-                         info_contacts_address = mail.find('.//address').text,
-                         info_contacts_city = mail.find('.//city').text,
-                         info_contacts_state = mail.find('.//state').text,
-                         info_contacts_country = mail.find('.//country').text,
-                         info_contacts_zip = mail.find('.//zip').text,
+                         info_contacts_phone = contact.find('.//phone').text if contact.find('.//phone').text != None else "",
+                         info_contacts_email = contact.find('.//email').text if contact.find('.//email').text != None else "",
+                         info_contacts_address = mail.find('.//address').text if mail.find('.//address').text != None else "",
+                         info_contacts_city = mail.find('.//city').text if mail.find('.//city').text != None else "",
+                         info_contacts_state = mail.find('.//state').text if mail.find('.//state').text != None else "",
+                         info_contacts_country = mail.find('.//country').text if mail.find('.//country').text != None else "",
+                         info_contacts_zip = mail.find('.//zip').text if mail.find('.//zip').text != None else "",
 
-                         info_loc_city = loc.find('.//city').text,
-                         info_loc_region = loc.find('.//region').text,
-                         info_loc_country = loc.find('.//country').text,
+                         info_loc_city = loc.find('.//city').text if loc.find('.//city').text != None else "",
+                         info_loc_region = loc.find('.//region').text if loc.find('.//region').text != None else "",
+                         info_loc_country = loc.find('.//country').text if loc.find('.//country').text != None else "",
                          
                          personrefs = [x.attrib['idref'] for x in org.findall('.//person')],
                          crisisrefs = [x.attrib['idref'] for x in org.findall('.//crisis')]
                          )
-        organization_list.append(o)
-        #o.put()
-        return organization_list
+        
+        try:
+            q = db.GqlQuery("SELECT name FROM Organization WHERE elemid='" + org.attrib['id'] + "'")
+            if (not q.count()):
+                o.put()
+        except:
+            o.put()
+            
+        #return organization_list
 
-#clears the global lists (temporary fix until db integration)
-def clearGlobals():
-    # to prevent multiple copy uploads
-    global crisis_list
-    global person_list
-    global organization_list
-    global link_list
-    crisis_list = []
-    person_list = []
-    organization_list = []
-    link_list = []
 
 # in_file : file (XML-validated file)
 # parse and store the XML data in the GAE datastore
 def parseXML(in_file):
+    assert(in_file is not None)
     
-    clearGlobals()
+    db.delete(db.Query())
 
     tree = ElementTree.parse(in_file)
         
@@ -203,10 +264,12 @@ def parseXML(in_file):
 ############################
 #gets links for a crisis from the list and adds them to the element tree
 def exportLinks(c, ref):
+    assert(c is not None)
+    assert(ref is not None)
+
+    link_list = db.GqlQuery("SELECT * FROM Link WHERE link_parent='" + c.elemid+"'")
     for l in link_list:
-        if not l.link_parent == c.elemid:
-            continue
-        
+
         currRef = ElementTree.SubElement(ref, l.link_type)
         site = ElementTree.SubElement(currRef, "site")
         site.text = l.link_site
@@ -219,6 +282,9 @@ def exportLinks(c, ref):
 
 # fills a crisis subtree, where crisis is the root element, and c is a Crisis object
 def buildCrisis(crisis, c):
+    assert(crisis is not None)
+    assert(c is not None)
+
     name = ElementTree.SubElement(crisis, "name")
     name.text = c.name
 
@@ -288,6 +354,9 @@ def buildCrisis(crisis, c):
 
 # fills an organization subtree, where organization is the root element, and o is an Organization object
 def buildOrganization(organization, o):
+    assert(organization is not None)
+    assert(o is not None)    
+    
     name = ElementTree.SubElement(organization, "name")
     name.text = o.name
 
@@ -336,6 +405,9 @@ def buildOrganization(organization, o):
 
 # fills a person subtree, where person is the root element, and p is a person object
 def buildPerson(person, p):
+    assert(person is not None)
+    assert(p is not None)
+    
     name = ElementTree.SubElement(person, "name")
     name.text = p.name
     
@@ -373,18 +445,22 @@ def buildPerson(person, p):
 
 # main function that builds xml
 def buildXML(worldCrises):
+    assert(worldCrises is not None)
     
     #build sub-trees for each crisis
+    crisis_list = db.GqlQuery("SELECT * FROM Crisis")
     for c in crisis_list:
         crisis = ElementTree.SubElement(worldCrises, "crisis", {"id" : c.elemid})
         buildCrisis(crisis, c)
         
     #build sub-trees for each organization
+    organization_list = db.GqlQuery("SELECT * FROM Organization")
     for o in organization_list:
         organization = ElementTree.SubElement(worldCrises, "organization", {"id" : o.elemid})
         buildOrganization(organization, o)
 
     #build sub-trees for each person
+    person_list = db.GqlQuery("SELECT * FROM Person")
     for p in person_list:
         person = ElementTree.SubElement(worldCrises, "person", {"id" : p.elemid})
         buildPerson(person, p)
