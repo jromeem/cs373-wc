@@ -1027,17 +1027,17 @@ class ImportTests(unittest.TestCase):
         ref = SubElement(crisis, "ref")
         img = SubElement(ref, "image")
         site = SubElement(img, "site")
-        site.text = "i'm a site"
+        site.text = "http://img.timeinc.net"
         title = SubElement(img, "title")
         title.text = "i'm a title"
         url = SubElement(img, "url")
-        url.text = "i'm a url"
+        url.text = "http://img.timeinc.net/time/photoessays/2010/haiti_time_z/haiti_time_z_01.jpg"
         description = SubElement(img, "description")
         description.text = "i'm a description"
         
         XMLHelpers.grabLinks(crisis)
         temp = db.GqlQuery("SELECT * FROM Link WHERE link_parent ='"+crisis.attrib['id']+"'")
-        self.assertEqual(temp[0].link_site, "i'm a site")
+        self.assertEqual(temp[0].link_site, "http://img.timeinc.net")
         db.delete(db.Query())
         
     def test_grablinks2(self):
@@ -1050,7 +1050,7 @@ class ImportTests(unittest.TestCase):
         title = SubElement(img, "title")
         title.text = "i'm a title"
         url = SubElement(img, "url")
-        url.text = "i'm a url"
+        url.text = "http://img.timeinc.net/time/photoessays/2010/haiti_time_z/haiti_time_z_01.jpg"
         description = SubElement(img, "description")
         description.text = "i'm a description"
         

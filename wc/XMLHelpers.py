@@ -104,7 +104,7 @@ def grabLinks(crisis):
                 new_link.description = l.find('./description').text
             new_link.link_parent = crisis.attrib['id']
 
-                
+            new_link.put()
     #return link_list
 
 #adds a crisis to the list, where crisis is an element tree
