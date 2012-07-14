@@ -268,16 +268,18 @@ def exportLinks(c, ref):
     assert(ref is not None)
 
     link_list = db.GqlQuery("SELECT * FROM Link WHERE link_parent='" + c.elemid+"'")
-    for l in link_list:
-        currRef = ElementTree.SubElement(ref, l.link_type)
-        site = ElementTree.SubElement(currRef, "site")
-        site.text = l.link_site
-        title = ElementTree.SubElement(currRef, "title")
-        title.text = l.title
-        url = ElementTree.SubElement(currRef, "url")
-        url.text = l.link_url
-        description = ElementTree.SubElement(currRef, "description")
-        description.text = l.description
+    for t in ['primaryImage', 'image', 'video', 'social', 'ext']:
+        for l in link_list:
+            if l.link_type == t:
+                currRef = ElementTree.SubElement(ref, l.link_type)
+                site = ElementTree.SubElement(currRef, "site")
+                site.text = l.link_site
+                title = ElementTree.SubElement(currRef, "title")
+                title.text = l.title
+                url = ElementTree.SubElement(currRef, "url")
+                url.text = l.link_url
+                description = ElementTree.SubElement(currRef, "description")
+                description.text = l.description
 
 # fills a crisis subtree, where crisis is the root element, and c is a Crisis object
 def buildCrisis(crisis, c):
