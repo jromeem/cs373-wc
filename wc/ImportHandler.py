@@ -50,8 +50,10 @@ class ImportPage(webapp.RequestHandler):
 
         # check if file was uploaded
         if not file_item.filename and not url:
-            message = 'Error: No file was uploaded. Try again? </br>'
-        
+            message = 'Error: No file was uploaded. Try again?</br>'
+            
+        elif file_item.filename and url:
+            message = 'Error: Please upload only one document.</br>'
         else:
             try:
                 if not url:
@@ -61,7 +63,6 @@ class ImportPage(webapp.RequestHandler):
                     content = form.getvalue('importfile')
                 else:
                     webfile = urllib2.urlopen(url)
-                    
                     content = webfile.read()
                     message = 'Content from "' + url + '" was accessed successfully, '
                     in_file = webfile
