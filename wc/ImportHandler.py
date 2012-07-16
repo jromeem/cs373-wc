@@ -33,7 +33,10 @@ class ImportPage(webapp.RequestHandler):
                 
                 Or provide a URL</br>
                 <input id="inurl" name="inurl" type="text"><br /><br />
+                <input type="hidden" name="check" value="0" />
+                <input type="checkbox" name="check" value="1" /> Check if image URLs are valid<br /><br />
                 <input value="Import" type="submit" />
+                
               </div>
             </form><br />
             <a href="/">Home</a>
@@ -46,8 +49,12 @@ class ImportPage(webapp.RequestHandler):
         form = cgi.FieldStorage()
         file_item = form['importfile']
         url = form['inurl'].value
+        check = 0
+        try:	
+        	check = form['check'].value
+        except AttributeError:
+        	check = 1
         
-
         # check if file was uploaded
         if not file_item.filename and not url:
             message = 'Error: No file was uploaded. Try again?</br>'
@@ -78,7 +85,7 @@ class ImportPage(webapp.RequestHandler):
                     message += "and is a valid XML file!</br>"
 
                     # call function to parse and store into datastore
-                    parseXML(in_file)
+                    parseXML(in_file, check)
             except urllib2.URLError, ue:
                 message = 'URLERROR: ' + str(ue)
             except ValueError, ve:
@@ -99,6 +106,8 @@ class ImportPage(webapp.RequestHandler):
                 <input id="importfile" name="importfile" type="file"><br /><br />
                 Or provide a URL</br>
                 <input id="inurl" name="inurl" type="text"><br /><br />
+                <input type="hidden" name="check" value="0" />
+                <input type="checkbox" name="check" value="1" /> Check if image URLs are valid<br /><br />
                 <input value="Import" type="submit" />
               </div>
             </form><br />

@@ -26,7 +26,7 @@ import urllib
 #person_list = []
 #organization_list = []
 #link_list = []
-
+check = 0;
 ############################
 # IMPORT HANDLER FUNCTIONS #
 ############################
@@ -78,6 +78,7 @@ def check_url(url):
 # crisis : Elementtree object
 def grabLinks(crisis):
     assert(crisis is not None)
+    
     imgvid_tags = ["primaryImage","image"]
     for ref in crisis.findall('.//ref'):
         for l in ref:
@@ -90,7 +91,9 @@ def grabLinks(crisis):
                 new_link.title = l.find('./title').text
             try:
 				if (l.find('./url') != None):
-					if (l.tag in imgvid_tags):
+					
+					if (l.tag in imgvid_tags and check == 1):
+						
 						if (check_url(l.find('./url').text)):
 							new_link.link_url = l.find('./url').text
 						else:
@@ -99,14 +102,16 @@ def grabLinks(crisis):
 						new_link.link_url = l.find('./url').text            
             except DownloadError:
             	new_link.link_url = None
-
+            except AttributeError:
+            	new_link.link_url = None
             if (l.find('./description') != None):
                 new_link.description = l.find('./description').text
             new_link.link_parent = crisis.attrib['id']
 
             new_link.put()
     #return link_list
-
+	
+	
 #adds a crisis to the list, where crisis is an element tree
 def addCrisis(crisis):
     assert(crisis is not None)
@@ -236,9 +241,12 @@ def addOrganization(org):
 
 # in_file : file (XML-validated file)
 # parse and store the XML data in the GAE datastore
-def parseXML(in_file):
+def parseXML(in_file, chk):
     assert(in_file is not None)
-    
+    assert(chk is not None)
+    global check
+    check = chk
+
     db.delete(db.Query())
 
     tree = ElementTree.parse(in_file)
@@ -258,7 +266,8 @@ def parseXML(in_file):
     #build organization list
     for org in orgs:
         addOrganization(org)
-
+    
+    check = 0
 ############################
 # EXPORT HANDLER FUNCTIONS #
 ############################
