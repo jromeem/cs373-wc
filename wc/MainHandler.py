@@ -48,7 +48,6 @@ def link_values(template_values, link):
     template_values['externals'] = externals
     template_values['misc_links'] = misc_links
     template_values['isNotEmpty_misc'] = misc_links != []
-    template_values['headerNote'] = headerNote
 
 
 class MainPage(webapp.RequestHandler):
@@ -95,46 +94,13 @@ class CrisisPage(webapp.RequestHandler):
                     dict_personrefs[ppl_elemid] = p.name
 
         template_values = { 'crisis'     : crisis,
-                            'link'       : link,
+                            'link'       : link,                            
+                            'headerNote'  : headerNote,
                             'orgrefs'    : dict_orgrefs,
                             'personrefs' : dict_personrefs }
         
         link_values(template_values, link)
         
-        """
-        # categorize and populate links
-        images = []
-        imageset = set()
-        videos = []
-        socials = []
-        externals = []
-        misc_links = []
-        for l in link:
-            if l.link_type == 'primaryImage' or l.link_type == 'image':
-                images.append(l)
-                imageset.add(l.link_url)
-            elif l.link_type == 'video':
-                videos.append(l)
-            elif l.link_type == 'social':
-                socials.append(l)
-            elif l.link_type == 'ext':
-                externals.append(l)
-            else:
-                misc_links.append(l)
-
-        template_values['cImages'] = images
-        template_values['cImagesSet'] = imageset
-        template_values['videos'] = videos
-        for v in videos:
-            if v.link_site == "YouTube":
-                template_values['youtube_embed'] = v.link_url[-11:]
-        template_values['socials'] = socials
-        template_values['externals'] = externals
-        template_values['misc_links'] = misc_links
-        template_values['isNotEmpty_misc'] = misc_links != []
-        template_values['headerNote'] = headerNote
-        """
-                
         path = os.path.join(os.path.dirname(__file__), "crisis_template.html")
         self.response.out.write(template.render(path, template_values))     
 
@@ -168,41 +134,12 @@ class OrganizationPage(webapp.RequestHandler):
         
         template_values = { 'organization': org,
                             'link'        : link,
+                            'headerNote'  : headerNote,
                             'crisisrefs'  : dict_crisisrefs,
                             'personrefs'  : dict_personrefs }
-                            
-        # categorize and populate links
-        images = []
-        imageset = set()
-        videos = []
-        socials = []
-        externals = []
-        misc_links = []
-        for l in link:
-            if l.link_type == 'primaryImage' or l.link_type == 'image':
-                images.append(l)
-                imageset.add(l.link_url)
-            elif l.link_type == 'video':
-                videos.append(l)
-            elif l.link_type == 'social':
-                socials.append(l)
-            elif l.link_type == 'ext':
-                externals.append(l)
-            else:
-                misc_links.append(l)
 
-        template_values['oImages'] = images
-        template_values['oImagesSet'] = imageset
-        template_values['videos'] = videos
-        for v in videos:
-            if v.link_site == "YouTube":
-                template_values['youtube_embed'] = v.link_url[-11:]
-        template_values['socials'] = socials
-        template_values['externals'] = externals
-        template_values['misc_links'] = misc_links
-        template_values['isNotEmpty_misc'] = misc_links != []
-        template_values['headerNote'] = headerNote
-                
+        link_values(template_values, link)
+        
         path = os.path.join(os.path.dirname(__file__), "organization_template.html")
         self.response.out.write(template.render(path, template_values))
         
@@ -231,41 +168,11 @@ class PersonPage(webapp.RequestHandler):
 
         template_values = { 'person': person,
                             'link'  : link,
+                            'headerNote'  : headerNote,
                             'org_references' : org_references,
                             'crisis_references' : crisis_references }
 
-
-        # categorize and populate links
-        images = []
-        imageset = set()
-        videos = []
-        socials = []
-        externals = []
-        misc_links = []
-        for l in link:
-            if l.link_type == 'primaryImage' or l.link_type == 'image':
-                images.append(l)
-                imageset.add(l.link_url)
-            elif l.link_type == 'video':
-                videos.append(l)
-            elif l.link_type == 'social':
-                socials.append(l)
-            elif l.link_type == 'ext':
-                externals.append(l)
-            else:
-                misc_links.append(l)
-
-        template_values['pImages'] = images
-        template_values['pImagesSet'] = imageset
-        template_values['videos'] = videos
-        for v in videos:
-            if v.link_site == "YouTube":
-                template_values['youtube_embed'] = v.link_url[-11:]
-        template_values['socials'] = socials
-        template_values['externals'] = externals
-        template_values['misc_links'] = misc_links
-        template_values['isNotEmpty_misc'] = misc_links != []
-        template_values['headerNote'] = headerNote
+        link_values(template_values, link)
                 
         path = os.path.join(os.path.dirname(__file__), "person_template.html")
         self.response.out.write(template.render(path, template_values))  
