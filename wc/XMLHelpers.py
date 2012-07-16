@@ -78,7 +78,7 @@ def check_url(url):
 # crisis : Elementtree object
 def grabLinks(crisis):
     assert(crisis is not None)
-    global check
+    
     imgvid_tags = ["primaryImage","image"]
     for ref in crisis.findall('.//ref'):
         for l in ref:
