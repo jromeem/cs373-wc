@@ -873,8 +873,6 @@ class ExportTests(unittest.TestCase):
       
 class ImportTests(unittest.TestCase):
     
-    
-     
     @classmethod
     def setUpClass(cls):
         # First, create an instance of the Testbed class.
@@ -882,8 +880,7 @@ class ImportTests(unittest.TestCase):
         # Then activate the testbed, which prepares the service stubs for use.
         cls.testbed.activate()
         # Next, declare which service stubs you want to use.
-        cls.testbed.init_datastore_v3_stub()
-    
+        cls.testbed.init_datastore_v3_stub(
     
     def test_validxml1(self):
         xml_file = open("test/test_instance1.xml",'r')
