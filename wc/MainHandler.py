@@ -14,8 +14,41 @@ template.register_template_library('django.contrib.humanize.templatetags.humaniz
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
 from DataModels import Crisis, Organization, Person
-
 import django.contrib.humanize.templatetags.humanize
+
+# mutator for template values
+# extracts the values in link and categorizes and stores them in template_values
+def link_values(template_values, link):
+    images = []
+    imageset = set()
+    videos = []
+    socials = []
+    externals = []
+    misc_links = []
+    for l in link:
+        if l.link_type == 'primaryImage' or l.link_type == 'image':
+            images.append(l)
+            imageset.add(l.link_url)
+        elif l.link_type == 'video':
+            videos.append(l)
+        elif l.link_type == 'social':
+            socials.append(l)
+        elif l.link_type == 'ext':
+            externals.append(l)
+        else:
+            misc_links.append(l)
+
+    template_values['cImages'] = images
+    template_values['cImagesSet'] = imageset
+    template_values['videos'] = videos
+    for v in videos:
+        if v.link_site == "YouTube":
+            template_values['youtube_embed'] = v.link_url[-11:]
+    template_values['socials'] = socials
+    template_values['externals'] = externals
+    template_values['misc_links'] = misc_links
+    template_values['isNotEmpty_misc'] = misc_links != []
+    template_values['headerNote'] = headerNote
 
 
 class MainPage(webapp.RequestHandler):
@@ -65,7 +98,10 @@ class CrisisPage(webapp.RequestHandler):
                             'link'       : link,
                             'orgrefs'    : dict_orgrefs,
                             'personrefs' : dict_personrefs }
-
+        
+        link_values(template_values, link)
+        
+        """
         # categorize and populate links
         images = []
         imageset = set()
@@ -97,6 +133,7 @@ class CrisisPage(webapp.RequestHandler):
         template_values['misc_links'] = misc_links
         template_values['isNotEmpty_misc'] = misc_links != []
         template_values['headerNote'] = headerNote
+        """
                 
         path = os.path.join(os.path.dirname(__file__), "crisis_template.html")
         self.response.out.write(template.render(path, template_values))     
@@ -195,7 +232,7 @@ class PersonPage(webapp.RequestHandler):
         template_values = { 'person': person,
                             'link'  : link,
                             'org_references' : org_references,
-                            'crisis_references' : crisis_references}
+                            'crisis_references' : crisis_references }
 
 
         # categorize and populate links
