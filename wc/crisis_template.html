@@ -61,6 +61,7 @@
 										  				{% else %}
 														{{ x.impact_economic_amount|intcomma }} {{ x.impact_economic_currency }}
 														{% endifequal %}</td></tr>
+						<tr><th>History</th><td>{% ifnotequal x.info_history "" %}{{ x.info_history }}{% else %}Unknown{% endifnotequal %}</td></tr>
 						<tr><th>Resources Needed</th><td>{{ x.info_resources }}</td></tr>
 						<tr><th>Ways to Help</th><td>{{ x.info_help }}</td></tr>
 						<tr>
