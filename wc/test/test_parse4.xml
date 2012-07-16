@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<worldCrises xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="wc.xsd">
+    <crisis id="ID000">
+        <name>name0</name>
+        <info>
+            <history>history0</history>
+            <help>help0</help>
+            <resources>resources0</resources>
+            <type>type0</type>
+            <time>
+                <time>time0</time>
+                <day>0</day>
+                <month>0</month>
+                <year>0</year>
+                <misc>misc0</misc>
+            </time>
+            <loc>
+                <city>city0</city>
+                <region>region0</region>
+                <country>country0</country>
+            </loc>
+            <impact>
+                <human>
+                    <deaths>0</deaths>
+                    <displaced>0</displaced>
+                    <injured>0</injured>
+                    <missing>0</missing>
+                    <misc>misc1</misc>
+                </human>
+                <economic>
+                    <amount>0</amount>
+                    <currency>currency0</currency>
+                    <misc>misc2</misc>
+                </economic>
+            </impact>
+        </info>
+        <ref>
+            <primaryImage>
+                <site>site0</site>
+                <title>title0</title>
+                <url>aaaa</url>
+            </primaryImage>
+            <image>
+                <site>site1</site>
+                <title>title1</title>
+                <url>aaaa</url>
+            </image>
+            <video>
+                <site>site4</site>
+                <title>title4</title>
+                <url>https://www.google.com</url>
+            </video>
+            <social>
+                <site>site7</site>
+                <title>title7</title>
+                <url>https://www.google.com</url>
+            </social>
+            <ext>
+                <site>site10</site>
+                <title>title10</title>
+                <url>https://www.google.com</url>
+            </ext>
+
+        </ref>
+        <misc>misc3</misc>
+        <org idref="ID000"/>
+        <org idref="ID000"/>
+        <org idref="ID000"/>
+        <person idref="ID000"/>
+        <person idref="ID000"/>
+        <person idref="ID000"/>
+    </crisis>
+    
+    <organization id="ID003">
+        <name>name3</name>
+        <info>
+            <type>type3</type>
+            <history>history3</history>
+            <contact>
+                <phone>phone0</phone>
+                <email>email0</email>
+                <mail>
+                    <address>address0</address>
+                    <city>city3</city>
+                    <state>state0</state>
+                    <country>country3</country>
+                    <zip>zip0</zip>
+                </mail>
+            </contact>
+            <loc>
+                <city>city4</city>
+                <region>region3</region>
+                <country>country4</country>
+            </loc>
+        </info>
+        <ref>
+            <primaryImage>
+                <site>site39</site>
+                <title>title39</title>
+                <url>aaaa</url>
+            </primaryImage>
+            <image>
+                <site>site40</site>
+                <title>title40</title>
+                <url>aaaa</url>
+            </image>
+            <video>
+                <site>site45</site>
+                <title>title45</title>
+                <url>https://www.google.com</url>
+            </video>
+            <social>
+                <site>site48</site>
+                <title>title48</title>
+                <url>https://www.google.com</url>
+            </social>
+            <ext>
+                <site>site51</site>
+                <title>title51</title>
+                <url>https://www.google.com</url>
+            </ext>
+        </ref>
+        <misc>misc12</misc>
+        <crisis idref="ID000"/>
+        <crisis idref="ID000"/>
+        <crisis idref="ID000"/>
+        <person idref="ID006"/>
+        <person idref="ID006"/>
+        <person idref="ID006"/>
+    </organization>
+   
+    <person id="ID006">
+        <name>name6</name>
+        <info>
+            <type>type6</type>
+            <birthdate>
+                <time>time3</time>
+                <day>0</day>
+                <month>0</month>
+                <year>0</year>
+                <misc>misc15</misc>
+            </birthdate>
+            <nationality>nationality0</nationality>
+            <biography>biography0</biography>
+        </info>
+        <ref>
+            <primaryImage>
+                <site>site78</site>
+                <title>title78</title>
+                <url>aaaa</url>
+            </primaryImage>
+            <image>
+                <site>site79</site>
+                <title>title79</title>
+                <url>aaaa</url>
+            </image>
+            <video>
+                <site>site82</site>
+                <title>title82</title>
+                <url>https://www.google.com</url>
+            </video>
+            <social>
+                <site>site85</site>
+                <title>title85</title>
+                <url>https://www.google.com</url>
+            </social>
+            <ext>
+                <site>site88</site>
+                <title>title88</title>
+                <url>https://www.google.com</url>
+            </ext>
+        </ref>
+        <misc>misc16</misc>
+        <crisis idref="ID000"/>
+        <crisis idref="ID000"/>
+        <crisis idref="ID000"/>
+        <org idref="ID003"/>
+        <org idref="ID003"/>
+        <org idref="ID003"/>
+    </person>
+   
+       
+    
+</worldCrises>
+
