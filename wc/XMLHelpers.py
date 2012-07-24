@@ -27,6 +27,7 @@ import urllib
 #organization_list = []
 #link_list = []
 check = 0;
+merge = 0;
 ############################
 # IMPORT HANDLER FUNCTIONS #
 ############################
@@ -72,7 +73,18 @@ def check_url(url):
     good_codes = [httplib.OK, httplib.FOUND]
     return get_server_status_code(url) in good_codes
 
-
+def mergeModels(model1, model2):
+	try:
+		dict2 = model2.__dict__
+		generator1 = model1.attrs()
+		while True:
+			keyValTuple = generator1.next()
+			
+			if dict2[keyValTuple[0]] == False or dict2[keyValTuple[0]] == "":
+				assert False
+				setattr(model2,keyValTuple[0],keyValTuple[1])
+	except StopIteration:
+		return model2
 
 # used for creating the list of links for a given crisis/ppl/org
 # crisis : Elementtree object
@@ -114,8 +126,9 @@ def grabLinks(crisis):
 	
 #adds a crisis to the list, where crisis is an element tree
 def addCrisis(crisis):
+
+	
     assert(crisis is not None)
-    
     if (crisis.find('.//info')):
         info = crisis.find('.//info')
         grabLinks(crisis)
@@ -154,12 +167,15 @@ def addCrisis(crisis):
                    personrefs = [x.attrib['idref'] for x in crisis.findall('.//person')]
                    )
 
-        
+
         try:
             q = db.GqlQuery("SELECT name FROM Crisis WHERE elemid='" + crisis.attrib['id'] + "'")
             if (not q.count()):
                 c.put()
-        except:
+            if merge:
+            	mergeModels(c,q[0]).put()
+
+        except :
             c.put()
 
         #return crisis_list
@@ -185,7 +201,7 @@ def addPerson(person):
                    orgrefs = [x.attrib['idref'] for x in person.findall('.//org')],
                    crisisrefs = [x.attrib['idref'] for x in person.findall('.//crisis')]
                    )
-            
+
         try:       
             q = db.GqlQuery("SELECT name FROM Person WHERE elemid='" + person.attrib['id'] + "'")
             if (not q.count()):
@@ -241,13 +257,16 @@ def addOrganization(org):
 
 # in_file : file (XML-validated file)
 # parse and store the XML data in the GAE datastore
-def parseXML(in_file, chk):
+def parseXML(in_file, chk, mrge):
     assert(in_file is not None)
     assert(chk is not None)
     global check
+    global merge
     check = chk
-
-    db.delete(db.Query())
+    merge = mrge
+    
+    if not merge:
+    	db.delete(db.Query())
 
     tree = ElementTree.parse(in_file)
         
@@ -268,6 +287,9 @@ def parseXML(in_file, chk):
         addOrganization(org)
     
     check = 0
+    merge = 0
+    
+
 ############################
 # EXPORT HANDLER FUNCTIONS #
 ############################
