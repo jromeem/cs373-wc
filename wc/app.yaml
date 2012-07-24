@@ -14,7 +14,7 @@ handlers:
   script: meow.py
   
 - url: /search
-  script: search.py
+  script: Search.py
   
 - url: /stylesheets
   static_dir: stylesheets
