@@ -38,11 +38,10 @@ def link_values(template_values, link):
         else:
             misc_links.append(l)
 
-    template_values['cImages'] = images
-    template_values['cImagesSet'] = imageset
+    template_values['ImagesSet'] = imageset
     template_values['videos'] = videos
     for v in videos:
-        if v.link_site == "YouTube":
+        if v.link_site.lower() == "youtube":
             template_values['youtube_embed'] = v.link_url[-11:]
     template_values['socials'] = socials
     template_values['externals'] = externals

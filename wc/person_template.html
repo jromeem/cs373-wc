@@ -33,7 +33,7 @@
 						<tr>
 							<th>Embedded Image</th>
 								<td>
-								{% for i in pImagesSet %}
+								{% for i in ImagesSet %}
 									{% ifnotequal i None %}
 										<img src="{{i}}" /><br />
 									{% endifnotequal %}
@@ -43,13 +43,10 @@
 						<tr>
 							<th>Embedded Video</th>
 								<td>
-									<iframe 
-										width="560" 
-										height="315" 
-										src="http://www.youtube.com/embed/{{ youtube_embed }}" 
-										frameborder="0" 
-										allowfullscreen>
+									{% for v in videos %}
+									<iframe  width="560" height="315" src="http://www.youtube.com/embed/{{ youtube_embed }}" frameborder="0" allowfullscreen>
 									</iframe><br />
+									{% endfor %}
 								</td>
 						</tr>
 						<tr><th>Social Networks</th><td>
