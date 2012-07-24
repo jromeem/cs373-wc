@@ -6,12 +6,12 @@
 .headerLinks			{ padding:7px; border-left:1px solid grey; border-bottom:1px solid grey; border-right:1px solid grey; background:white; }
 #iso 					{ z-index:-1; position:relative; top:20px; width:850px; margin:0 auto; }
 #header					{ height:60px; position:relative; }
-.isoImg					{ max-width:200px; display:none; opacity:.6; }
+.isoImg					{ max-width:100px; display:none; opacity:.6; }
 #pageInfoBox			{ background:white; width:240px; border:1px solid grey; padding:7px; position:absolute; right:0px; top:60px; right:10px; }
 
 #search_results			{ display:none; background:white; border:1px solid grey; padding:7px; position:absolute; width:600px; }
 #search_results_top		{ position:relative; }
-#results_header			{ text-decoration:underline; font-style:italic; }
+#results_header			{  }
 #xbutton				{ position:absolute; top:0; right:5px; font-size:20px; }
 #xbutton:hover			{ cursor:pointer; }
 
