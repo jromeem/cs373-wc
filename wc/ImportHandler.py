@@ -35,7 +35,8 @@ class ImportPage(webapp.RequestHandler):
                 <input id="inurl" name="inurl" type="text"><br /><br />
                 <input type="hidden" name="check" value="0" />
                 <input type="checkbox" name="check" value="1" /> Check if image URLs are valid<br /><br />
-                <input value="Import" type="submit" />
+                <input name="merge" value="Import Merge" type="submit" />
+                <input name="overwrite" value="Import Overwrite" type="submit" />
                 
               </div>
             </form><br />
@@ -49,6 +50,9 @@ class ImportPage(webapp.RequestHandler):
         form = cgi.FieldStorage()
         file_item = form['importfile']
         url = form['inurl'].value
+        merge = False
+        if "merge" in form:
+        	merge = True
         check = 0
         try:	
         	check = form['check'].value
@@ -85,7 +89,7 @@ class ImportPage(webapp.RequestHandler):
                     message += "and is a valid XML file!</br>"
 
                     # call function to parse and store into datastore
-                    parseXML(in_file, check)
+                    parseXML(in_file, check, merge)
             except urllib2.URLError, ue:
                 message = 'URLERROR: ' + str(ue)
             except ValueError, ve:
@@ -108,7 +112,8 @@ class ImportPage(webapp.RequestHandler):
                 <input id="inurl" name="inurl" type="text"><br /><br />
                 <input type="hidden" name="check" value="0" />
                 <input type="checkbox" name="check" value="1" /> Check if image URLs are valid<br /><br />
-                <input value="Import" type="submit" />
+                <input name="merge" value="Import Merge" type="submit" />
+                <input name="overwrite" value="Import Overwrite" type="submit" />
               </div>
             </form><br />
             <p>%s</p><br />
