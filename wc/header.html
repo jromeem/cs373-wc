@@ -20,13 +20,26 @@
 		    {% endfor %}
 	    </div>
     </div>
-    <script>
-    	$('input').keypress(function(k){
+</div>
+<div id="search_results">
+	<div id="xbutton">x</div>
+	<span id="results_header">results for <span id="resultsfor"></span>:</span>
+</div>
+
+<script>
+	$(document).ready(function(){
+		$('input').keypress(function(k){
     		if (k.keyCode == 13){
     			$.post('/search', {'q':$('input').val()}, function(data){
-    				alert(data);
+    				$('input').val('');
+    				$('#resultsfor').text(data);
+    				$('#search_results').fadeIn(400);
     			});
     		}
     	});
+    	
+    	$('#xbutton').click(function(){
+    		$('#search_results').fadeOut(400);
+    	});
+	});
     </script>
-</div>
