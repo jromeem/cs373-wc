@@ -3,7 +3,8 @@
 		<a href="/">HOME!</a> | 
 	    <a class="categoryLink" id="crises" href="/crises">Crises</a> | 
 	    <a class="categoryLink" id="people" href="/people">People</a> | 
-	    <a class="categoryLink" id="organizations" href="/organizations">Organizations</a>
+	    <a class="categoryLink" id="organizations" href="/organizations">Organizations</a> |
+	    <input type="text" />
    </div>
 	<div id="tools" class="headerLinks">
 	    <a href="/import">Import</a> | 
@@ -19,4 +20,13 @@
 		    {% endfor %}
 	    </div>
     </div>
+    <script>
+    	$('input').keypress(function(k){
+    		if (k.keyCode == 13){
+    			$.post('/search', {'q':$('input').val()}, function(data){
+    				alert(data);
+    			});
+    		}
+    	});
+    </script>
 </div>
