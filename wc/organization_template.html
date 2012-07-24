@@ -27,7 +27,7 @@
 						<tr>
 							<th>Embedded Image</th>
 							<td>
-								{% for i in oImagesSet %}
+								{% for i in ImagesSet %}
 									{% ifnotequal i None %}
 										<img src="{{i}}" /><br />
 									{% endifnotequal %}
@@ -38,12 +38,7 @@
 							<th>Embedded Video</th>
 							<td>
 								{% for v in videos %}
-								<iframe 
-									width="560" 
-									height="315" 
-									src="http://www.youtube.com/embed/{{ youtube_embed }}" 
-									frameborder="0" 
-									allowfullscreen>
+								<iframe  width="560" height="315" src="http://www.youtube.com/embed/{{ youtube_embed }}" frameborder="0" allowfullscreen>
 								</iframe><br />
 								{% endfor %}
 							</td>
