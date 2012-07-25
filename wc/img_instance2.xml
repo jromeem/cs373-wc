@@ -75,7 +75,7 @@
         <name>Smash Bros Cast</name>
         <info>
             <type>type1</type>
-            <history>history1</history>
+            <history>SSBHIST</history>
             <contact>
                 <phone>phone0</phone>
                 <email>email0</email>
@@ -141,7 +141,7 @@
                 <misc>misc5</misc>
             </birthdate>
             <nationality>nationality0</nationality>
-            <biography>biography0</biography>
+            <biography>MARIO BIO</biography>
         </info>
         <ref>
             <primaryImage>
