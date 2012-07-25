@@ -29,8 +29,9 @@ import urllib
 #person_list = []
 #organization_list = []
 #link_list = []
-check = 0;
-merge = 0;
+check = 0
+merge = 0
+update = 0
 ############################
 # IMPORT HANDLER FUNCTIONS #
 ############################
@@ -285,14 +286,15 @@ def addOrganization(org):
 
 # in_file : file (XML-validated file)
 # parse and store the XML data in the GAE datastore
-def parseXML(in_file, chk, mrge):
+def parseXML(in_file, flags):
     assert(in_file is not None)
-    assert(chk is not None)
+    assert(flags is not None)
     global check
     global merge
-    check = chk
-    merge = mrge
-    
+    global update
+    check = flags['check']
+    merge = flags['merge']
+    update = flags['update']
     if not merge:
         db.delete(db.Query())
 
@@ -316,7 +318,7 @@ def parseXML(in_file, chk, mrge):
     
     check = 0
     merge = 0
-    
+    update = 0
 
 ############################
 # EXPORT HANDLER FUNCTIONS #
