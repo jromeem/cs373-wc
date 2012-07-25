@@ -26,7 +26,9 @@ def link_values(template_values, link):
     externals = []
     misc_links = []
     for l in link:
-        if l.link_type == 'primaryImage' or l.link_type == 'image':
+        if l.link_type == 'primaryImage':
+            template_values['bgimg'] = l.link_url
+        elif l.link_type == 'image':
             images.append(l)
             imageset.add(l.link_url)
         elif l.link_type == 'video':
