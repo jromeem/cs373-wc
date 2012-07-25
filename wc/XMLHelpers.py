@@ -49,6 +49,7 @@ def validXML (xml_instance, xml_schema_filename):
         root = et.getroot()
         return True
     except:
+        pass
         return False
 
 def get_server_status_code(url):
@@ -136,16 +137,14 @@ def grabLinks(crisis):
 
 
             try:
-                q = db.GqlQuery("SELECT * FROM Link WHERE link_parent='" + crisis.attrib['id'] + "' AND link_url='" + new_link.link_url + "'")
+                q = db.GqlQuery("SELECT * FROM Link WHERE link_parent='" + crisis.attrib['id'] + "' AND link_url='" + new_link.link_url + "' AND link_type='" + new_link.link_type + "'")
 
                 if (not q.count()):
-                
                     new_link.put()
 
             except db.BadQueryError, e:
                 logging.info("Error Caught: "+ str(e))
                 new_link.put()
-    #return link_list
     
     
 #adds a crisis to the list, where crisis is an element tree
@@ -328,6 +327,7 @@ def exportLinks(c, ref):
     assert(ref is not None)
 
     link_list = db.GqlQuery("SELECT * FROM Link WHERE link_parent='" + c.elemid+"'")
+
     for t in ['primaryImage', 'image', 'video', 'social', 'ext']:
         for l in link_list:
             if l.link_type == t:
@@ -340,6 +340,7 @@ def exportLinks(c, ref):
                 url.text = l.link_url
                 description = ElementTree.SubElement(currRef, "description")
                 description.text = l.description
+
 
 # fills a crisis subtree, where crisis is the root element, and c is a Crisis object
 def buildCrisis(crisis, c):
