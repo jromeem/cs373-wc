@@ -4,7 +4,7 @@
 	    <a class="categoryLink" id="crises" href="/crises">Crises</a> | 
 	    <a class="categoryLink" id="people" href="/people">People</a> | 
 	    <a class="categoryLink" id="organizations" href="/organizations">Organizations</a> |
-	    <input type="text" value="Search"/>
+	    <input type="text" value="Search for something..." />
    </div>
 	<div id="tools" class="headerLinks">
 	    <a href="/import">Import</a> | 
@@ -28,6 +28,10 @@
 
 <script>
 	$(document).ready(function(){
+		$('input').focus(function(){
+			if ($(this).val() == 'Search for something...') $(this).val('');
+		});
+		
 		$('input').keypress(function(k){
     		if (k.keyCode == 13){
     			$.post('/search', {'q':$('input').val()}, function(data){

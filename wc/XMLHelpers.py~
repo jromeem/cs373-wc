@@ -2,7 +2,6 @@
 # XMLHelpers.py
 # contains the methods to validate, parse, and build XML
 # it also contains the code to populate the GAE datastore
-import logging
 
 from google.appengine.ext import db
 from google.appengine.ext import webapp
@@ -18,8 +17,6 @@ from google.appengine.api.urlfetch import DownloadError
 import httplib
 import urlparse
 import urllib
-
-
 ###############
 # XML HELPERS #
 ###############
@@ -29,8 +26,7 @@ import urllib
 #person_list = []
 #organization_list = []
 #link_list = []
-check = 0;
-merge = 0;
+
 ############################
 # IMPORT HANDLER FUNCTIONS #
 ############################
@@ -48,7 +44,8 @@ def validXML (xml_instance, xml_schema_filename):
         et = etw.getTree()
         root = et.getroot()
         return True
-    except:
+    except StandardError, e:
+        print e
         return False
 
 def get_server_status_code(url):
@@ -76,27 +73,12 @@ def check_url(url):
     good_codes = [httplib.OK, httplib.FOUND]
     return get_server_status_code(url) in good_codes
 
-def mergeModels(newmodel, oldmodel):
-    logging.info("MERGEMODELS CALLED!")
-    try:
-        logging.info("TRYING")
-        dict2 = oldmodel.__dict__
-        generator1 = newmodel.__dict__.iteritems()
-        logging.info("ENTERING FOR LOOP...")
-        for k,v in generator1:
-            logging.info("---------KV PAIR: " + str(k) + str(v) + str(dict2[k]))
-            """if dict2[k] == False or dict2[k] == "" or dict2[k] == "Unknown" :
-                assert False
-                setattr(oldmodel,k,v)"""
-    except StopIteration:
-        logging.info("STOPITER")
-        return oldmodel
+
 
 # used for creating the list of links for a given crisis/ppl/org
 # crisis : Elementtree object
 def grabLinks(crisis):
     assert(crisis is not None)
-    
     imgvid_tags = ["primaryImage","image"]
     for ref in crisis.findall('.//ref'):
         for l in ref:
@@ -108,33 +90,28 @@ def grabLinks(crisis):
             if (l.find('./title') != None):
                 new_link.title = l.find('./title').text
             try:
-                if (l.find('./url') != None):
-                    
-                    if (l.tag in imgvid_tags and check == 1):
-                        
-                        if (check_url(l.find('./url').text)):
-                            new_link.link_url = l.find('./url').text
-                        else:
-                            new_link.link_url = None
-                    else:
-                        new_link.link_url = l.find('./url').text            
+				if (l.find('./url') != None):
+					if (l.tag in imgvid_tags):
+						if (check_url(l.find('./url').text)):
+							new_link.link_url = l.find('./url').text
+						else:
+							new_link.link_url = None
+					else:
+						new_link.link_url = l.find('./url').text            
             except DownloadError:
-                new_link.link_url = None
-            except AttributeError:
-                new_link.link_url = None
+            	new_link.link_url = None
+
             if (l.find('./description') != None):
                 new_link.description = l.find('./description').text
             new_link.link_parent = crisis.attrib['id']
 
             new_link.put()
     #return link_list
-    
-    
+
 #adds a crisis to the list, where crisis is an element tree
 def addCrisis(crisis):
-
-    
     assert(crisis is not None)
+    
     if (crisis.find('.//info')):
         info = crisis.find('.//info')
         grabLinks(crisis)
@@ -173,14 +150,12 @@ def addCrisis(crisis):
                    personrefs = [x.attrib['idref'] for x in crisis.findall('.//person')]
                    )
 
-
+        
         try:
             q = db.GqlQuery("SELECT name FROM Crisis WHERE elemid='" + crisis.attrib['id'] + "'")
             if (not q.count()):
                 c.put()
-            if merge:
-                mergeModels(c,q[0]).put()
-        except :
+        except:
             c.put()
 
         #return crisis_list
@@ -206,7 +181,7 @@ def addPerson(person):
                    orgrefs = [x.attrib['idref'] for x in person.findall('.//org')],
                    crisisrefs = [x.attrib['idref'] for x in person.findall('.//crisis')]
                    )
-
+            
         try:       
             q = db.GqlQuery("SELECT name FROM Person WHERE elemid='" + person.attrib['id'] + "'")
             if (not q.count()):
@@ -262,16 +237,10 @@ def addOrganization(org):
 
 # in_file : file (XML-validated file)
 # parse and store the XML data in the GAE datastore
-def parseXML(in_file, chk, mrge):
+def parseXML(in_file):
     assert(in_file is not None)
-    assert(chk is not None)
-    global check
-    global merge
-    check = chk
-    merge = mrge
     
-    if not merge:
-        db.delete(db.Query())
+    db.delete(db.Query())
 
     tree = ElementTree.parse(in_file)
         
@@ -290,10 +259,6 @@ def parseXML(in_file, chk, mrge):
     #build organization list
     for org in orgs:
         addOrganization(org)
-    
-    check = 0
-    merge = 0
-    
 
 ############################
 # EXPORT HANDLER FUNCTIONS #
@@ -304,18 +269,16 @@ def exportLinks(c, ref):
     assert(ref is not None)
 
     link_list = db.GqlQuery("SELECT * FROM Link WHERE link_parent='" + c.elemid+"'")
-    for t in ['primaryImage', 'image', 'video', 'social', 'ext']:
-        for l in link_list:
-            if l.link_type == t:
-                currRef = ElementTree.SubElement(ref, l.link_type)
-                site = ElementTree.SubElement(currRef, "site")
-                site.text = l.link_site
-                title = ElementTree.SubElement(currRef, "title")
-                title.text = l.title
-                url = ElementTree.SubElement(currRef, "url")
-                url.text = l.link_url
-                description = ElementTree.SubElement(currRef, "description")
-                description.text = l.description
+    for l in link_list:
+        currRef = ElementTree.SubElement(ref, l.link_type)
+        site = ElementTree.SubElement(currRef, "site")
+        site.text = l.link_site
+        title = ElementTree.SubElement(currRef, "title")
+        title.text = l.title
+        url = ElementTree.SubElement(currRef, "url")
+        url.text = l.link_url
+        description = ElementTree.SubElement(currRef, "description")
+        description.text = l.description
 
 # fills a crisis subtree, where crisis is the root element, and c is a Crisis object
 def buildCrisis(crisis, c):
