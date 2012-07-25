@@ -83,9 +83,9 @@ def mergeModels(newmodel, oldmodel):
     #try:
     logging.info("TRYING")
     logging.info("OLDMODEL TYPE: " + str(type(oldmodel)))
-    dict2 = oldmodel.__dict__
-    logging.info("DICT 2 KEYS: ")
-    for k in dict2:
+    olddict = oldmodel.__dict__
+    logging.info("OLD DICT KEYS: ")
+    for k in olddict:
         logging.info("     " + str(k))
     #generator1 = newmodel.__dict__.iteritems()
     logging.info("ENTERING FOR LOOP...")
@@ -93,10 +93,17 @@ def mergeModels(newmodel, oldmodel):
         #k = k[1:]
         logging.info("INSIDE LOOP")
         logging.info("---------KV PAIR: "+ str(k) + " " + str(v) )
-        # + str(dict2[k]))
-        if (k in dict2) and (dict2[k] == False or dict2[k] == "" or dict2[k] == 0):
-            logging.info("key " + str(k) + " not found; replacing with new value: " + str(v))
-            setattr(oldmodel,k,v)
+        # + str(olddict[k]))
+        #if (k in olddict) and (olddict[k] == False or olddict[k] == "" or olddict[k] == 0):
+            #logging.info("key " + str(k) + " not found; replacing with new value: " + str(v))
+            #setattr(oldmodel,k,v)
+        if (k in olddict) and (v != False and v != "" and v != None):
+            if update and olddict[k] != v:
+            	logging.info("key " + str(k) + " UPDATE; replacing with new value: " + str(v))
+                setattr(oldmodel,k,v)
+            elif olddict[k] == False or olddict[k] == "":
+                logging.info("key " + str(k) + " not found; replacing with new value: " + str(v))
+                setattr(oldmodel,k,v)
     #except StopIteration:
     logging.info("STOPITER")
     return oldmodel
