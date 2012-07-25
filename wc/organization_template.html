@@ -6,6 +6,8 @@
 		<script src="/js/jquery-1.7.2.min.js"></script>
 		<script src="/js/fadeStuff.js"></script>
 		<script src="/js/jquery.isotope.min.js"></script>
+		<script src="/js/jquery.cycle.lite.js"></script>
+		<script src="/js/slideshowStuff.js"></script>
 	</head>
 	<body background="{{bgimg}}">
 		<div id="wrapper">
@@ -17,7 +19,7 @@
 							<tr><td class="sectionTitle"><h3>INFO</h3></td></tr>
 							<tr><td>Location</td>
 							<td>{{x.info_loc_city}}, {{x.info_loc_region}}, {{x.info_loc_country}}</td></tr>
-							<tr><td>History</td><td>{{ x.info_history }}</td></tr>
+							<tr><td>History</td><td><div class="scrollable">{{ x.info_history }}</div></td></tr>
 							<tr><td>Contact</td>
 						    <td>Phone Number: {{ x.info_contacts_phone }}<br />
 						        Email Address: {{ x.info_contacts_email }}<br />
@@ -34,15 +36,6 @@
 								{% endif %}
 							</tr>
 							<tr><td class="sectionTitle"><h3>MEDIA</h3></td></tr>
-							<tr id="imagesRow"><td>Images</td>
-								<td id="imageCell">
-								{% for i in ImagesSet %}
-									{% ifnotequal i None %}
-										<img src="{{i}}" /><br />
-									{% endifnotequal %}
-								{% endfor %}
-								</td>
-							</tr>
 							<tr><td>Videos</td>
 									<td>
 										{% for v in videos %}
@@ -86,18 +79,17 @@
 		    			<hr />
 		    			<small>{{ x.info_type }}</small>
 		    			<hr />
+		    			<div class="slideshow">
+								{% for i in ImagesSet %}
+									{% ifnotequal i None %}
+										<img src="{{i}}" />
+									{% endifnotequal %}
+								{% endfor %}
+								</div>
 				    </div>
 				</div>
 			</div>
 		</div>
-		<script>
-			$(document).ready(function(){
-				$('img').each(function(){
-					if ($(this).attr('src') == $('body').attr('background')) $(this).parent().remove();
-				});
-				if (!$('#imageCell').length) $('#imagesRow').remove();
-			});
-		</script>
 	</body>
 </html>
 {% endfor %}

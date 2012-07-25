@@ -6,6 +6,8 @@
 		<script src="/js/jquery-1.7.2.min.js"></script>
 		<script src="/js/fadeStuff.js"></script>
 		<script src="/js/jquery.isotope.min.js"></script>
+		<script src="/js/jquery.cycle.lite.js"></script>
+		<script src="/js/slideshowStuff.js"></script>
 	</head>
 	<body background="{{bgimg}}">
 		<div id="wrapper">
@@ -29,7 +31,7 @@
 									{% endifnotequal %}
 								</td>
 							</tr>
-							<tr><td>Bio</td><td>{{ x.info_biography }}</td></tr>
+							<tr><td>Bio</td><td><div class="scrollable">{{ x.info_biography }}</div></td></tr>
 							<tr>
 								{% if isEmpty_misc %}
 								<td>Misc</td>
@@ -41,15 +43,6 @@
 								{% endif %}
 							</tr>
 							<tr><td class="sectionTitle"><h3>MEDIA</h3></td></tr>
-							<tr id="imagesRow"><td>Images</td>
-								<td id="imageCell">
-								{% for i in ImagesSet %}
-									{% ifnotequal i None %}
-										<img src="{{i}}" /><br />
-									{% endifnotequal %}
-								{% endfor %}
-								</td>
-							</tr>
 							<tr><td>Videos</td>
 									<td>
 										{% for v in videos %}
@@ -101,18 +94,17 @@
 		    			<hr />
 		    			<small>{{ x.info_type }}</small>
 		    			<hr />
+		    			<div class="slideshow">
+								{% for i in ImagesSet %}
+									{% ifnotequal i None %}
+										<img src="{{i}}" />
+									{% endifnotequal %}
+								{% endfor %}
+								</div>
 				    </div>
 				</div>
 			</div>
 		</div>
-		<script>
-			$(document).ready(function(){
-				$('img').each(function(){
-					if ($(this).attr('src') == $('body').attr('background')) $(this).parent().remove();
-				});
-				if (!$('#imageCell').length) $('#imagesRow').remove();
-			});
-		</script>
 	</body>
 </html>
 {% endfor %}
