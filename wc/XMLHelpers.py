@@ -93,10 +93,7 @@ def mergeModels(newmodel, oldmodel):
         #k = k[1:]
         logging.info("INSIDE LOOP")
         logging.info("---------KV PAIR: "+ str(k) + " " + str(v) )
-        # + str(olddict[k]))
-        #if (k in olddict) and (olddict[k] == False or olddict[k] == "" or olddict[k] == 0):
-            #logging.info("key " + str(k) + " not found; replacing with new value: " + str(v))
-            #setattr(oldmodel,k,v)
+        
         if (k in olddict) and (v != False and v != "" and v != None):
             if olddict[k] == False or olddict[k] == "":
                 logging.info("key " + str(k) + " not found; replacing with new value: " + str(v))
@@ -157,7 +154,7 @@ def addCrisis(crisis):
 
     
     assert(crisis is not None)
-    if (crisis.find('.//info')):
+    if (crisis.find('.//info') is not None):
         info = crisis.find('.//info')
         grabLinks(crisis)
         
