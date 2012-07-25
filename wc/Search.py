@@ -1,5 +1,4 @@
-import cgi, os, sys
-import cgitb; cgitb.enable()
+import re, sys
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 template.register_template_library('django.contrib.humanize.templatetags.humanize')
@@ -10,42 +9,63 @@ import django.contrib.humanize.templatetags.humanize
 import google.appengine.api.search
 
 class SearchResults(webapp.RequestHandler):
-    def post(self):
-        search_query = self.request.get('q')
+    def post(self):        
         
-        self.response.out.write('RESULTS')
+        search_string = self.request.get('q')
+        search_results = []
+        self.response.out.write('Results for: ' + search_string + '<hr>')
         
-        # Get the index.
-        #index = search.Index(name='eleemid', consistency=Index.PER_DOCUMENT_CONSISTENT)
+        
+        crises = db.GqlQuery("SELECT * FROM Crisis")
+        people = db.GqlQuery("SELECT * FROM Person")
+        orgs   = db.GqlQuery("SELECT * FROM Organization")
+        
+        
+        # search in all the crises
+        for c in crises.run():
+            self.response.out.write('<br>')
+            self.response.out.write(repr(c))
+            cd = c.__dict__
+            
+            for k, v in cd.items():
+                vv = repr(v)
+                if search_string in vv:
+                    search_results.append(cd['_elemid'])
+                    
+            self.response.out.write('<br>')
+
+        self.response.out.write(repr(search_results))
+        
         """
-        # Create a document.
-        doc = search.Document(
-            doc_id='document-id',
-            fields=[search.TextField(name='subject', value='my first email'),
-                    search.HtmlField(name='body', value='<html>some content here</html>')])
 
-        # Index the document.
-        try:
-            index.add(doc)
-        except search.AddError, e:
-            result = e.results[0]
-            if result.code == search.OperationResult.TRANSIENT_ERROR:
-                # possibly retry indexing result.object_id
-        except search.Error, e:
-            # possibly log the failure
+        # search in all the orgs
+        for o in orgs.run():
+            self.response.out.write('<br>')
+            self.response.out.write(repr(o))
+            od = o.__dict__
+            
+            for k, v in od.items():
+                vv = repr(v)
+                if search_string in vv:
+                    search_results.append(od['_elemid'])
+                    
+            print ''
 
-        # Query the index.
-        try:
-            results = index.search('subject:first body:here')
+        for p in people.run():
+            self.response.out.write('<br>')
+            self.response.out.write(repr(p))
+            pd = p.__dict__
+            
+            for k, v in cd.items():
+                vv = repr(v)
+                if search_string in vv:
+                search_results.append(pd['_elemid'])
+            
+            self.response.out.write('<br>')
 
-            # Iterate through the search results.
-            for scored_document in results:
-                print scored_document
-
-        except search.Error, e:
-            print "no results"
-            # possibly log the failure
+        self.response.out.write(repr(search_results))
         """
+    
 
 application = webapp.WSGIApplication([('/search', SearchResults)], debug=True)
 

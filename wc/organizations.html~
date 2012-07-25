@@ -1,0 +1,43 @@
+<html>
+	<head>
+		<title>Organizations{{headerNote}}</title>
+		<link rel="stylesheet" type="text/css" href="stylesheets/main.css" />
+		<script src="js/jquery-1.7.2.min.js"></script>
+		<script src="js/fadeStuff.js"></script>
+		<script src="js/jquery.isotope.min.js"></script>
+	</head>
+  	<body>
+  		<div id="wrapper">
+			<div id="content">
+				{% include "header.html" %}
+				<div id="fadeContent">
+					<ul>	
+						{% for org in orgs %}
+							<li><a href="/organizations/{{org.elemid}}">{{ org.name }}</a></li> 
+						{% endfor %}
+				  	</ul>
+				  	<div id="pageInfoBox">
+		    			<h1>Organizations</h1>
+		    			<hr />
+				    </div>
+			    </div>
+		  	</div>
+	  	</div>
+	  	<script>
+    		$(document).ready(function(){
+    			$('#fadeContent').fadeIn(400);
+	    		$('a').click(function(){
+	    			$('#fadeContent').fadeOut(400);
+	    		});
+	    		
+    			$('#iso').imagesLoaded(function(){
+	    			$('.isoImg').css('display', 'inline');
+		    		$('#iso').isotope({
+					  // options
+					  itemSelector : '.item'
+					});
+				});
+    		});
+    	</script>
+ 	</body>
+</html>

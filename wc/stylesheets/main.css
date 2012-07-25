@@ -15,8 +15,10 @@
 
 #search_results			{ display:none; background:white; border:1px solid grey; padding:7px 7px 20px 7px; position:absolute; width:600px; z-index:1; }
 #search_results_top		{ position:relative; }
+
 #results_body			{ margin:0 10px 0 10px; }
 .resultRow				{ margin:0 20px 0 20px; }
+
 #xbutton				{ position:absolute; top:0; right:5px; font-size:20px; }
 #xbutton:hover			{ cursor:pointer; }
 
