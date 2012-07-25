@@ -76,13 +76,11 @@ def check_url(url):
 def mergeModels(model1, model2):
 	try:
 		dict2 = model2.__dict__
-		generator1 = model1.attrs()
-		while True:
-			keyValTuple = generator1.next()
-			
-			if dict2[keyValTuple[0]] == False or dict2[keyValTuple[0]] == "":
+		generator1 = model1.__dict__.iteritems()
+		for k,v in generator1:
+			if dict2[k] == False or dict2[k] == "" or dict2[k] == "Unknown" :
 				assert False
-				setattr(model2,keyValTuple[0],keyValTuple[1])
+				setattr(model2,k,v)
 	except StopIteration:
 		return model2
 
@@ -174,7 +172,8 @@ def addCrisis(crisis):
                 c.put()
             if merge:
             	mergeModels(c,q[0]).put()
-
+        except AssertionError:
+            assert False
         except :
             c.put()
 
