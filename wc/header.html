@@ -49,13 +49,17 @@
 	    				clearResults();
 	    				var rows = "";
 	    				var no_dupes = Array();
+	    				var row_helper = Array();
 	    				
 	    				$.each(data, function(key, value){
-	    					if (no_dupes.indexOf(value) == -1) no_dupes.push(value);
+	    					if (no_dupes.indexOf(value[0]) == -1){
+	    						no_dupes.push(value[0]);
+	    						row_helper.push(value);
+	    					}
 	    				});
 	    				
 	    				for (var i = 0; i < no_dupes.length; i++){
-	    					rows += "<hr /><div class=\"resultRow\"><a href=\"\">" + no_dupes[i] + "</a></div>";
+	    					rows += "<hr /><div class=\"resultRow\">" + row_helper[i][0] + row_helper[i][1] + "</div>";
 	    				}
 	    				
 	    				$('#results_body').append(rows);

@@ -35,7 +35,7 @@ class SearchResults(webapp.RequestHandler):
                     # hacked way of converting unicode -> ascii
                     elemid = repr(cd['_elemid'])[2:-1]
                     title = repr(cd['_name'])[2:-1]
-                    result_string = '<a href="/crises/' + elemid + '">' + title + '</a><p>' + snippet + '</p>'
+                    result_string = ['<a href="/crises/' + elemid + '">' + title + '</a>', '<p>' + snippet + '</p>']
 
                     search_results[str(i)] = result_string 
                     i += 1
@@ -59,7 +59,7 @@ class SearchResults(webapp.RequestHandler):
                     # hacked way of converting unicode -> ascii
                     elemid = repr(od['_elemid'])[2:-1]
                     title = repr(od['_name'])[2:-1]
-                    result_string = '<a href="/organizations/' + elemid + '">' + title + '</a><p>' + snippet + '</p>'
+                    result_string = ['<a href="/organizations/' + elemid + '">' + title + '</a>', '<p>' + snippet + '</p>']
 
                     search_results[str(i)] = result_string 
                     i += 1
@@ -82,7 +82,7 @@ class SearchResults(webapp.RequestHandler):
                     # hacked way of converting unicode -> ascii
                     elemid = repr(pd['_elemid'])[2:-1]
                     title = repr(pd['_name'])[2:-1]
-                    result_string = '<a href="/people/' + elemid + '">' + title + '</a><p>' + snippet + '</p>'
+                    result_string = '<a href="/people/' + elemid + '">' + title + '</a>', '<p>' + snippet + '</p>'
 
                     search_results[str(i)] = result_string 
                     i += 1
