@@ -7,94 +7,97 @@
 		<script src="/js/fadeStuff.js"></script>
 		<script src="/js/jquery.isotope.min.js"></script>
 	</head>
-	<body>
+	<body background="{{bgimg}}">
 		<div id="wrapper">
 			<div id="content">
 				{% include "header.html" %}
 				<div id="fadeContent">
-					<table>
-						<tr><th>Name</th><td>{{ x.name }}</td></tr>
-						<tr><th>Kind</th><td>{{ x.info_type }}</td></tr>
-						<tr><th>History</th><td>{{ x.info_history }}</td></tr>
-						<tr><th>Contact</th>
+					<div id="templatePageInfo">
+						<table class="templateTable">
+							<tr><td class="sectionTitle"><h3>INFO</h3></td></tr>
+							<tr><td>Location</td>
+							<td>{{x.info_loc_city}}, {{x.info_loc_region}}, {{x.info_loc_country}}</td></tr>
+							<tr><td>History</td><td>{{ x.info_history }}</td></tr>
+							<tr><td>Contact</td>
 						    <td>Phone Number: {{ x.info_contacts_phone }}<br />
 						        Email Address: {{ x.info_contacts_email }}<br />
 						        Mailing Address: {{ x.info_contacts_address }}, {{ x.info_contacts_city }}, 
-						            {{ x.info_contacts_state }}, {{ x.info_contacts_zip }}, {{ x.info_contacts_country }}</td>
-						<tr><th>Location</th>
-							<td>{{x.info_loc_city}}, {{x.info_loc_region}}, {{x.info_loc_country}}</td>
-						</tr>
-						<tr>
-							<th>Embedded Image</th>
-							<td>
-								{% for i in oImagesSet %}
+						            {{ x.info_contacts_state }}, {{ x.info_contacts_zip }}, {{ x.info_contacts_country }}</td></tr>
+							<tr>
+								{% if isEmpty_misc %}
+								<td>Misc</td>
+								<td>
+									{% for m in misc_links %}
+										<a href="{{m.link_url}}">{{m.title}}</a><br />
+									{% endfor %}
+								</td>
+								{% endif %}
+							</tr>
+							<tr><td class="sectionTitle"><h3>MEDIA</h3></td></tr>
+							<tr id="imagesRow"><td>Images</td>
+								<td id="imageCell">
+								{% for i in ImagesSet %}
 									{% ifnotequal i None %}
 										<img src="{{i}}" /><br />
 									{% endifnotequal %}
 								{% endfor %}
-							</td>	
-						</tr>
-						<tr>
-							<th>Embedded Video</th>
-							<td>
-								{% for v in videos %}
-								<iframe 
-									width="560" 
-									height="315" 
-									src="http://www.youtube.com/embed/{{ youtube_embed }}" 
-									frameborder="0" 
-									allowfullscreen>
-								</iframe><br />
-								{% endfor %}
-							</td>
-						</tr>
-						<tr>
-							<th>Social Networks</th>
-							<td>
-								{% for s in socials %}
-									<a href="{{s.link_url}}">{{s.title}}</a><br/>
-								{% endfor %}
-							</td>
-						</tr>
-						<tr>
-							<th>External Links</th>
-							<td>
-								{% for e in externals %}
-									<a href="{{e.link_url}}">{{e.title}}</a><br />
-								{% endfor %}
-							</td>
-						</tr>
-						
-						<tr>
-							{% if isEmpty_misc %}
-							<th>misc</th>
-							<td>
-								{% for m in misc_links %}
-									<a href="{{m.link_url}}">{{m.title}}</a><br />
-								{% endfor %}
-							</td>
-							{% endif %}
-						</tr>
-						<tr>
-							<th>Related Crises</th>
+								</td>
+							</tr>
+							<tr><td>Videos</td>
+									<td>
+										{% for v in videos %}
+										<iframe  width="300" src="http://www.youtube.com/embed/{{ youtube_embed }}" frameborder="0" allowfullscreen>
+										</iframe><br />
+										{% endfor %}
+									</td>
+							</tr>
+							<tr><td class="sectionTitle"><h3>RELATED</h3></td></tr>
+							<tr><td>Crises</td>
 							<td>
 								{% for item in crisisrefs.items %}
 									<a href="/crises/{{item.0}}">{{item.1}}</a>
 								{% endfor %}
 							</td>
-						</tr>
-						<tr>
-							<th>Related People</th>
+							</tr>
+							<tr><td>People</td>
 							<td>
 							{% for item in personrefs.items %}
 								<a href="/people/{{item.0}}">{{item.1}}</a>
 							{% endfor %}
 							</td>
-						</tr>
-					</table>
+							</tr>
+							<tr><td class="sectionTitle"><h3>LINKS</h3></td></tr>
+							<tr><td>Social</td><td>
+								{% for s in socials %}
+									<a href="{{s.link_url}}">{{s.title}}</a><br/>
+								{% endfor %}</td>
+							</tr>
+							<tr><td>External</td>
+								<td>
+									{% for e in externals %}
+										<a href="{{e.link_url}}">{{e.title}}</a><br />
+									{% endfor %}
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div id="pageInfoBox">
+		    			<h1>{{ x.name }}</h1>
+		    			<hr />
+		    			<small>{{ x.info_type }}</small>
+		    			<hr />
+				    </div>
 				</div>
 			</div>
 		</div>
+		<script>
+			$(document).ready(function(){
+				$('img').each(function(){
+					if ($(this).attr('src') == $('body').attr('background')) $(this).parent().remove();
+				});
+				if (!$('#imageCell').length) $('#imagesRow').remove();
+			});
+		</script>
 	</body>
 </html>
 {% endfor %}

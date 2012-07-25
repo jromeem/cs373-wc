@@ -30,7 +30,10 @@ class Person(db.Model):
     crisisrefs = db.ListProperty(str)
     
     misc = db.StringProperty()
-
+    
+    def attrs(self):
+	  for attr, value in self.__dict__.iteritems():
+		yield attr, value
             
 class Crisis(db.Model):
     elemid = db.StringProperty()
@@ -68,6 +71,10 @@ class Crisis(db.Model):
     orgrefs = db.ListProperty(str)
     personrefs = db.ListProperty(str)
     
+    def attrs(self):
+	  for attr, value in self.__dict__.iteritems():
+		yield attr, value
+    
 class Organization(db.Model):
     elemid = db.StringProperty()
     
@@ -93,3 +100,7 @@ class Organization(db.Model):
     personrefs = db.ListProperty(str)
     
     misc = db.StringProperty()
+
+    def attrs(self):
+	  for attr, value in self.__dict__.iteritems():
+		yield attr, value

@@ -3,7 +3,8 @@
 		<a href="/">HOME!</a> | 
 	    <a class="categoryLink" id="crises" href="/crises">Crises</a> | 
 	    <a class="categoryLink" id="people" href="/people">People</a> | 
-	    <a class="categoryLink" id="organizations" href="/organizations">Organizations</a>
+	    <a class="categoryLink" id="organizations" href="/organizations">Organizations</a> |
+	    <input type="text" value="Search for something..." />
    </div>
 	<div id="tools" class="headerLinks">
 	    <a href="/import">Import</a> | 
@@ -20,3 +21,54 @@
 	    </div>
     </div>
 </div>
+<div id="search_results">
+	<div id="xbutton">x</div>
+	<h3 id="results_header">results for <span id="resultsfor"></span>:</h3>
+	<div id="results_body"></div>
+</div>
+
+<script>
+	$(document).ready(function(){
+		$('input').focus(function(){
+			if ($(this).val() == 'Search for something...') $(this).val('');
+		});
+		
+		$('input').blur(function(){
+			$(this).val('Search for something...');
+		});
+		
+		$('input').keypress(function(k){
+    		if (k.keyCode == 13 && $(this).val()){
+    			$('#fadeContent').fadeOut(400);
+    			var query = $('input').val();
+    			$.post('/search', {'q':query}, function(data){
+    				$('input').val('');
+    				$('#resultsfor').html(query);
+    				
+    				clearResults();
+    				
+    				var rows;
+    				
+    				console.log(data);
+    				
+    				for (var i = 0; i < data.length; i++){
+    					console.log(data[i]);
+    					rows += "<hr /><div class=\"resultRow\">" + data[i] + "</div>";
+    				}
+    				
+    				$('#results_body').append(rows);
+    				$('#search_results').fadeIn(400);
+    			});
+    		}
+    	});
+    	
+    	$('#xbutton').click(function(){
+    		$('#search_results').fadeOut(400);
+    		$('#fadeContent').fadeIn(400);
+    	});
+    	
+    	function clearResults(){
+    		$('#results_body').children().remove();
+    	}
+	});
+    </script>
