@@ -16,6 +16,7 @@ from XMLHelpers import validXML, parseXML
 ##################
 # IMPORT HANDLER #
 ##################
+f = open('wc.xsd', 'rb')
 
 class ImportPage(webapp.RequestHandler):
     def get(self):
@@ -101,7 +102,8 @@ class ImportPage(webapp.RequestHandler):
                     #return
                     
                 # check if uploaded file is a valid xml_instance
-                if not validXML(content, "wc.xsd"):
+                
+                if not validXML(content, f.read()):
                     message = "Error: " + message + "but does not validate against our schema.</br>"                
 
                 else:
