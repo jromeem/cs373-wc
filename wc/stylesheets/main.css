@@ -11,7 +11,7 @@
 
 #search_results			{ display:none; background:white; border:1px solid grey; padding:7px; position:absolute; width:600px; }
 #search_results_top		{ position:relative; }
-#results_header			{ text-decoration:underline; font-style:italic; }
+#results_header			{ }
 #xbutton				{ position:absolute; top:0; right:5px; font-size:20px; }
 #xbutton:hover			{ cursor:pointer; }
 

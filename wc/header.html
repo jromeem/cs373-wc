@@ -4,7 +4,7 @@
 	    <a class="categoryLink" id="crises" href="/crises">Crises</a> | 
 	    <a class="categoryLink" id="people" href="/people">People</a> | 
 	    <a class="categoryLink" id="organizations" href="/organizations">Organizations</a> |
-	    <input type="text" />
+	    <input type="text" value="Search"/>
    </div>
 	<div id="tools" class="headerLinks">
 	    <a href="/import">Import</a> | 
@@ -23,7 +23,7 @@
 </div>
 <div id="search_results">
 	<div id="xbutton">x</div>
-	<span id="results_header">results for <span id="resultsfor"></span>:</span>
+	<span id="results_header"><span id="resultsfor"></span></span>
 </div>
 
 <script>
@@ -32,7 +32,7 @@
     		if (k.keyCode == 13){
     			$.post('/search', {'q':$('input').val()}, function(data){
     				$('input').val('');
-    				$('#resultsfor').text(data);
+    				$('#resultsfor').html(data);
     				$('#search_results').fadeIn(400);
     			});
     		}
