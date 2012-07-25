@@ -13,7 +13,6 @@ class SearchResults(webapp.RequestHandler):
         
         search_string = self.request.get('q')
         search_results = []
-        self.response.out.write('Results for: ' + search_string + '<hr>')
         
         
         crises = db.GqlQuery("SELECT * FROM Crisis")
@@ -23,16 +22,12 @@ class SearchResults(webapp.RequestHandler):
         
         # search in all the crises
         for c in crises.run():
-            self.response.out.write('<br>')
-            self.response.out.write(repr(c))
             cd = c.__dict__
             
             for k, v in cd.items():
                 vv = repr(v)
                 if search_string in vv:
                     search_results.append(cd['_elemid'])
-                    
-            self.response.out.write('<br>')
 
         self.response.out.write(repr(search_results))
         

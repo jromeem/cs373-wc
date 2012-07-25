@@ -47,8 +47,16 @@
     				
     				clearResults();
     				
-    				var row = "<hr /><div class=\"resultRow\">" + data + "</div>";
-    				$('#results_body').append(row);
+    				var rows;
+    				
+    				console.log(data);
+    				
+    				for (var i = 0; i < data.length; i++){
+    					console.log(data[i]);
+    					rows += "<hr /><div class=\"resultRow\">" + data[i] + "</div>";
+    				}
+    				
+    				$('#results_body').append(rows);
     				$('#search_results').fadeIn(400);
     			});
     		}
