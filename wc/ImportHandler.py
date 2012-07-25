@@ -37,6 +37,7 @@ class ImportPage(webapp.RequestHandler):
                 <input type="hidden" name="check" value="0" />
                 <input type="checkbox" name="check" value="1" /> Check if image URLs are valid<br /><br />
                 <input name="merge" value="Import Merge" type="submit" />
+                <input name="update" value="Import Merge & Update" type="submit" />
                 <input name="overwrite" value="Import Overwrite" type="submit" />
               </div>
             </form><br />
@@ -53,10 +54,15 @@ class ImportPage(webapp.RequestHandler):
 
         url = form['inurl'].value
         merge = False
+        update = False
         logging.info("POSTING TO IMPORT...")
         if "merge" in form:
             logging.info("with merge=TRUE")
             merge = True
+        if "update" in form:
+            logging.info("with merge/update=TRUE")
+            merge = True
+            update = True
         check = 0
         try:
             check = form['check'].value
@@ -96,8 +102,8 @@ class ImportPage(webapp.RequestHandler):
                     message += "and is a valid XML file!</br>"
 
                     # call function to parse and store into datastore
-
-                    parseXML(in_file, check, merge)
+                    flags = {'check': check, 'merge' : merge, 'update' : update}
+                    parseXML(in_file, flags)
             except urllib2.URLError, ue:
                 message = 'URLERROR: ' + str(ue)
             except ValueError, ve:
@@ -122,6 +128,7 @@ class ImportPage(webapp.RequestHandler):
                 <input type="hidden" name="check" value="0" />
                 <input type="checkbox" name="check" value="1" /> Check if image URLs are valid<br /><br />
                 <input name="merge" value="Import Merge" type="submit" />
+                <input name="update" value="Import Merge & Update" type="submit" />
                 <input name="overwrite" value="Import Overwrite" type="submit" />
               </div>
             </form><br />
