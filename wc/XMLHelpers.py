@@ -2,6 +2,7 @@
 # XMLHelpers.py
 # contains the methods to validate, parse, and build XML
 # it also contains the code to populate the GAE datastore
+import logging
 
 from google.appengine.ext import db
 from google.appengine.ext import webapp
@@ -17,6 +18,8 @@ from google.appengine.api.urlfetch import DownloadError
 import httplib
 import urlparse
 import urllib
+
+
 ###############
 # XML HELPERS #
 ###############
@@ -73,16 +76,21 @@ def check_url(url):
     good_codes = [httplib.OK, httplib.FOUND]
     return get_server_status_code(url) in good_codes
 
-def mergeModels(model1, model2):
-	try:
-		dict2 = model2.__dict__
-		generator1 = model1.__dict__.iteritems()
-		for k,v in generator1:
-			if dict2[k] == False or dict2[k] == "" or dict2[k] == "Unknown" :
-				assert False
-				setattr(model2,k,v)
-	except StopIteration:
-		return model2
+def mergeModels(newmodel, oldmodel):
+    logging.info("MERGEMODELS CALLED!")
+    try:
+        logging.info("TRYING")
+        dict2 = oldmodel.__dict__
+        generator1 = newmodel.__dict__.iteritems()
+        logging.info("ENTERING FOR LOOP...")
+        for k,v in generator1:
+            logging.info("---------KV PAIR: " + str(k) + str(v) + str(dict2[k]))
+            """if dict2[k] == False or dict2[k] == "" or dict2[k] == "Unknown" :
+                assert False
+                setattr(oldmodel,k,v)"""
+    except StopIteration:
+        logging.info("STOPITER")
+        return oldmodel
 
 # used for creating the list of links for a given crisis/ppl/org
 # crisis : Elementtree object
@@ -100,32 +108,32 @@ def grabLinks(crisis):
             if (l.find('./title') != None):
                 new_link.title = l.find('./title').text
             try:
-				if (l.find('./url') != None):
-					
-					if (l.tag in imgvid_tags and check == 1):
-						
-						if (check_url(l.find('./url').text)):
-							new_link.link_url = l.find('./url').text
-						else:
-							new_link.link_url = None
-					else:
-						new_link.link_url = l.find('./url').text            
+                if (l.find('./url') != None):
+                    
+                    if (l.tag in imgvid_tags and check == 1):
+                        
+                        if (check_url(l.find('./url').text)):
+                            new_link.link_url = l.find('./url').text
+                        else:
+                            new_link.link_url = None
+                    else:
+                        new_link.link_url = l.find('./url').text            
             except DownloadError:
-            	new_link.link_url = None
+                new_link.link_url = None
             except AttributeError:
-            	new_link.link_url = None
+                new_link.link_url = None
             if (l.find('./description') != None):
                 new_link.description = l.find('./description').text
             new_link.link_parent = crisis.attrib['id']
 
             new_link.put()
     #return link_list
-	
-	
+    
+    
 #adds a crisis to the list, where crisis is an element tree
 def addCrisis(crisis):
 
-	
+    
     assert(crisis is not None)
     if (crisis.find('.//info')):
         info = crisis.find('.//info')
@@ -171,9 +179,7 @@ def addCrisis(crisis):
             if (not q.count()):
                 c.put()
             if merge:
-            	mergeModels(c,q[0]).put()
-        except AssertionError:
-            assert False
+                mergeModels(c,q[0]).put()
         except :
             c.put()
 
@@ -265,7 +271,7 @@ def parseXML(in_file, chk, mrge):
     merge = mrge
     
     if not merge:
-    	db.delete(db.Query())
+        db.delete(db.Query())
 
     tree = ElementTree.parse(in_file)
         

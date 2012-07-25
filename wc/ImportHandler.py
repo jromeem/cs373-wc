@@ -46,18 +46,21 @@ class ImportPage(webapp.RequestHandler):
           </body>
         </html>""")
             
-    def post(self):        
+    def post(self): 
+        import logging        
         form = cgi.FieldStorage()
         file_item = form['importfile']
         url = form['inurl'].value
         merge = False
+        logging.info("POSTING TO IMPORT...")
         if "merge" in form:
-        	merge = True
+            logging.info("with merge=TRUE")
+            merge = True
         check = 0
-        try:	
-        	check = form['check'].value
+        try:
+            check = form['check'].value
         except AttributeError:
-        	check = 1
+            check = 1
         
         # check if file was uploaded
         if not file_item.filename and not url:

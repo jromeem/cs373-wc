@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <worldCrises xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:noNamespaceSchemaLocation="file:/Users/gold831/Desktop/wc/wc/wc.xsd">
+ xsi:noNamespaceSchemaLocation="wc.xsd">
     <crisis id="ID000">
         <name>Fight</name>
         <info>
