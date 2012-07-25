@@ -137,16 +137,14 @@ def grabLinks(crisis):
 
 
             try:
-                q = db.GqlQuery("SELECT * FROM Link WHERE link_parent='" + crisis.attrib['id'] + "' AND link_url='" + new_link.link_url + "'")
+                q = db.GqlQuery("SELECT * FROM Link WHERE link_parent='" + crisis.attrib['id'] + "' AND link_url='" + new_link.link_url + "' AND link_type='" + new_link.link_type + "'")
 
                 if (not q.count()):
-                
                     new_link.put()
 
             except db.BadQueryError, e:
                 logging.info("Error Caught: "+ str(e))
                 new_link.put()
-    #return link_list
     
     
 #adds a crisis to the list, where crisis is an element tree
