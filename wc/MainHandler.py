@@ -44,7 +44,7 @@ def link_values(template_values, link):
     template_values['ImagesSet'] = imageset
     template_values['videos'] = videos
     for v in videos:
-        if v.link_site.lower() == "youtube":
+        if v.link_site and v.link_site.lower() == "youtube":
             template_values['youtube_embed'] = v.link_url[-11:]
     template_values['socials'] = socials
     template_values['externals'] = externals
