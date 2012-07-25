@@ -26,7 +26,8 @@ class SearchResults(webapp.RequestHandler):
             for k, v in cd.items():
                 vv = repr(v)
                 if search_string in vv:
-                    search_results.add(cd['_elemid'])
+                    fields = ('crises', cd['_elemid'], cd['_name'])
+                    search_results.add(fields)
         
         # search in all the orgs
         for o in orgs.run():
@@ -35,15 +36,18 @@ class SearchResults(webapp.RequestHandler):
             for k, v in od.items():
                 vv = repr(v)
                 if search_string in vv:
-                    search_results.add(od['_elemid'])
-        
+                    fields = ('organizations', cd['_elemid'], cd['_name'])
+                    search_results.add(fields)
+
+        # search in all crises
         for p in people.run():
             pd = p.__dict__
             
             for k, v in pd.items():
                 vv = repr(v)
                 if search_string in vv:
-                    search_results.add(pd['_elemid'])
+                    fields = ('people', cd['_elemid'], cd['_name'])
+                    search_results.add(fields)
 
         self.response.out.write(repr(search_results))
         for s in search_results:
