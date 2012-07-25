@@ -41,6 +41,9 @@ class ImportPage(webapp.RequestHandler):
                 <input name="overwrite" value="Import Overwrite" type="submit" />
               </div>
             </form><br />
+
+            <form method="link" action="http://xkcd.com/353/"><input type="submit" value="Import Antigravity"></form><br />
+            
             <a href="/">Home</a>
             </div></div></div>
             <script>$(document).ready(function(){$('#fadeContent').fadeIn(400);$('a').click(function(){$('#fadeContent').fadeOut(400);});});</script>
@@ -55,6 +58,13 @@ class ImportPage(webapp.RequestHandler):
         url = form['inurl'].value
         merge = False
         update = False
+
+        ### ### ###
+        antigravity = False
+        if "antigravity" in form:
+            pass
+        ### ### ###
+        
         logging.info("POSTING TO IMPORT...")
         if "merge" in form:
             logging.info("with merge=TRUE")
@@ -132,6 +142,9 @@ class ImportPage(webapp.RequestHandler):
                 <input name="overwrite" value="Import Overwrite" type="submit" />
               </div>
             </form><br />
+
+            <form method="link" action="http://xkcd.com/353/"><input type="submit" value="Import Antigravity"></form>
+            
             <p>%s</p><br />
             <a href="/">Home</a>
             </div></div></div>
