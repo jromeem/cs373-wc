@@ -7,95 +7,112 @@
 		<script src="/js/fadeStuff.js"></script>
 		<script src="/js/jquery.isotope.min.js"></script>
 	</head>
-	<body>
+	<body background="{{bgimg}}">
 		<div id="wrapper">
 			<div id="content">
 				{% include "header.html" %}
 				<div id="fadeContent">
-					<table>
-						<tr><th>Name</th><td>{{ x.name }}</td></tr>
-						<tr><th>Kind</th><td>{{ x.info_type }}</td></tr>
-						<tr><th>Nationality</th><td>{{ x.info_nationality }}</td></tr>
-						<tr><th>Date of Birth</th>
-							<td>
-								{% ifnotequal x.info_birthdate_year 0 %}
-									{% ifnotequal x.info_birthdate_day 0 %}
-										{{ x.info_birthdate_month }}-{{ x.info_birthdate_day }}-{{ x.info_birthdate_year }}
-									{% else %}
-										{{ x.info_birthdate_year }}
-									{% endifnotequal %}
-								{% else %}
-									Unknown
-								{% endifnotequal %}
-							</td>
-						</tr>
-						<tr><th>Info</th><td>{{ x.info_biography }}</td></tr>
-						<tr>
-							<th>Embedded Image</th>
+					<div id="templatePageInfo">
+						<table class="templateTable">
+							<tr><td class="sectionTitle"><h3>INFO</h3></td></tr>
+							<tr><td>Nationality</td><td>{{ x.info_nationality }}</td></tr>
+							<tr><td>Date of Birth</td>
 								<td>
+									{% ifnotequal x.info_birthdate_year 0 %}
+										{% ifnotequal x.info_birthdate_day 0 %}
+											{{ x.info_birthdate_month }}-{{ x.info_birthdate_day }}-{{ x.info_birthdate_year }}
+										{% else %}
+											{{ x.info_birthdate_year }}
+										{% endifnotequal %}
+									{% else %}
+										Unknown
+									{% endifnotequal %}
+								</td>
+							</tr>
+							<tr><td>Bio</td><td>{{ x.info_biography }}</td></tr>
+							<tr>
+								{% if isEmpty_misc %}
+								<td>Misc</td>
+								<td>
+									{% for m in misc_links %}
+										<a href="{{m.link_url}}">{{m.title}}</a><br />
+									{% endfor %}
+								</td>
+								{% endif %}
+							</tr>
+							<tr><td class="sectionTitle"><h3>MEDIA</h3></td></tr>
+							<tr id="imagesRow"><td>Images</td>
+								<td id="imageCell">
 								{% for i in ImagesSet %}
 									{% ifnotequal i None %}
 										<img src="{{i}}" /><br />
 									{% endifnotequal %}
 								{% endfor %}
 								</td>
-						</tr>
-						<tr>
-							<th>Embedded Video</th>
+							</tr>
+							<tr><td>Videos</td>
+									<td>
+										{% for v in videos %}
+										<iframe  width="300" src="http://www.youtube.com/embed/{{ youtube_embed }}" frameborder="0" allowfullscreen>
+										</iframe><br />
+										{% endfor %}
+									</td>
+							</tr>
+							<tr><td class="sectionTitle"><h3>RELATED</h3></td></tr>
+							<tr><td>Crises</td>
 								<td>
-									{% for v in videos %}
-									<iframe  width="560" height="315" src="http://www.youtube.com/embed/{{ youtube_embed }}" frameborder="0" allowfullscreen>
-									</iframe><br />
+									{% for ref in x.crisisrefs %}					
+										
+										{% for item in crisis_references.items %}
+				    						<a href="/crises/{{item.0}}">{{item.1}}</a>
+				    					{% endfor %}
+										<br />
 									{% endfor %}
 								</td>
-						</tr>
-						<tr><th>Social Networks</th><td>
+							</tr>
+							<tr><td>Organizations</td>
+								<td>
+									{% for ref in x.orgrefs %}					
+										
+										{% for item in org_references.items %}
+				    						<a href="/organizations/{{item.0}}">{{item.1}}</a>
+				    					{% endfor %}
+										<br />
+									{% endfor %}					
+								</td>
+							</tr>
+							<tr><td class="sectionTitle"><h3>LINKS</h3></td></tr>
+							<tr><td>Social</td><td>
 								{% for s in socials %}
 									<a href="{{s.link_url}}">{{s.title}}</a><br/>
-								{% endfor %}</td></tr>
-						<tr><th>External Links</th>
-							<td>
-								{% for e in externals %}
-									<a href="{{e.link_url}}">{{e.title}}</a><br />
-								{% endfor %}
-							</td>
-						</tr>
-						<tr>
-							{% if isEmpty_misc %}
-							<th>misc</th>
-							<td>
-								{% for m in misc_links %}
-									<a href="{{m.link_url}}">{{m.title}}</a><br />
-								{% endfor %}
-							</td>
-							{% endif %}
-						</tr>
-						<tr><th>Crises</th>
-							<td>
-								{% for ref in x.crisisrefs %}					
-									
-									{% for item in crisis_references.items %}
-			    						<a href="/crises/{{item.0}}">{{item.1}}</a>
-			    					{% endfor %}
-									<br />
-								{% endfor %}
-							</td>
-						</tr>
-						<tr><th>Organizations</th>
-							<td>
-								{% for ref in x.orgrefs %}					
-									
-									{% for item in org_references.items %}
-			    						<a href="/organizations/{{item.0}}">{{item.1}}</a>
-			    					{% endfor %}
-									<br />
-								{% endfor %}					
-							</td>
-						</tr>
-					</table>
+								{% endfor %}</td>
+							</tr>
+							<tr><td>External</td>
+								<td>
+									{% for e in externals %}
+										<a href="{{e.link_url}}">{{e.title}}</a><br />
+									{% endfor %}
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div id="pageInfoBox">
+		    			<h1>{{ x.name }}</h1>
+		    			<hr />
+		    			<small>{{ x.info_type }}</small>
+		    			<hr />
+				    </div>
 				</div>
 			</div>
 		</div>
+		<script>
+			$(document).ready(function(){
+				$('img').each(function(){
+					if ($(this).attr('src') == $('body').attr('background')) $(this).parent().remove();
+				});
+				if (!$('#imageCell').length) $('#imagesRow').remove();
+			});
+		</script>
 	</body>
 </html>
 {% endfor %}

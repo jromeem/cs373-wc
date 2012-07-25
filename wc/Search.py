@@ -6,7 +6,6 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
 from DataModels import Crisis, Organization, Person
 import django.contrib.humanize.templatetags.humanize
-
 import google.appengine.api.search
 
 class SearchResults(webapp.RequestHandler):
