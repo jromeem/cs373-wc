@@ -75,7 +75,7 @@
         <name>Smash Bros Cast</name>
         <info>
             <type>type1</type>
-            <history>history1</history>
+            <history></history>
             <contact>
                 <phone>phone0</phone>
                 <email>email0</email>
@@ -141,7 +141,7 @@
                 <misc>misc5</misc>
             </birthdate>
             <nationality>nationality0</nationality>
-            <biography>biography0</biography>
+            <biography></biography>
         </info>
         <ref>
             <primaryImage>
@@ -149,11 +149,6 @@
                 <title>Mario</title>
                 <url>http://www.smashbros.com/en_us/characters/images/mario/mario.jpg</url>
             </primaryImage>
-            <image>
-                <site>mariowiki</site>
-                <title>luigi</title>
-                <url>http://www.mariowiki.com/images/thumb/e/e9/BrawlLuigi.png/220px-BrawlLuigi.png</url>
-            </image>
             <image>
                 <site>test</site>
                 <title>broken</title>

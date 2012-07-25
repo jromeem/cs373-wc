@@ -78,19 +78,26 @@ def check_url(url):
 
 def mergeModels(newmodel, oldmodel):
     logging.info("MERGEMODELS CALLED!")
-    try:
-        logging.info("TRYING")
-        dict2 = oldmodel.__dict__
-        generator1 = newmodel.__dict__.iteritems()
-        logging.info("ENTERING FOR LOOP...")
-        for k,v in generator1:
-            logging.info("---------KV PAIR: " + str(k) + str(v) + str(dict2[k]))
-            """if dict2[k] == False or dict2[k] == "" or dict2[k] == "Unknown" :
-                assert False
-                setattr(oldmodel,k,v)"""
-    except StopIteration:
-        logging.info("STOPITER")
-        return oldmodel
+    #try:
+    logging.info("TRYING")
+    logging.info("OLDMODEL TYPE: " + str(type(oldmodel)))
+    dict2 = oldmodel.__dict__
+    logging.info("DICT 2 KEYS: ")
+    for k in dict2:
+        logging.info("     " + str(k))
+    #generator1 = newmodel.__dict__.iteritems()
+    logging.info("ENTERING FOR LOOP...")
+    for k,v in newmodel.__dict__.iteritems():
+        #k = k[1:]
+        logging.info("INSIDE LOOP")
+        logging.info("---------KV PAIR: "+ str(k) + " " + str(v) )
+        # + str(dict2[k]))
+        if (k in dict2) and (dict2[k] == False or dict2[k] == "" or dict2[k] == 0):
+            logging.info("key " + str(k) + " not found; replacing with new value: " + str(v))
+            setattr(oldmodel,k,v)
+    #except StopIteration:
+    logging.info("STOPITER")
+    return oldmodel
 
 # used for creating the list of links for a given crisis/ppl/org
 # crisis : Elementtree object
@@ -126,7 +133,18 @@ def grabLinks(crisis):
                 new_link.description = l.find('./description').text
             new_link.link_parent = crisis.attrib['id']
 
-            new_link.put()
+
+
+            try:
+                q = db.GqlQuery("SELECT * FROM Link WHERE link_parent='" + crisis.attrib['id'] + "' AND link_url='" + new_link.link_url + "'")
+
+                if (not q.count()):
+                
+                    new_link.put()
+
+            except db.BadQueryError, e:
+                logging.info("Error Caught: "+ str(e))
+                new_link.put()
     #return link_list
     
     
@@ -175,12 +193,13 @@ def addCrisis(crisis):
 
 
         try:
-            q = db.GqlQuery("SELECT name FROM Crisis WHERE elemid='" + crisis.attrib['id'] + "'")
+            q = db.GqlQuery("SELECT * FROM Crisis WHERE elemid='" + crisis.attrib['id'] + "'")
             if (not q.count()):
                 c.put()
-            if merge:
+            elif merge:
                 mergeModels(c,q[0]).put()
-        except :
+        except db.BadQueryError, e:
+            logging.info("Error Caught: "+ str(e))
             c.put()
 
         #return crisis_list
@@ -189,7 +208,7 @@ def addCrisis(crisis):
 def addPerson(person):
     assert(person is not None)
     
-    if (person.find('.//info')):
+    if (person.find('.//info') is not None):
         grabLinks(person)
         p = Person(
                    elemid = person.attrib['id'],
@@ -208,19 +227,21 @@ def addPerson(person):
                    )
 
         try:       
-            q = db.GqlQuery("SELECT name FROM Person WHERE elemid='" + person.attrib['id'] + "'")
+            q = db.GqlQuery("SELECT * FROM Person WHERE elemid='" + person.attrib['id'] + "'")
             if (not q.count()):
                 p.put()
-        except:
+            elif merge:
+                mergeModels(p,q[0]).put()
+        except db.BadQueryError, e:
+            logging.info("Error Caught: "+ str(e))
             p.put()
-            
         #return person_list
         
 #adds an organization to the list, where org is an element tree
 def addOrganization(org):
     assert (org is not None)    
     
-    if org.find('.//info'):
+    if org.find('.//info') is not None:
         grabLinks(org)
         info = org.find('.//info')
         contact = info.find('.//contact')
@@ -251,10 +272,13 @@ def addOrganization(org):
                          )
         
         try:
-            q = db.GqlQuery("SELECT name FROM Organization WHERE elemid='" + org.attrib['id'] + "'")
+            q = db.GqlQuery("SELECT * FROM Organization WHERE elemid='" + org.attrib['id'] + "'")
             if (not q.count()):
                 o.put()
-        except:
+            elif merge:
+                mergeModels(o,q[0]).put()
+        except db.BadQueryError, e:
+            logging.info("Error Caught: "+ str(e))
             o.put()
             
         #return organization_list
