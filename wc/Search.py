@@ -45,9 +45,6 @@ class SearchResults(webapp.RequestHandler):
                     search_results.add(pd['_elemid'])
 
         self.response.out.write(repr(search_results))
-        for s in search_results:
-            self.response.out.write(s)
-            self.response.out.write('<br>')
         
     
 
