@@ -7,18 +7,16 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
 from DataModels import Crisis, Organization, Person
 import django.contrib.humanize.templatetags.humanize
-
 import google.appengine.api.search
 
 class SearchResults(webapp.RequestHandler):
     def post(self):
         search_query = self.request.get('q')
-        print search_query
-
+        
+        self.response.out.write('RESULTS')
         
         # Get the index.
-        index = search.Index(name='index-name',
-                             consistency=Index.PER_DOCUMENT_CONSISTENT)
+        #index = search.Index(name='eleemid', consistency=Index.PER_DOCUMENT_CONSISTENT)
         """
         # Create a document.
         doc = search.Document(

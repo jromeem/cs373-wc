@@ -23,7 +23,8 @@
 </div>
 <div id="search_results">
 	<div id="xbutton">x</div>
-	<span id="results_header">results for <span id="resultsfor"></span>:</span>
+	<h3 id="results_header">results for <span id="resultsfor"></span>:</h3>
+	<div id="results_body"></div>
 </div>
 
 <script>
@@ -32,18 +33,30 @@
 			if ($(this).val() == 'Search for something...') $(this).val('');
 		});
 		
+		$('input').blur(function(){
+			$(this).val('Search for something...');
+		});
+		
 		$('input').keypress(function(k){
-    		if (k.keyCode == 13){
-    			$.post('/search', {'q':$('input').val()}, function(data){
+    		if (k.keyCode == 13 && $(this).val()){
+    			var query = $('input').val();
+    			$.post('/search', {'q':query}, function(data){
     				$('input').val('');
-    				$('#resultsfor').html(data);
+    				$('#resultsfor').html(query);
+    				
+    				clearResults();
+    				
+    				var row = "<hr /><div class=\"resultRow\">" + data + "</div>";
+    				$('#results_body').append(row);
     				$('#search_results').fadeIn(400);
     			});
     		}
     	});
     	
-    	$('#xbutton').click(function(){
-    		$('#search_results').fadeOut(400);
-    	});
+    	$('#xbutton').click(function(){$('#search_results').fadeOut(400);});
+    	
+    	function clearResults(){
+    		$('#results_body').children().remove();
+    	}
 	});
     </script>
