@@ -39,17 +39,39 @@
 		
 		$('input').keypress(function(k){
     		if (k.keyCode == 13 && $(this).val()){
-    			$('#fadeContent').fadeOut(400);
     			var query = $('input').val();
-    			$.post('/search', {'q':query}, function(data){
-    				$('input').val('');
-    				$('#resultsfor').html(query);
-    				
-    				clearResults();
-    				
-    				var row = "<hr /><div class=\"resultRow\">" + data + "</div>";
-    				$('#results_body').append(row);
-    				$('#search_results').fadeIn(400);
+    			$.getJSON('/search', {'q':query}, function(data){
+    				if (!$.isEmptyObject(data)){
+	    				$('#fadeContent').fadeOut(400);
+	    				$('input').val('');
+	    				$('#resultsfor').html(query);
+	    				
+	    				clearResults();
+	    				var rows = "";
+	    				var no_dupes = Array();
+	    				
+	    				$.each(data, function(key, value){
+	    					if (no_dupes.indexOf(value) == -1) no_dupes.push(value);
+	    				});
+	    				
+	    				for (var i = 0; i < no_dupes.length; i++){
+	    					rows += "<hr /><div class=\"resultRow\"><a href=\"\">" + no_dupes[i] + "</a></div>";
+	    				}
+	    				
+	    				$('#results_body').append(rows);
+	    				$('#search_results').fadeIn(400);
+    				}
+    				else{
+    					$('#fadeContent').fadeOut(400);
+	    				$('input').val('');
+	    				$('#resultsfor').html(query);
+	    				
+	    				clearResults();
+	    				var rows = "<hr /><div class=\"resultRow\">There were no matches for your search.</div>";
+	    				
+	    				$('#results_body').append(rows);
+	    				$('#search_results').fadeIn(400);
+    				}
     			});
     		}
     	});

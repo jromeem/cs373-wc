@@ -4,7 +4,9 @@
 import cgi, os
 import cgitb; cgitb.enable()
 import urllib2
+
 import tempfile
+
 from google.appengine.ext import db
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
@@ -30,14 +32,13 @@ class ImportPage(webapp.RequestHandler):
               <div>
                 Upload an XML file </br>
                 <input id="importfile" name="importfile" type="file"><br /><br />
-                
                 Or provide a URL</br>
                 <input id="inurl" name="inurl" type="text"><br /><br />
                 <input type="hidden" name="check" value="0" />
                 <input type="checkbox" name="check" value="1" /> Check if image URLs are valid<br /><br />
                 <input name="merge" value="Import Merge" type="submit" />
+                <input name="update" value="Import Merge & Update" type="submit" />
                 <input name="overwrite" value="Import Overwrite" type="submit" />
-                
               </div>
             </form><br />
             <a href="/">Home</a>
@@ -50,17 +51,24 @@ class ImportPage(webapp.RequestHandler):
         import logging        
         form = cgi.FieldStorage()
         file_item = form['importfile']
+
         url = form['inurl'].value
         merge = False
+        update = False
         logging.info("POSTING TO IMPORT...")
         if "merge" in form:
             logging.info("with merge=TRUE")
             merge = True
+        if "update" in form:
+            logging.info("with merge/update=TRUE")
+            merge = True
+            update = True
         check = 0
         try:
             check = form['check'].value
         except AttributeError:
             check = 1
+
         
         # check if file was uploaded
         if not file_item.filename and not url:
@@ -70,6 +78,7 @@ class ImportPage(webapp.RequestHandler):
             message = 'Error: Please upload only one document.</br>'
         else:
             try:
+
                 if not url:
                     file_name = os.path.basename(file_item.filename)
                     in_file = file_item.file
@@ -88,25 +97,28 @@ class ImportPage(webapp.RequestHandler):
                 # check if uploaded file is a valid xml_instance
                 if not validXML(content, "wc.xsd"):
                     message = "Error: " + message + "but does not validate against our schema.</br>"                
+
                 else:
                     message += "and is a valid XML file!</br>"
 
                     # call function to parse and store into datastore
-                    parseXML(in_file, check, merge)
+                    flags = {'check': check, 'merge' : merge, 'update' : update}
+                    parseXML(in_file, flags)
             except urllib2.URLError, ue:
                 message = 'URLERROR: ' + str(ue)
             except ValueError, ve:
                 message = 'VALUEERROR: '+ str(ve)
+
                 
         self.response.out.write("""
         <html>
-        <head>
+            <head>
                 <link rel="stylesheet" type="text/css" href="stylesheets/main.css" />
                 <script src="js/jquery-1.7.2.min.js"></script>
                 <script src="js/fadeStuff.js"></script>
             </head>
           <body>
-          <div id="wrapper"><div id="content"><div id="fadeContent">
+            <div id="wrapper"><div id="content"><div id="fadeContent">
             <form action="/import" method="post" enctype="multipart/form-data">
               <div>
                 Upload an XML file </br>
@@ -116,12 +128,14 @@ class ImportPage(webapp.RequestHandler):
                 <input type="hidden" name="check" value="0" />
                 <input type="checkbox" name="check" value="1" /> Check if image URLs are valid<br /><br />
                 <input name="merge" value="Import Merge" type="submit" />
+                <input name="update" value="Import Merge & Update" type="submit" />
                 <input name="overwrite" value="Import Overwrite" type="submit" />
               </div>
             </form><br />
             <p>%s</p><br />
-            <a href="/">Home</a></br>
+            <a href="/">Home</a>
             </div></div></div>
+            <script>$(document).ready(function(){$('#fadeContent').fadeIn(400);$('a').click(function(){$('#fadeContent').fadeOut(400);});});</script>
           </body>
         </html>""" % message)
         

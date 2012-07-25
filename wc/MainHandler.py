@@ -1,5 +1,6 @@
 import cgi, os, sys
 import cgitb; cgitb.enable()
+import logging
 """
 sys.path.append('/home/joe/Downloads/google_appengine/google')
 sys.path.append('/home/joe/Downloads/google_appengine/google/appengine')
@@ -43,21 +44,36 @@ def link_values(template_values, link):
     template_values['ImagesSet'] = imageset
     template_values['videos'] = videos
     for v in videos:
-        if v.link_site.lower() == "youtube":
+        if v.link_site and v.link_site.lower() == "youtube":
             template_values['youtube_embed'] = v.link_url[-11:]
     template_values['socials'] = socials
     template_values['externals'] = externals
     template_values['misc_links'] = misc_links
     template_values['isNotEmpty_misc'] = misc_links != []
 
-
+def getID(q):
+	list = []
+	for item in q:
+		list.append(str(item.elemid))
+	return list
+	
 class MainPage(webapp.RequestHandler):
     def get(self):
         headerNote = " - Import Antigravity"
         #: test documentation for images
         images = db.GqlQuery("SELECT * FROM Link WHERE link_type='primaryImage' ORDER BY link_url")
+        crises = db.GqlQuery("SELECT * FROM Crisis")
+        orgs = db.GqlQuery("SELECT * FROM Organization")
+        people = db.GqlQuery("SELECT * FROM Person")
         
-        template_values={'page_name': 'World Crises','team_name': 'IMPORT ANTIGRAVITY','team_members': ['Joe Peacock', 'Andy Hsu','Harrison He','Jerome Martinez','Michael Pace','Justin Salazar',], 'images' : images, 'headerNote': headerNote}
+        template_values={'page_name': 'World Crises',
+        				 'team_name': 'IMPORT ANTIGRAVITY',
+        				 'team_members': ['Joe Peacock', 'Andy Hsu','Harrison He','Jerome Martinez','Michael Pace','Justin Salazar',], 
+        				 'images' : images, 
+        				 'headerNote': headerNote,
+        				 'crises' : getID(crises),
+        				 'orgs' : getID(orgs),
+        				 'people' : getID(people)}
         
         path = os.path.join(os.path.dirname(__file__), "index.html")
         self.response.out.write(template.render(path, template_values))
