@@ -19,28 +19,50 @@ class SearchResults(webapp.RequestHandler):
         orgs   = db.GqlQuery("SELECT * FROM Organization")
         
         i = 0
+
+        regex = r'(.{0,50})(' + re.escape(search_string) + r')(.{0,50})'
+        regex_obj = re.compile(regex, re.IGNORECASE)
         
-        # search in all the crises
-        for c in crises.run():
-            cd = c.__dict__
-            # take out things you don't want to search in here
-            cd.pop('_entity')
+        datamodels = [crises.run(), orgs.run(), people.run()]
+
+        index = 0
+        for kind in datamodels:
             
-            for k, v in cd.items():
+            for entity in kind:    
+                entity_dict = entity.__dict__
+                # take out things you don't want to search in here
+                entity_dict.pop('_entity')
                 
-                vv = repr(v)[2:-1]
-                regex = r'(.{0,50})(' + re.escape(search_string) + r')(.{0,50})'
-                matched = re.search(regex, vv)
-                
-                if matched != None:
-                    snippet = '...' + matched.group(1) + '<b>' + matched.group(2) + '</b>' + matched.group(3) + '...'
-                    u_elemid = unicodedata.normalize('NFKD', cd['_elemid']).encode('ascii','ignore')
-                    u_title = unicodedata.normalize('NFKD', cd['_name']).encode('ascii','ignore')
+                for key, value in entity_dict.items():
+                    # only parse normalized strings and unicode strings
+                    if type(value) == type(1L) or value == None:
+                        break
                     
-                    result_string = ['<a href="/crises/' + u_elemid + '">' + u_title + '</a>', '<p>' + snippet + '</p>']
-                    search_results[str(i)] = result_string 
-                    i += 1
-        
+                    # convert to unicode
+                    target_string = unicodedata.normalize('NFKD', value).encode('ascii','ignore')
+                    matched = regex_obj.match(target_string)
+                    
+                    if matched != None:
+                        snippet = '...' + matched.group(1) + '<b>' + matched.group(2) + '</b>' + matched.group(3) + '...'
+                        elemid = unicodedata.normalize('NFKD', entity_dict['_elemid']).encode('ascii','ignore')
+                        title = unicodedata.normalize('NFKD', entity_dict['_name']).encode('ascii','ignore')
+
+                        link_string = '<a href="/'
+                        if index == 0:
+                            link_string += 'crisis'
+                        elif index == 1:
+                            link_string += 'organizations'
+                        else:
+                            link_string += 'people'
+                        link_string += elemid + '">' + title + '</a>'
+
+                        print link_string
+                        
+                        result_string = [link_string, '<p>' + snippet + '</p>']
+                        search_results[str(i)] = result_string 
+                        i += 1
+
+        '''
         # search in all the orgs
         for o in orgs.run():
             od = o.__dict__
@@ -48,8 +70,13 @@ class SearchResults(webapp.RequestHandler):
             od.pop('_entity')
             
             for k, v in od.items():
+                # only parse normalized strings and unicode strings
+                if type(v) == type(1L) or v == None:
+                    break
                 
-                vv = repr(v)[2:-1]
+                # convert to unicode
+                vv = unicodedata.normalize('NFKD', v).encode('ascii','ignore')
+                
                 regex = r'(.{0,50})(' + re.escape(search_string) + r')(.{0,50})'
                 matched = re.search(regex, vv)
                 
@@ -68,8 +95,13 @@ class SearchResults(webapp.RequestHandler):
             pd.pop('_entity')
             
             for k, v in pd.items():
+                # only parse normalized strings and unicode strings
+                if type(v) == type(1L) or v == None:
+                    break
                 
-                vv = repr(v)[2:-1]
+                # convert to unicode
+                vv = unicodedata.normalize('NFKD', v).encode('ascii','ignore')
+                
                 regex = r'(.{0,50})(' + re.escape(search_string) + r')(.{0,50})'
                 matched = re.search(regex, vv)
                 
@@ -81,6 +113,7 @@ class SearchResults(webapp.RequestHandler):
                     result_string = '<a href="/people/' + u_elemid + '">' + u_title + '</a>', '<p>' + snippet + '</p>'
                     search_results[str(i)] = result_string 
                     i += 1
+        '''
 
         self.response.out.write(json.dumps(search_results))
 
