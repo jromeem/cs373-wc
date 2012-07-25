@@ -39,6 +39,7 @@
 		
 		$('input').keypress(function(k){
     		if (k.keyCode == 13 && $(this).val()){
+    			$('#fadeContent').fadeOut(400);
     			var query = $('input').val();
     			$.post('/search', {'q':query}, function(data){
     				$('input').val('');
@@ -53,7 +54,10 @@
     		}
     	});
     	
-    	$('#xbutton').click(function(){$('#search_results').fadeOut(400);});
+    	$('#xbutton').click(function(){
+    		$('#search_results').fadeOut(400);
+    		$('#fadeContent').fadeIn(400);
+    	});
     	
     	function clearResults(){
     		$('#results_body').children().remove();
