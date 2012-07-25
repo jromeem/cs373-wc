@@ -45,6 +45,7 @@ def validXML (xml_instance, xml_schema_filename):
         root = et.getroot()
         return True
     except:
+        pass
         return False
 
 def get_server_status_code(url):
