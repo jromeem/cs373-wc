@@ -13,59 +13,44 @@ class SearchResults(webapp.RequestHandler):
     def post(self):        
         
         search_string = self.request.get('q')
-        search_results = []
+        search_results = set([])
         self.response.out.write('Results for: ' + search_string + '<hr>')
-        
         
         crises = db.GqlQuery("SELECT * FROM Crisis")
         people = db.GqlQuery("SELECT * FROM Person")
         orgs   = db.GqlQuery("SELECT * FROM Organization")
         
-        
         # search in all the crises
         for c in crises.run():
-            self.response.out.write('<br>')
-            self.response.out.write(repr(c))
             cd = c.__dict__
             
             for k, v in cd.items():
                 vv = repr(v)
                 if search_string in vv:
-                    search_results.append(cd['_elemid'])
-                    
-            self.response.out.write('<br>')
-
-        self.response.out.write(repr(search_results))
+                    search_results.add(cd['_elemid'])
         
-        """
-
         # search in all the orgs
         for o in orgs.run():
-            self.response.out.write('<br>')
-            self.response.out.write(repr(o))
             od = o.__dict__
             
             for k, v in od.items():
                 vv = repr(v)
                 if search_string in vv:
-                    search_results.append(od['_elemid'])
-                    
-            print ''
-
+                    search_results.add(od['_elemid'])
+        
         for p in people.run():
-            self.response.out.write('<br>')
-            self.response.out.write(repr(p))
             pd = p.__dict__
             
-            for k, v in cd.items():
+            for k, v in pd.items():
                 vv = repr(v)
                 if search_string in vv:
-                search_results.append(pd['_elemid'])
-            
-            self.response.out.write('<br>')
+                    search_results.add(pd['_elemid'])
 
         self.response.out.write(repr(search_results))
-        """
+        for s in search_results:
+            self.response.out.write(s)
+            self.response.out.write('<br>')
+        
     
 
 application = webapp.WSGIApplication([('/search', SearchResults)], debug=True)
