@@ -98,10 +98,7 @@ def mergeModels(newmodel, oldmodel):
             #logging.info("key " + str(k) + " not found; replacing with new value: " + str(v))
             #setattr(oldmodel,k,v)
         if (k in olddict) and (v != False and v != "" and v != None):
-            if update and olddict[k] != v:
-            	logging.info("key " + str(k) + " UPDATE; replacing with new value: " + str(v))
-                setattr(oldmodel,k,v)
-            elif olddict[k] == False or olddict[k] == "":
+            if olddict[k] == False or olddict[k] == "":
                 logging.info("key " + str(k) + " not found; replacing with new value: " + str(v))
                 setattr(oldmodel,k,v)
     #except StopIteration:
