@@ -46,9 +46,9 @@
 	    		});
 				
 				function addTypeClasses(){
-	    			typeLookup = {  'crises' : ['wafrica', 'haiti', 'iraq', 'chernobyl'],
-	    						'people' : ['mbarzani', 'jsheeran', 'aroche', 'roffenheiser'],
-	    						'organizations' : ['redcrescent', 'oxfam', 'wfp', 'ccpi'] }
+	    			typeLookup = {  'crises' : {{crises}},
+	    						'people' : {{people}},
+	    						'organizations' : {{orgs}} }
 		    		$.each(typeLookup, function(t, l){
 		    			$.each(l, function(){
 		    				$("." + this).addClass(t);
