@@ -61,19 +61,19 @@ class MainPage(webapp.RequestHandler):
     def get(self):
         headerNote = " - Import Antigravity"
         #: test documentation for images
-        images = db.GqlQuery("SELECT * FROM Link WHERE link_type='primaryImage' ORDER BY link_url")
-        crises = db.GqlQuery("SELECT * FROM Crisis")
-        orgs = db.GqlQuery("SELECT * FROM Organization")
-        people = db.GqlQuery("SELECT * FROM Person")
+        images = db.GqlQuery("SELECT * FROM Link WHERE link_type='primaryImage'")
+        crises = getID(db.GqlQuery("SELECT elemid FROM Crisis"))
+        orgs = getID(db.GqlQuery("SELECT elemid FROM Organization"))
+        people = getID(db.GqlQuery("SELECT elemid FROM Person"))
         
         template_values={'page_name': 'World Crises',
         				 'team_name': 'IMPORT ANTIGRAVITY',
         				 'team_members': ['Joe Peacock', 'Andy Hsu','Harrison He','Jerome Martinez','Michael Pace','Justin Salazar',], 
         				 'images' : images, 
         				 'headerNote': headerNote,
-        				 'crises' : getID(crises),
-        				 'orgs' : getID(orgs),
-        				 'people' : getID(people)}
+        				 'crises' : (crises),
+        				 'orgs' : (orgs),
+        				 'people' : (people)}
         
         path = os.path.join(os.path.dirname(__file__), "index.html")
         self.response.out.write(template.render(path, template_values))
