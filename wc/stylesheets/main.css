@@ -13,7 +13,7 @@
 .templateTable td:not(.sectionTitle)		{ font-size:15px; padding:3px 10px 0 10px; }
 .templateTable :not(:first-child) td.sectionTitle { padding-top:20px; }
 
-#search_results			{ display:none; background:white; border:1px solid grey; padding:7px 7px 20px 7px; position:absolute; width:600px; z-index:1; }
+#search_results			{ display:none; background:white; border:1px solid grey; padding:7px 7px 20px 7px; position:absolute; width:700px; z-index:1; }
 #search_results_top		{ position:relative; }
 
 #results_body			{ margin:0 10px 0 10px; }
