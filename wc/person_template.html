@@ -7,6 +7,7 @@
 		<script src="/js/fadeStuff.js"></script>
 		<script src="/js/jquery.isotope.min.js"></script>
 		<script src="/js/jquery.cycle.lite.js"></script>
+		<script src="/js/slideshowStuff.js"></script>
 	</head>
 	<body background="{{bgimg}}">
 		<div id="wrapper">
@@ -100,20 +101,10 @@
 									{% endifnotequal %}
 								{% endfor %}
 								</div>
-						<hr />
 				    </div>
 				</div>
 			</div>
 		</div>
-		<script>
-			$(document).ready(function(){
-				$('img').each(function(){
-					if ($(this).attr('src') == $('body').attr('background')) $(this).parent().remove();
-				});
-				if (!$('#imageCell').length) $('#imagesRow').remove();
-				$('.slideshow').cycle({fx: 'fade'});
-			});
-		</script>
 	</body>
 </html>
 {% endfor %}
