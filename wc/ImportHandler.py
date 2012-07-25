@@ -37,7 +37,6 @@ class ImportPage(webapp.RequestHandler):
                 <input type="hidden" name="check" value="0" />
                 <input type="checkbox" name="check" value="1" /> Check if image URLs are valid<br /><br />
                 <input name="merge" value="Import Merge" type="submit" />
-                <input name="update" value="Import Merge & Update" type="submit" />
                 <input name="overwrite" value="Import Overwrite" type="submit" />
               </div>
             </form><br />
@@ -69,10 +68,7 @@ class ImportPage(webapp.RequestHandler):
         if "merge" in form:
             logging.info("with merge=TRUE")
             merge = True
-        if "update" in form:
-            logging.info("with merge/update=TRUE")
-            merge = True
-            update = True
+
         check = 0
         try:
             check = form['check'].value
@@ -112,7 +108,7 @@ class ImportPage(webapp.RequestHandler):
                     message += "and is a valid XML file!</br>"
 
                     # call function to parse and store into datastore
-                    flags = {'check': check, 'merge' : merge, 'update' : update}
+                    flags = {'check': check, 'merge' : merge}
                     parseXML(in_file, flags)
             except urllib2.URLError, ue:
                 message = 'URLERROR: ' + str(ue)
@@ -138,7 +134,6 @@ class ImportPage(webapp.RequestHandler):
                 <input type="hidden" name="check" value="0" />
                 <input type="checkbox" name="check" value="1" /> Check if image URLs are valid<br /><br />
                 <input name="merge" value="Import Merge" type="submit" />
-                <input name="update" value="Import Merge & Update" type="submit" />
                 <input name="overwrite" value="Import Overwrite" type="submit" />
               </div>
             </form><br />

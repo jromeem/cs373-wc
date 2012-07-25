@@ -31,7 +31,7 @@ import urllib
 #link_list = []
 check = 0
 merge = 0
-update = 0
+
 ############################
 # IMPORT HANDLER FUNCTIONS #
 ############################
@@ -149,7 +149,7 @@ def grabLinks(crisis):
 
                 if (not q.count()):
                     new_link.put()
-
+                    
             except db.BadQueryError, e:
                 logging.info("Error Caught: "+ str(e))
                 new_link.put()
@@ -298,10 +298,9 @@ def parseXML(in_file, flags):
     assert(flags is not None)
     global check
     global merge
-    global update
     check = flags['check']
     merge = flags['merge']
-    update = flags['update']
+
     if not merge:
         db.delete(db.Query())
 
@@ -325,7 +324,7 @@ def parseXML(in_file, flags):
     
     check = 0
     merge = 0
-    update = 0
+
 
 ############################
 # EXPORT HANDLER FUNCTIONS #
