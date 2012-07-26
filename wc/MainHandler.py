@@ -1,4 +1,4 @@
-import cgi, os, sys
+import cgi, os, sys, re
 import cgitb; cgitb.enable()
 import logging
 """
@@ -23,6 +23,7 @@ def link_values(template_values, link):
     images = []
     imageset = set()
     videos = []
+    video_ids = []
     socials = []
     externals = []
     misc_links = []
@@ -44,8 +45,9 @@ def link_values(template_values, link):
     template_values['ImagesSet'] = imageset
     template_values['videos'] = videos
     for v in videos:
-        if v.link_site and v.link_site.lower() == "youtube":
-            template_values['youtube_embed'] = v.link_url[-11:]
+        m = re.search('.*/(watch\?v=)?(.*)', v.link_url)
+        video_ids.append(m.group(2))
+    template_values['video_ids'] = video_ids
     template_values['socials'] = socials
     template_values['externals'] = externals
     template_values['misc_links'] = misc_links

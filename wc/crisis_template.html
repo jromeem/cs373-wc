@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 {% for x in crisis %}
 <html>
 	<head>
@@ -8,6 +9,13 @@
 		<script src="/js/jquery.isotope.min.js"></script>
 		<script src="/js/jquery.cycle.lite.js"></script>
 		<script src="/js/slideshowStuff.js"></script>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
+		<!--[if lt IE 9]>
+		  <script type="text/javascript" src="/js/excanvas/excanvas.js"></script>
+		<![endif]-->
+		<script type="text/javascript" src="/js/spinners/spinners.min.js"></script>
+		<script type="text/javascript" src="/js/lightview/lightview.js"></script>
+		<link rel="stylesheet" type="text/css" href="/stylesheets/lightview/lightview.css"/>
 	</head>
 	<body background="{{bgimg}}">
 		<div id="wrapper">
@@ -79,9 +87,17 @@
 							<tr><td class="sectionTitle"><h3>MEDIA</h3></td></tr>
 							<tr><td>Videos</td>
 									<td>
-										{% for v in videos %}
-										<iframe  width="300" src="http://www.youtube.com/embed/{{ youtube_embed }}" frameborder="0" allowfullscreen>
-										</iframe><br />
+										{% for v in video_ids %}
+										<a href='http://www.youtube.com/embed/{{v}}?autoplay=1&autohide=1&border=0&egm=0&showinfo=0&showsearch=0' 
+   class="lightview" 
+   data-lightview-type="iframe"  
+   data-lightview-group="thumbnail-icon-example" 
+   data-lightview-options="
+     width: 638,
+     height: 360,
+     viewport: 'scale',
+     thumbnail: { image: '/thumbnails/youtube.jpg', icon: 'video' }
+   "><img src="http://img.youtube.com/vi/{{v}}/0.jpg" class="yticon" /></a>
 										{% endfor %}
 									</td>
 							</tr>

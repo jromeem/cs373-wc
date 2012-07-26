@@ -3,7 +3,7 @@
 #content				{ margin-top:10px; margin-bottom:70px; position:relative; }
 #tools					{ position:absolute; right:0px; top:0px; }
 #navLinks				{ position:absolute; top:0px; }
-.headerLinks			{ padding:7px; border-left:1px solid grey; border-bottom:1px solid grey; border-right:1px solid grey; background:white; }
+.headerLinks			{ padding:7px; border-left:1px solid grey; border-bottom:1px solid grey; border-right:1px solid grey; background:white; height:35px; }
 #iso 					{ z-index:-1; position:relative; top:20px; width:850px; margin:0 auto; }
 #header					{ height:60px; position:relative; }
 .isoImg					{ max-width:85px; display:none; opacity:.6; }
@@ -15,7 +15,7 @@
 
 .scrollable				{ max-height:200px; overflow-y:scroll; border-left:1px dashed grey; border-right:1px dashed grey; padding:4px 10px 4px 4px;  }
 
-#search_results			{ display:none; background:white; border:1px solid grey; padding:7px 7px 20px 7px; position:absolute; width:850px; z-index:1; }
+#search_results			{ display:none; background:white; border:1px solid grey; padding:7px 7px 20px 7px; position:absolute; left:7px; width:700px; z-index:1; }
 #search_results_top		{ position:relative; }
 #and_results_body		{ border-top:1px solid grey; padding-top:7px; max-height:200px; overflow-y:scroll; }
 #or_results_body		{ border-top:1px solid grey; padding-top:7px; max-height:200px; overflow-y:scroll; }
@@ -28,6 +28,7 @@
 #xbutton				{ position:absolute; top:0; right:5px; font-size:20px; }
 #xbutton:hover			{ cursor:pointer; }
 
+.yticon					{ width:190px; margin:10px 0; }
 td						{ text-align:left; vertical-align:top; }
 th						{ text-align:left; }
 #fadeContent			{ display:none; padding:0 40px; }
