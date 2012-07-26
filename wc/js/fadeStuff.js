@@ -9,11 +9,9 @@ itemSelector : '.item'
 });
 }
 $('html').fadeIn(200);
-$('a').click(function(){
-	$('html').fadeOut(200);
-});
 $('#fadeContent').fadeIn(800);
-$('a').click(function(){
+$('a').not('.lightview').click(function(){
+	$('html').fadeOut(200);
 	$('#fadeContent').fadeOut(800);
 });
 });
