@@ -22,7 +22,7 @@
 #or_results_body		{ border-top:1px solid grey; padding-top:7px; max-height:200px; overflow-y:scroll; }
 #resultsforand			{ font-style:italic; }
 #resultsforor			{ font-style:italic; }
-#frown					{ margin-top:7px; }
+#frown					{ margin:7px 35px; }
 
 #results_body			{ margin:0 10px 0 10px; }
 .resultRow				{ margin:0 20px 0 20px; }
