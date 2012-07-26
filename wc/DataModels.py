@@ -3,12 +3,17 @@
 from google.appengine.ext import db
 
 class Link(db.Model):
+
     link_parent = db.StringProperty()
     link_type = db.StringProperty()
     title = db.StringProperty()
     link_url = db.StringProperty()
     description = db.StringProperty()
     link_site = db.StringProperty()
+    def __eq__(self,other):
+        if self.link_url == other.link_url and self.link_type == other.link_type:
+            return True
+        return False
 
 class Person(db.Model):
     elemid = db.StringProperty()
