@@ -1035,9 +1035,8 @@ class ImportTests(unittest.TestCase):
         description = SubElement(img, "description")
         description.text = "i'm a description"
         
-        XMLHelpers.grabLinks(crisis)
-        temp = db.GqlQuery("SELECT * FROM Link WHERE link_parent ='"+crisis.attrib['id']+"'")
-        self.assertEqual(temp[0].link_site, "http://img.timeinc.net")
+        linkList = XMLHelpers.grabLinks(crisis)
+        self.assertEqual(linkList[0].link_site, "http://img.timeinc.net")
         db.delete(db.Query())
         
     def test_grablinks2(self):
@@ -1064,17 +1063,15 @@ class ImportTests(unittest.TestCase):
         description2 = SubElement(img, "description")
         description2.text = "the cats are dancing!!!"
         
-        XMLHelpers.grabLinks(person)
-        temp = db.GqlQuery("SELECT * FROM Link WHERE link_parent ='"+person.attrib['id']+"'")
-        self.assert_(temp.count() == 2)
+        linkList = XMLHelpers.grabLinks(person)
+        self.assert_(len(linkList) == 1)
         db.delete(db.Query())
         
     def test_grablinks3(self):
         db.delete(db.Query())
         person = Element("person", {"id" : "globetrotter"})
-        XMLHelpers.grabLinks(person)
-        temp = db.GqlQuery("SELECT * FROM Link WHERE link_parent ='"+person.attrib['id']+"'")
-        self.assert_(temp.count() == 0)
+        linkList = XMLHelpers.grabLinks(person)
+        self.assert_(len(linkList) == 0)
         db.delete(db.Query())
         
     @classmethod
