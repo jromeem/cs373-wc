@@ -22,8 +22,13 @@
 	    </div>
     </div>
 </div>
+<div id="search_results_none">
+	<div class="xbutton">x</div>
+	<h3>There were no results for your query!</h3>
+	<img id="frown" src="http://www.clker.com/cliparts/X/d/3/i/V/9/black-and-white-sad-face-md.png" />
+</div>
 <div id="search_results">
-	<div id="xbutton">x</div>
+	<div class="xbutton">x</div>
 	<h3 id="and_results_header">results for <span id="resultsforand"></span>:</h3>
 	<div id="and_results_body"></div><br />
 	<h3 id="or_results_header">results for <span id="resultsforor"></span>:</h3>
@@ -44,7 +49,7 @@
     		if (k.keyCode == 13 && $(this).val()){
     			var query = $('input').val();
     			$.getJSON('/search', {'q':query}, function(data){
-    				if (!$.isEmptyObject(data)){
+    				if (!$.isEmptyObject(data['OR'])){
 	    				$('#fadeContent').fadeOut(400);
 	    				$('input').val('');
 	    				$('#resultsforand').html(String(query.split(" ")).replace(/,/g, ' <small>AND</small> '));
@@ -105,25 +110,18 @@
 		    				$('#search_results').fadeIn(400);
 	    				}
 	    			}
-    				else{
-    					$('#fadeContent').fadeOut(400);
+	    			else{
+	    				$('#fadeContent').fadeOut(400);
 	    				$('input').val('');
-	    				$('#resultsforand').html(String(query.split(" ")).replace(/,/g, ' <small>AND</small> '));
-	    				$('#resultsforor').css('display', 'none');
-	    				$('#or_results_header').css('display', 'none');
-	    				
-	    				clearResults();
-	    				var rows = "<hr /><div class=\"resultRow\">There were no matches for your search.</div>";
-	    				
-	    				$('#and_results_body').append(rows);
-	    				$('#search_results').fadeIn(400);
-    				}
+	    				$('#search_results_none').fadeIn(400);
+	    			}
     			});
     		}
     	});
     	
-    	$('#xbutton').click(function(){
+    	$('.xbutton').click(function(){
     		$('#search_results').fadeOut(400);
+    		$('#search_results_none').fadeOut(400);
     		$('#fadeContent').fadeIn(400);
     	});
     	
