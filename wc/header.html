@@ -50,6 +50,7 @@
     			var query = $('input').val();
     			$.getJSON('/search', {'q':query}, function(data){
     				if (!$.isEmptyObject(data['OR'])){
+    					$('#search_results_none').fadeOut(400);
 	    				$('#fadeContent').fadeOut(400);
 	    				$('input').val('');
 	    				$('#resultsforand').html(String(query.split(" ")).replace(/,/g, ' <small>AND</small> '));
@@ -112,6 +113,7 @@
 	    			}
 	    			else{
 	    				$('#fadeContent').fadeOut(400);
+	    				$('#search_results').fadeOut(400);
 	    				$('input').val('');
 	    				$('#search_results_none').fadeIn(400);
 	    			}
