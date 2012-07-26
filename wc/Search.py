@@ -9,10 +9,9 @@ class SearchResults(webapp.RequestHandler):
     def get(self):
         search_string = self.request.get('q')
         search_list = search_string.split()
-        and_results = {}
-        or_results = {}
-        
         search_results = {}
+        search_results['OR'] = {}
+        search_results['AND'] = {}
         
         crises = db.GqlQuery("SELECT * FROM Crisis")
         people = db.GqlQuery("SELECT * FROM Person")
@@ -39,16 +38,6 @@ class SearchResults(webapp.RequestHandler):
                     else:
                         target_string = repr(value)
                     matched = regex_obj.match(target_string)
-                    """
-                    self.response.out.write('key:<br />')
-                    self.response.out.write(key)
-                    self.response.out.write('<br />value:<br />')
-                    self.response.out.write(value)
-                    self.response.out.write('<br />matched: ')
-                    self.response.out.write(matched)
-                    self.response.out.write('<br />')
-                    self.response.out.write('<br />')
-                    """
                     
                     if matched != None:
                         snippet = '...' + matched.group(1) + '<b>' + matched.group(2) + '</b>' + matched.group(3) + '...'
@@ -69,7 +58,7 @@ class SearchResults(webapp.RequestHandler):
                         snippet = re.sub(r'\\u', r'', snippet)
                         
                         result_string = [link_string, '<p>' + snippet + '</p>']
-                        search_results[str(i)] = result_string 
+                        search_results['OR'][str(i)] = result_string 
                         i += 1
             index += 1
 
