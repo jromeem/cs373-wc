@@ -20,7 +20,7 @@ class SearchResults(webapp.RequestHandler):
         
         i = 0
 
-        regex = r'(.{0,50})(' + re.escape(search_string) + r')(.{0,50})'
+        regex = r'(.*)(' + re.escape(search_string) + r')(.*)'
         regex_obj = re.compile(regex, re.IGNORECASE)
         
         datamodels = [crises.run(), orgs.run(), people.run()]
@@ -32,14 +32,23 @@ class SearchResults(webapp.RequestHandler):
                 # take out things you don't want to search in here
                 entity_dict.pop('_entity')
                 for key, value in entity_dict.items():
-                    # only parse normalized strings and unicode strings
                     if type(value) == type(u''):
-                        # convert to unicode
+                        # convert from unicode
                         target_string = unicodedata.normalize('NFKD', value).encode('ascii','ignore')
                         target_string = target_string
                     else:
-                        target_string = repr(value)[:-1]
+                        target_string = repr(value)
                     matched = regex_obj.match(target_string)
+                    """
+                    self.response.out.write('key:<br />')
+                    self.response.out.write(key)
+                    self.response.out.write('<br />value:<br />')
+                    self.response.out.write(value)
+                    self.response.out.write('<br />matched: ')
+                    self.response.out.write(matched)
+                    self.response.out.write('<br />')
+                    self.response.out.write('<br />')
+                    """
                     
                     if matched != None:
                         snippet = '...' + matched.group(1) + '<b>' + matched.group(2) + '</b>' + matched.group(3) + '...'
@@ -57,6 +66,7 @@ class SearchResults(webapp.RequestHandler):
                         
                         snippet = re.sub(r'\.\.\.\[?u.', r'...', snippet)
                         snippet = re.sub(r'\'\.\.\.', r'...', snippet)
+                        snippet = re.sub(r'\\u', r'', snippet)
                         
                         result_string = [link_string, '<p>' + snippet + '</p>']
                         search_results[str(i)] = result_string 
