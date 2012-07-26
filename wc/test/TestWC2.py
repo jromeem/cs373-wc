@@ -76,7 +76,7 @@ class UnitTests(unittest.TestCase):
         temp = db.GqlQuery("SELECT * FROM Link")
         for i in temp:
             if i.link_type == "image":
-                self.assert_(i.link_url == "adfadfasdf")
+                self.assertEqual(i.link_url, "asdfasdfsadf")
                 break
         db.delete(db.Query())        
 
