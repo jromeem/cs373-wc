@@ -58,40 +58,64 @@
 	    				var and_row_helper = Array();
 	    				var or_row_helper = Array();
 	    				
-	    				$.each(data['AND'], function(key, value){
-	    					if (andArray.indexOf(value[0]) == -1){
-	    						andArray.push(value[0]);
-	    						and_row_helper.push(value);
-	    					}
-	    				});
-	    				$.each(data['OR'], function(key, value){
-	    					if (orArray.indexOf(value[0]) == -1){
-	    						orArray.push(value[0]);
-	    						or_row_helper.push(value);
-	    					}
-	    				});
-	    				
-	    				for (var i = 0; i < andArray.length; i++){
-	    					andRows += "<div class=\"resultRow\">" + and_row_helper[i][0] + and_row_helper[i][1] + "</div><hr />";
+	    				// one word
+	    				if (query.indexOf(" ") == -1){
+	    					$.each(data['AND'], function(key, value){
+		    					if (andArray.indexOf(value[0]) == -1){
+		    						andArray.push(value[0]);
+		    						and_row_helper.push(value);
+		    					}
+		    				});
+		    				
+		    				for (var i = 0; i < andArray.length; i++){
+		    					andRows += "<div class=\"resultRow\">" + and_row_helper[i][0] + and_row_helper[i][1] + "</div><hr />";
+		    				}
+		    				
+		    				$('#and_results_body').append(andRows);
+		    				$('#or_results_body').css('display', 'none');
+		    				$('#or_results_header').css('display', 'none');
+		    				$('#search_results').fadeIn(400);
 	    				}
-	    				for (var i = 0; i < orArray.length; i++){
-	    					orRows += "<div class=\"resultRow\">" + or_row_helper[i][0] + or_row_helper[i][1] + "</div><hr />";
+	    				// two words
+	    				else{
+	    					$('#or_results_body').css('display', '');
+	    					$('#or_results_header').css('display', '');
+	    					$.each(data['AND'], function(key, value){
+		    					if (andArray.indexOf(value[0]) == -1){
+		    						andArray.push(value[0]);
+		    						and_row_helper.push(value);
+		    					}
+		    				});
+		    				$.each(data['OR'], function(key, value){
+		    					if (orArray.indexOf(value[0]) == -1){
+		    						orArray.push(value[0]);
+		    						or_row_helper.push(value);
+		    					}
+		    				});
+		    				
+		    				for (var i = 0; i < andArray.length; i++){
+		    					andRows += "<div class=\"resultRow\">" + and_row_helper[i][0] + and_row_helper[i][1] + "</div><hr />";
+		    				}
+		    				for (var i = 0; i < orArray.length; i++){
+		    					orRows += "<div class=\"resultRow\">" + or_row_helper[i][0] + or_row_helper[i][1] + "</div><hr />";
+		    				}
+		    				
+		    				$('#and_results_body').append(andRows);
+		    				$('#or_results_body').append(orRows);
+		    				$('#search_results').fadeIn(400);
 	    				}
-	    				
-	    				$('#and_results_body').append(andRows);
-	    				$('#or_results_body').append(orRows);
-	    				$('#search_results').fadeIn(400);
-    				}
+	    			}
     				else{
     					$('#fadeContent').fadeOut(400);
 	    				$('input').val('');
 	    				$('#resultsforand').html(String(query.split(" ")).replace(/,/g, ' <small>AND</small> '));
-	    				$('#resultsforor').html(String(query.split(" ")).replace(/,/g, ' <small>OR</small> '));
+	    				$('#resultsforor').css('display', 'none');
+	    				$('#or_results_header').css('display', 'none');
 	    				
 	    				clearResults();
 	    				var rows = "<hr /><div class=\"resultRow\">There were no matches for your search.</div>";
 	    				
-	    				$('#results_body').append(rows);
+	    				$('#and_results_body').append(rows);
 	    				$('#search_results').fadeIn(400);
     				}
     			});
