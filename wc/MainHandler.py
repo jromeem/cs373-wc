@@ -61,7 +61,7 @@ class MainPage(webapp.RequestHandler):
     def get(self):
         headerNote = " - Import Antigravity"
         #: test documentation for images
-        images = db.GqlQuery("SELECT * FROM Link WHERE link_type='primaryImage'")
+        images = db.GqlQuery("SELECT link_url, link_parent FROM Link WHERE link_type='primaryImage'")
         crises = getID(db.GqlQuery("SELECT elemid FROM Crisis"))
         orgs = getID(db.GqlQuery("SELECT elemid FROM Organization"))
         people = getID(db.GqlQuery("SELECT elemid FROM Person"))
@@ -196,7 +196,7 @@ class PersonPage(webapp.RequestHandler):
         
 class CrisisSplashPage(webapp.RequestHandler):
     def get(self):
-        q = db.GqlQuery("SELECT * FROM Crisis")
+        q = db.GqlQuery("SELECT elemid, name FROM Crisis")
         allImages = db.GqlQuery("SELECT * FROM Link WHERE link_type='primaryImage' ORDER BY link_url")
         images = []
         for c in q:
@@ -213,7 +213,7 @@ class CrisisSplashPage(webapp.RequestHandler):
 
 class OrganizationsSplashPage(webapp.RequestHandler):
     def get(self):
-        q = db.GqlQuery("SELECT * FROM Organization")
+        q = db.GqlQuery("SELECT elemid, name FROM Organization")
         allImages = db.GqlQuery("SELECT * FROM Link WHERE link_type='primaryImage' ORDER BY link_url")
         images = []
         for o in q:
@@ -230,7 +230,7 @@ class OrganizationsSplashPage(webapp.RequestHandler):
 
 class PeopleSplashPage(webapp.RequestHandler):
     def get(self):
-        q = db.GqlQuery("SELECT * FROM Person")
+        q = db.GqlQuery("SELECT elemid, name FROM Person")
         allImages = db.GqlQuery("SELECT * FROM Link WHERE link_type='primaryImage' ORDER BY link_url")
         images = []
         for p in q:

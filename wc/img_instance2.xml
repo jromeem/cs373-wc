@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<worldCrises xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:noNamespaceSchemaLocation="wc.xsd">
-    <crisis id="ID000">
+<worldCrises xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <crisis id="fight">
         <name>Fight</name>
         <info>
             <history>SSBBrawl</history>
             <help>help0</help>
-            <resources>resources0</resources>
+            <resources></resources>
             <type>type0</type>
             <time>
                 <time>time0</time>
@@ -68,8 +67,8 @@
             </ext>
         </ref>
         <misc>misc3</misc>
-        <org idref="ID000"/>
-        <person idref="ID000"/>
+        <org idref="fight"/>
+        <person idref="fight"/>
     </crisis>
     <organization id="ID001">
         <name>Smash Bros Cast</name>
@@ -176,7 +175,7 @@
             </ext>
         </ref>
         <misc>misc6</misc>
-        <crisis idref="ID000"/>
-        <org idref="ID000"/>
+        <crisis idref="fight"/>
+        <org idref="fight"/>
     </person>
 </worldCrises>

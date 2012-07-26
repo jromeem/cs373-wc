@@ -196,6 +196,8 @@ def addCrisis(crisis):
 
 		try:
 			q = db.GqlQuery("SELECT * FROM Crisis WHERE elemid='" + crisis.attrib['id'] + "'")
+			if (not q.count()) and merge:
+				q = db.GqlQuery("SELECT * FROM Crisis WHERE name='" + c.name + "'")
 			if (not q.count()):
 				c.put()
 			elif merge:
