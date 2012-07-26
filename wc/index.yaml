@@ -28,6 +28,12 @@ indexes:
 - kind: Link
   properties:
   - name: link_type
+  - name: link_parent
+  - name: link_url
+
+- kind: Link
+  properties:
+  - name: link_type
   - name: link_url
 
 - kind: Link
