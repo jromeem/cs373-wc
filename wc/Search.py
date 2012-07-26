@@ -19,8 +19,8 @@ class SearchResults(webapp.RequestHandler):
         
         i = 0
 
-        regex = r'(.*)(' + re.escape(search_string) + r')(.*)'
-        regex_obj = re.compile(regex, re.IGNORECASE)
+        regexOR = r'(.*)(' + re.escape(search_string) + r')(.*)'
+        regexOR_obj = re.compile(regexOR, re.IGNORECASE)
         
         datamodels = [crises.run(), orgs.run(), people.run()]
 
@@ -37,12 +37,46 @@ class SearchResults(webapp.RequestHandler):
                         target_string = target_string
                     else:
                         target_string = repr(value)
-                    matched = regex_obj.match(target_string)
+                    matchedOR = regexOR_obj.match(target_string)
                     
-                    if matched != None:
-                        snippet = '...' + matched.group(1) + '<b>' + matched.group(2) + '</b>' + matched.group(3) + '...'
-                        elemid = unicodedata.normalize('NFKD', entity_dict['_elemid']).encode('ascii','ignore')
-                        title = unicodedata.normalize('NFKD', entity_dict['_name']).encode('ascii','ignore')
+                    elemid = unicodedata.normalize('NFKD', entity_dict['_elemid']).encode('ascii','ignore')
+                    title = unicodedata.normalize('NFKD', entity_dict['_name']).encode('ascii','ignore')
+                    
+                    # AND
+                    regexAnd = ''
+                    for s in search_list:
+                        regexAnd += '(' + s + ')|'
+                    regexAnd = regexAnd[:-1]
+                    regexAnd_obj = re.compile(regexAnd, re.IGNORECASE)
+                    m = regexAnd_obj.match(target_string)
+                    for x in range(1, len(search_list)+1):
+                        if not m.group(x):
+                            break
+                    else:
+                        for x in range(1, len(search_list)+1):
+                            snippet = target_string.replace(m.group(x), '<b>' + m.group(x) + '</b>')
+                        snippet = '...' + result_string + '...'
+                        link_string = '<a href="/'
+                        if index == 0:
+                            link_string += 'crises/'
+                        elif index == 1:
+                            link_string += 'organizations/'
+                        else:
+                            link_string += 'people/'
+                        link_string += elemid + '">' + title + '</a>'
+                        
+                        snippet = re.sub(r'\.\.\.\[?u.', r'...', snippet)
+                        snippet = re.sub(r'\'\.\.\.', r'...', snippet)
+                        snippet = re.sub(r'\\u', r'', snippet)
+                        
+                        result_string = [link_string, '<p>' + snippet + '</p>']
+                        search_results['AND'][str(i)] = result_string 
+                        i += 1
+                        
+                    
+                    # OR
+                    if matchedOr != None:
+                        snippet = '...' + matchedOr.group(1) + '<b>' + matchedOr.group(2) + '</b>' + matchedOr.group(3) + '...'
     
                         link_string = '<a href="/'
                         if index == 0:
