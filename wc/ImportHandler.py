@@ -12,7 +12,7 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 
 from XMLHelpers import validXML, parseXML
-		
+from google.appengine.api.labs import taskqueue		
 ##################
 # IMPORT HANDLER #
 ##################
@@ -112,7 +112,8 @@ class ImportPage(webapp.RequestHandler):
 
 					# call function to parse and store into datastore
 					flags = {'check': check, 'merge' : merge}
-					parseXML(in_file, flags)
+					#parseXML(in_file, flags)
+					taskqueue.add(url='/ImportTask', params={'xml_file': file_name, 'flags':flags})
 			except urllib2.URLError, ue:
 				message = 'URLERROR: ' + str(ue)
 			except ValueError, ve:

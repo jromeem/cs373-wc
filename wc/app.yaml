@@ -9,6 +9,12 @@ handlers:
   
 - url: /export
   script: ExportHandler.py
+
+- url: /task
+  script: TaskQueueHandler.py
+
+- url: /importtask
+  script: ImportTask.py
   
 - url: /meow
   script: meow.py
