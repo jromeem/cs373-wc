@@ -4,6 +4,14 @@ runtime: python
 api_version: 1
 
 handlers:
+- url: /update
+  script: all-to-q.py
+  
+- url: /one-day
+  script: one-day.py
+  
+  
+
 - url: /import
   script: ImportHandler.py
   
