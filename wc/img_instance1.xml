@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<worldCrises xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:noNamespaceSchemaLocation="wc.xsd">
+<worldCrises xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <crisis id="ID000">
         <name>Fight</name>
         <info>
             <history></history>
             <help>help0</help>
-            <resources>resources0</resources>
+            <resources>stocks</resources>
             <type>type0</type>
             <time>
                 <time>time0</time>
