@@ -54,7 +54,8 @@ class SearchResults(webapp.RequestHandler):
                         link_string += 'people/'
                     link_string += elemid + '">' + title + '</a>'
                     for s in search_list :
-                        target_string = target_string.replace(s, '<b><FONT style="BACKGROUND-COLOR: yellow">'+s+'</FONT></b>')
+                        pattern = re.compile(s, re.IGNORECASE)
+                        target_string = pattern.sub('<b><FONT style="BACKGROUND-COLOR: yellow">'+s+'</FONT></b>', target_string)
                     snippet = '...' + target_string + '...'
                     
                     snippet = snippet.replace('\.\.\...', '...')
