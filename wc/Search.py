@@ -53,7 +53,8 @@ class SearchResults(webapp.RequestHandler):
                     else:
                         link_string += 'people/'
                     link_string += elemid + '">' + title + '</a>'
-
+                    for s in search_list :
+                        target_string = target_string.replace(' '+ s +' ', '<b> <FONT style="BACKGROUND-COLOR: yellow">'+s+'</FONT> </b>')
                     snippet = '...' + target_string + '...'
                     
                     snippet = snippet.replace('\.\.\...', '...')
