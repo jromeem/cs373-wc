@@ -3,7 +3,7 @@
 # contains the methods to validate, parse, and build XML
 # it also contains the code to populate the GAE datastore
 import logging
-
+from unicodedata import normalize
 from google.appengine.ext import db
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
@@ -96,11 +96,11 @@ def mergeModels(newmodel, oldmodel):
 		logging.info("	   " + str(k))
 	logging.info("ENTERING FOR LOOP...")
 	for k,v in newmodel.__dict__.iteritems():
-		logging.info("---------KV PAIR: "+ str(k) + " " + str(v) )
+		#logging.info("---------KV PAIR: "+ str(k) + " " + str(v) )
 		
 		if (k in olddict) and (v != False and v != "" and v != None):
 			if olddict[k] == False or olddict[k] == "":
-				logging.info("key " + str(k) + " not found; replacing with new value: " + str(v))
+				logging.info("key " + str(k) + " not found; replacing with new value")
 				setattr(oldmodel,k,v)
 	#except StopIteration:
 	logging.info("STOPITER")
@@ -313,6 +313,7 @@ def addOrganization(org):
 # in_file : file (XML-validated file)
 # parse and store the XML data in the GAE datastore
 def parseXML(in_file, flags):
+	logging.info("PARSING...")
 	assert(in_file is not None)
 	assert(flags is not None)
 	global check
@@ -322,6 +323,13 @@ def parseXML(in_file, flags):
 
 	if not merge:
 		db.delete(db.Query())
+
+	#lines = in_file.readlines()
+	#i = 0
+	#for line in lines:
+
+	#	logging.info(str("---Line " + str(i) + ": " + line))
+	#	i+=1
 
 	tree = ElementTree.parse(in_file)
 		

@@ -56,6 +56,12 @@ class SearchResults(webapp.RequestHandler):
                     for s in search_list :
                         target_string = target_string.replace(s, '<b><FONT style="BACKGROUND-COLOR: yellow">'+s+'</FONT></b>')
                     snippet = '...' + target_string + '...'
+                    
+                    snippet = snippet.replace('\.\.\...', '...')
+                    snippet = snippet.replace('.\.\.\.', '...')
+                    snippet = snippet.replace('\\u', '')
+                    snippet = snippet.replace('\\n', '')
+                    snippet = snippet.replace('\\t', '')
 
                     result = [link_string, '<p>' + snippet + '</p>']
                     if inAll:

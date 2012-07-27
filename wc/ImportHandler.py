@@ -4,8 +4,9 @@
 import cgi, os
 import cgitb; cgitb.enable()
 import urllib2
-
+import logging
 import tempfile
+from shutil import copyfile
 
 from google.appengine.ext import db
 from google.appengine.ext import webapp
@@ -94,9 +95,14 @@ class ImportPage(webapp.RequestHandler):
 					content = form.getvalue('importfile')
 				else:
 					webfile = urllib2.urlopen(url)
+					in_file = tempfile.TemporaryFile()
+					
 					content = webfile.read()
+					in_file.write(content)
+					in_file.seek(0)
+					logging.info("Content Read!")
 					message = 'Content from "' + url + '" was accessed successfully, '
-					in_file = webfile
+					
 					#self.response.headers['Content-Type'] = "text/xml; charset=utf-8"
 					#content.replace('<?xml version="1.0" encoding="UTF-8"?>', '')
 					#self.response.out.write(content)
@@ -105,13 +111,16 @@ class ImportPage(webapp.RequestHandler):
 				# check if uploaded file is a valid xml_instance
 				
 				if not validXML(content, schema):
+					logging.info("INVALID XML!")
 					message = "Error: " + message + "but does not validate against our schema.</br>"				
 
 				else:
+					logging.info("VALID!")
 					message += "and is a valid XML file!</br>"
 
 					# call function to parse and store into datastore
 					flags = {'check': check, 'merge' : merge}
+					logging.info("CALLING PARSE :O")
 					parseXML(in_file, flags)
 			except urllib2.URLError, ue:
 				message = 'URLERROR: ' + str(ue)
