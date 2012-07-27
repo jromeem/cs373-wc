@@ -1,5 +1,6 @@
 from pprint import pprint
-import re, sys, json, unicodedata
+import re, sys, unicodedata
+from django.utils import simplejson
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
@@ -33,7 +34,6 @@ class SearchResults(webapp.RequestHandler):
                 for key, value in entity_dict.items():
                     
                     if type(value) == type(u''):
-                        # convert from unicode
                         target_string = unicodedata.normalize('NFKD', value).encode('ascii','ignore')
                         target_string = target_string
                     else:
@@ -53,8 +53,15 @@ class SearchResults(webapp.RequestHandler):
                     else:
                         link_string += 'people/'
                     link_string += elemid + '">' + title + '</a>'
-
+                    for s in search_list :
+                        target_string = target_string.replace(' '+ s +' ', '<b> <FONT style="BACKGROUND-COLOR: yellow">'+s+'</FONT> </b>')
                     snippet = '...' + target_string + '...'
+                    
+                    snippet = snippet.replace('\.\.\...', '...')
+                    snippet = snippet.replace('.\.\.\.', '...')
+                    snippet = snippet.replace('\\u', '')
+                    snippet = snippet.replace('\\n', '')
+                    snippet = snippet.replace('\\t', '')
 
                     result = [link_string, '<p>' + snippet + '</p>']
                     if inAll:
@@ -65,7 +72,7 @@ class SearchResults(webapp.RequestHandler):
                     
             index+=1
         
-        self.response.out.write(json.dumps(search_results))
+        self.response.out.write(simplejson.dumps(search_results))
 
 application = webapp.WSGIApplication([('/search', SearchResults)], debug=True)
 

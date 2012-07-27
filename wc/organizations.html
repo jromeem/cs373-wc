@@ -24,20 +24,9 @@
 		  	</div>
 	  	</div>
 	  	<script>
-    		$(document).ready(function(){
-    			$('#fadeContent').fadeIn(400);
-	    		$('a').click(function(){
-	    			$('#fadeContent').fadeOut(400);
-	    		});
-	    		
-    			$('#iso').imagesLoaded(function(){
-	    			$('.isoImg').css('display', 'inline');
-		    		$('#iso').isotope({
-					  // options
-					  itemSelector : '.item'
-					});
-				});
-    		});
-    	</script>
+	  		$(window).load(function(){
+	  			$('.isoImg').css('width', '130px');
+	  		});
+	  	</script>
  	</body>
 </html>
