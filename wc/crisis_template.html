@@ -38,7 +38,7 @@
 									{% endifnotequal %}
 									{% ifnotequal x.date_year 0 %}
 										{% ifnotequal x.date_day 0 %}
-											{{ x.date_month }}-{{ x.date_day }}-{{ x.date_year }}
+											{{ x.date_month }}/{{ x.date_day }}/{{ x.date_year }}
 										{% else %}
 											{{ x.date_year }}
 										{% endifnotequal %}

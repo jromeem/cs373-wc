@@ -30,7 +30,7 @@
 								<td>
 									{% ifnotequal x.info_birthdate_year 0 %}
 										{% ifnotequal x.info_birthdate_day 0 %}
-											{{ x.info_birthdate_month }}-{{ x.info_birthdate_day }}-{{ x.info_birthdate_year }}
+											{{ x.info_birthdate_month }}/{{ x.info_birthdate_day }}/{{ x.info_birthdate_year }}
 										{% else %}
 											{{ x.info_birthdate_year }}
 										{% endifnotequal %}
