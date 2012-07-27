@@ -55,6 +55,12 @@ class SearchResults(webapp.RequestHandler):
                     link_string += elemid + '">' + title + '</a>'
 
                     snippet = '...' + target_string + '...'
+                    
+                    snippet = snippet.replace('\.\.\...', '...')
+                    snippet = snippet.replace('.\.\.\.', '...')
+                    snippet = snippet.replace('\\u', '')
+                    snippet = snippet.replace('\\n', '')
+                    snippet = snippet.replace('\\t', '')
 
                     result = [link_string, '<p>' + snippet + '</p>']
                     if inAll:
