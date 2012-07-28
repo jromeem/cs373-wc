@@ -19,7 +19,8 @@ from google.appengine.api.urlfetch import DownloadError
 import httplib
 import urlparse
 import urllib
-
+import cPickle
+import zlib
 
 ###############
 # XML HELPERS #
@@ -310,7 +311,9 @@ def addOrganization(org):
             for link in links:
                 link.put()
 
-
+def zdumps(obj):
+  return zlib.compress(cPickle.dumps(obj,cPickle.HIGHEST_PROTOCOL),9)
+  
 # in_file : file (XML-validated file)
 # parse and store the XML data in the GAE datastore
 def parseXML(in_file, flags):
@@ -332,14 +335,17 @@ def parseXML(in_file, flags):
 
     logging.info('***** adding task')
     
-    '''
+    """
     task = taskqueue.Task(url='/importtask', params={'crises':crises,
                                                      'people':people,
                                                      'orgs':orgs,
                                                      'flags':flags}).add(queue_name='importtask')
+    """
+    for crisis in crises:
+    	pCrisis = zdumps(crisis)
+    	task = taskqueue.Task(url='/importtask', payload=pCrisis).add(queue_name='importtask')
     
-    '''
-    
+    """
     #build crisis list
     for crisis in crises:
         addCrisis(crisis)
@@ -354,7 +360,7 @@ def parseXML(in_file, flags):
         
     check = 0
     merge = 0
-
+"""
 ############################
 # EXPORT HANDLER FUNCTIONS #
 ############################
