@@ -14,7 +14,7 @@ from google.appengine.ext.webapp import template
 template.register_template_library('django.contrib.humanize.templatetags.humanize')
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
-from DataModels import Crisis, Organization, Person
+from DataModels import Crisis, Organization, Person, getPeople, getCrises, getOrgs
 import django.contrib.humanize.templatetags.humanize
 
 # mutator for template values
@@ -64,9 +64,12 @@ class MainPage(webapp.RequestHandler):
         headerNote = " - Import Antigravity"
         #: test documentation for images
         images = db.GqlQuery("SELECT link_url, link_parent FROM Link WHERE link_type='primaryImage'")
-        crises = getID(db.GqlQuery("SELECT elemid FROM Crisis"))
-        orgs = getID(db.GqlQuery("SELECT elemid FROM Organization"))
-        people = getID(db.GqlQuery("SELECT elemid FROM Person"))
+        #crises = getID(db.GqlQuery("SELECT elemid FROM Crisis"))
+        #orgs = getID(db.GqlQuery("SELECT elemid FROM Organization"))
+        #people = getID(db.GqlQuery("SELECT elemid FROM Person"))
+        crises = getID(getCrises())
+        orgs = getID(getOrgs())
+        people = getID(getPeople())
         
         template_values={'page_name': 'World Crises',
         				 'team_name': 'IMPORT ANTIGRAVITY',
@@ -84,11 +87,13 @@ class MainPage(webapp.RequestHandler):
 class CrisisPage(webapp.RequestHandler):
     def get(self, crisis_id):
         assert(crisis_id is not None)
-    
-        crisis_query = "SELECT * FROM Crisis WHERE elemid='" + crisis_id + "'"
+        #crisis_query = "SELECT * FROM Crisis WHERE elemid='" + crisis_id + "'"
         link_query = "SELECT * FROM Link WHERE link_parent='" + crisis_id + "'"
-        crisis = db.GqlQuery(crisis_query)
+        #crisis = db.GqlQuery(crisis_query)
+        crisis = getCrises({"_elemid": crisis_id})
         link = db.GqlQuery(link_query)
+
+
         headerNote = " - Import Antigravity"
         
         # elemid : title

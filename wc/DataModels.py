@@ -1,7 +1,8 @@
 # Group Antigravity
 # DataModels.py
 from google.appengine.ext import db
-
+from google.appengine.api import memcache
+import logging
 class Link(db.Model):
 
     link_parent = db.StringProperty()
@@ -109,3 +110,59 @@ class Organization(db.Model):
     def attrs(self):
 	  for attr, value in self.__dict__.iteritems():
 		yield attr, value
+
+def getPeople(args = {}, limit = 0):
+    """returns a list of all Person objects matching the key:value pairs supplied in args"""
+    plist = [] 
+    people = memcache.get("people")
+    if people is  None:
+        logging.info("CACHE MISS!")
+        people = db.GqlQuery("SELECT * FROM Person").run(batch_size=1000)
+        memcache.add("people",people)
+    for person in people:
+        for key in args:
+            if person.__dict__[key] != args[key]:
+                break
+        else:
+            plist.append(person)
+    if limit !=0:
+        plist = plist[:limit]
+    return plist
+
+def getCrises(args = {}, limit = 0):
+    """returns a list of all Crisis objects matching the key:value pairs supplied in args"""
+    logging.info("CALLED getCrisis!")
+    clist = []
+    crises = memcache.get("crises")
+    if crises is None:
+        logging.info("CACHE MISS!")
+        crises = db.GqlQuery("SELECT * FROM Crisis").run(batch_size=1000)
+        memcache.add("crises",crises)
+    logging.info("FETCH TYPE:" + str(type(crises)))
+    for crisis in crises:
+        for key in args:
+            if crisis.__dict__[key] != args[key]:
+                break
+        else:
+            clist.append(crisis)
+    if limit !=0:
+        clist = clist[:limit]
+    return clist
+
+def getOrgs(args = {}, limit = 0):
+    """returns a list of all Organization objects matching the key:value pairs supplied in args"""
+    olist = []
+    orgs = memcache.get("orgs")
+    if orgs is None:
+        logging.info("CACHE MISS!")
+        orgs = db.GqlQuery("SELECT * FROM Organization").run(batch_size=1000)
+        memcache.add("orgs",orgs)
+    for org in orgs:
+        for key in args:
+            if org.__dict__[key] != args[key]:
+                break
+        else:
+            olist.append(org)
+    if limit !=0:
+        olist = olist[:limit]
+    return olist
