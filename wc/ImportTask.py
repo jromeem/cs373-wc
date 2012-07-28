@@ -1,28 +1,37 @@
-import wsgiref.handlers
-from google.appengine.ext import webapp
-from XMLHelpers import validXML, parseXML
+#from XMLHelpers import validXML, parseXML
 
+import logging
+from google.appengine.ext import webapp
+from google.appengine.ext.webapp.util import run_wsgi_app
+
+def function(x, y):
+  z = x*y
+  return z
 
 class ImportTask(webapp.RequestHandler):
-  def post(self):
-    flags = self.request.get('flags')
-    file = self.request.get('xml_file')
-	
-    logging.info('************Parsing file************* '+ file.filename +' to the Task Queue.')
-    parseXML(file.file, flags)
-
-    # ... and here you get your hands dirty; use i and do the work.
-
-"""
-def main():
-  logging.info('************Parsing file************* to the Task Queue.')
-  application = webapp.WSGIApplication([
-                (r'/importtask', ImportTask),
-                ], debug=True)
+  def get(self):
+    self.response.out.write("""
+    <html><body>
+    this page does not do anything
+    </body></html>
+    """)
   
-  wsgiref.handlers.CGIHandler().run(application)
+  def post(self):
+    x = eval(self.request.get('x'))
+    y = eval(self.request.get('y'))
 
+    typee = "***** type is," + str(type(x))
+    logging.info(typee)
 
-if __name__ == '__main__':
-  main()
-"""
+    string = 'Adding ' + str(x) + '*' + str(y) + ' to the Task Queue.'
+    logging.info(string)
+    z = function(x, y)
+    logging.info("***** z is " + str(z))
+
+application = webapp.WSGIApplication([('/importtask', ImportTask)],
+                                     debug=True)
+def main():
+    run_wsgi_app(application)
+            
+if __name__ == "__main__":
+    main()
