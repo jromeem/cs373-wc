@@ -4,6 +4,8 @@ import logging
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 
+import XMLHelpers
+
 def function(x, y):
   z = x*y
   return z
@@ -17,6 +19,7 @@ class ImportTask(webapp.RequestHandler):
     """)
   
   def post(self):
+    '''
     x = eval(self.request.get('x'))
     y = eval(self.request.get('y'))
 
@@ -27,6 +30,33 @@ class ImportTask(webapp.RequestHandler):
     logging.info(string)
     z = function(x, y)
     logging.info("***** z is " + str(z))
+    '''
+
+    logging.info('***** starting task')
+
+    '''
+    crises = self.request.get('crises')
+    orgs = self.request.get('orgs')
+    people = self.request.get('people')
+    flags = self.request.get('flags')    
+    
+    #build crisis list
+    for crisis in crises:
+        XMLHelpers.addCrisis(crisis)
+
+    #build person list
+    for person in people:
+        XMLHelpers.addPerson(person)
+
+    #build organization list
+    for org in orgs:
+        XMLHelpers.addOrganization(org)
+        
+    check = 0
+    merge = 0
+    '''
+
+    logging.info('***** finished task')
 
 application = webapp.WSGIApplication([('/importtask', ImportTask)],
                                      debug=True)
