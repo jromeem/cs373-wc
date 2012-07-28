@@ -46,7 +46,8 @@ def link_values(template_values, link):
     template_values['videos'] = videos
     for v in videos:
         m = re.search('.*/(watch\?v=)?(.*)', v.link_url)
-        video_ids.append(m.group(2))
+        if m:
+            video_ids.append(m.group(2))
     template_values['video_ids'] = video_ids
     template_values['socials'] = socials
     template_values['externals'] = externals

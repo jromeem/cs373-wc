@@ -14,7 +14,8 @@ from minixsv import pyxsval as xsv
 
 from DataModels import Link, Person, Organization, Crisis
 
-from google.appengine.api.urlfetch import DownloadError 
+from google.appengine.api.urlfetch import DownloadError
+from google.appengine.api import urlfetch 
 import httplib
 import urlparse
 import urllib
@@ -59,12 +60,10 @@ def get_server_status_code(url):
 	return the server's status code.
 	"""
 
-	host, path = urlparse.urlparse(url)[1:3]	# elems [1] and [2]
 	try:
-		conn = httplib.HTTPConnection(host)
-		conn.request('HEAD', path)
-		return conn.getresponse().status
-	except StandardError:
+		result = urlfetch.fetch(url)
+		return result.status_code
+	except:
 		return None
 		
 # Uses HTTP request to see if the url given is valid
