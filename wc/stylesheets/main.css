@@ -15,6 +15,7 @@
 
 .scrollable				{ max-height:200px; overflow-y:scroll; border-left:1px dashed grey; border-right:1px dashed grey; padding:4px 10px 4px 4px;  }
 
+#search_bar				{ position:relative; top:3px; }
 #search_results			{ display:none; background:white; border:1px solid grey; padding:7px 7px 20px 7px; position:absolute; left:7px; width:700px; z-index:1; }
 #search_results_none	{ display:none; background:white; border:1px solid grey; padding:7px 7px 20px 7px; position:absolute; left:7px; width:400px; z-index:1; }
 #search_results_top		{ position:relative; }
