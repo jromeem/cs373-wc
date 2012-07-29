@@ -35,22 +35,31 @@ class ImportTask(webapp.RequestHandler):
 	logging.info(string)
 	z = function(x, y)
 	logging.info("***** z is " + str(z))
+	
 	'''
-
 	logging.info('***** starting task')
 
 	
 	#crises = self.request.get('crises')
+
+	payload = zloads(self.request.body)
+	if payload[0] == 'crisis':
+	    XMLHelpers.addCrisis(payload[1])
+	if payload[0] == 'person':
+	    XMLHelpers.addPerson(payload[1])
+	if payload[0] == 'org':
+	    XMLHelpers.addOrganization(payload[1])
 	
-	crisis = zloads(self.request.body)
-	XMLHelpers.addCrisis(crisis)
-	"""
+	
+	logging.info("AHHJDKHSKJHSJHKJKHJKHJKHJLHKLHJJLHK")
+	logging.info('***** finished task')
+	'''
 	orgs = self.request.get('orgs')
 	people = self.request.get('people')
 	flags = self.request.get('flags')	 
-	"""
+	'''
 	
-"""	  
+'''
 	#build crisis list
 	for crisis in crises:
 		XMLHelpers.addCrisis(crisis)
@@ -62,12 +71,12 @@ class ImportTask(webapp.RequestHandler):
 	#build organization list
 	for org in orgs:
 		XMLHelpers.addOrganization(org)
-"""	  
-"""		
+  
+		
 	check = 0
 	merge = 0
-  """  
-	#logging.info('***** finished task')
+'''  
+    
 
 application = webapp.WSGIApplication([('/importtask', ImportTask)],
 									 debug=True)

@@ -334,16 +334,31 @@ def parseXML(in_file, flags):
     orgs = tree.findall(".//organization")
 
     logging.info('***** adding task')
-    
+
     """
     task = taskqueue.Task(url='/importtask', params={'crises':crises,
                                                      'people':people,
                                                      'orgs':orgs,
                                                      'flags':flags}).add(queue_name='importtask')
     """
+    
+   
     for crisis in crises:
-    	pCrisis = zdumps(crisis)
-    	task = taskqueue.Task(url='/importtask', payload=pCrisis).add(queue_name='importtask')
+        carr = ['crisis',crisis]
+        pCrisis = zdumps(carr)
+        task = taskqueue.Task(url='/importtask', payload=pCrisis).add(queue_name='importtask')
+
+    for person in people:
+        parr = ['person',person]
+        pPerson = zdumps(parr)
+        task = taskqueue.Task(url='/importtask', payload=pPerson).add(queue_name='importtask')
+		
+    for org in orgs:
+        oarr = ['org',org]
+        pOrg = zdumps(oarr)
+        task = taskqueue.Task(url='/importtask', payload=pOrg).add(queue_name='importtask')
+    #pCrisis = zdumps(crises[0])
+    #task = taskqueue.Task(url='/importtask', payload=pCrisis).add(queue_name='importtask')    
     
     """
     #build crisis list
@@ -357,10 +372,10 @@ def parseXML(in_file, flags):
     #build organization list
     for org in orgs:
         addOrganization(org)
-        
+    """ 
     check = 0
     merge = 0
-"""
+	
 ############################
 # EXPORT HANDLER FUNCTIONS #
 ############################
