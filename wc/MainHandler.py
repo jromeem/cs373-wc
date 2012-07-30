@@ -16,7 +16,8 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
 from DataModels import Crisis, Organization, Person, getPeople, getCrises, getOrgs
 import django.contrib.humanize.templatetags.humanize
-
+import ImportTask
+from google.appengine.api.labs import taskqueue
 # mutator for template values
 # extracts the values in link and categorizes and stores them in template_values
 def link_values(template_values, link):
@@ -253,6 +254,7 @@ class PeopleSplashPage(webapp.RequestHandler):
         path = os.path.join(os.path.dirname(__file__), "people.html")
         self.response.out.write(template.render(path, template_values))
 
+
 application = webapp.WSGIApplication([('/', MainPage), 
                                       ('/crises', CrisisSplashPage),
                                       ('/people', PeopleSplashPage),
@@ -267,8 +269,9 @@ application = webapp.WSGIApplication([('/', MainPage),
                                       ('/people/(.*)/', PersonPage),
                                       ('/crises/(.*)', CrisisPage),
                                       ('/organizations/(.*)', OrganizationPage),
-                                      ('/people/(.*)', PersonPage)],
-                                     debug=True)
+                                      ('/people/(.*)', PersonPage),
+                                      ('/importtask', ImportTask)],
+                                      debug=True)
 
 def main():
     run_wsgi_app(application)
