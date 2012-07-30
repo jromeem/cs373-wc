@@ -36,11 +36,11 @@
 								{% endifnotequal %}</td></tr>
 							<tr><td>Date and Time</td>
 								<td>
-									{% ifnotequal x.date_year 0 %}
-										{{ x.date_time }} 
+									{% ifnotequal x.date_time 'None' %}
+										{{ x.date_time }}
 									{% endifnotequal %}
-									{% ifnotequal x.date_year 0 %}
-										{% ifnotequal x.date_day 0 %}
+									{% ifnotequal x.date_year 'None' %}
+										{% ifnotequal x.date_day 'None' %}
 											{{ x.date_month }}/{{ x.date_day }}/{{ x.date_year }}
 										{% else %}
 											{{ x.date_year }}
