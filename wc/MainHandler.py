@@ -89,13 +89,11 @@ class MainPage(webapp.RequestHandler):
 class CrisisPage(webapp.RequestHandler):
     def get(self, crisis_id):
         assert(crisis_id is not None)
-        #crisis_query = "SELECT * FROM Crisis WHERE elemid='" + crisis_id + "'"
+        crisis_query = "SELECT * FROM Crisis WHERE elemid='" + crisis_id + "'"
         link_query = "SELECT * FROM Link WHERE link_parent='" + crisis_id + "'"
-        #crisis = db.GqlQuery(crisis_query)
-        crisis = getCrises({"_elemid": crisis_id})
+        crisis = db.GqlQuery(crisis_query)
+        #crisis = getCrises({"_elemid": crisis_id})
         link = db.GqlQuery(link_query)
-
-
         headerNote = " - Import Antigravity"
         
         # elemid : title
@@ -121,7 +119,7 @@ class CrisisPage(webapp.RequestHandler):
 
         template_values = { 'crisis'     : crisis,
                             'link'       : link,                            
-                            'headerNote'  : headerNote,
+                            'headerNote' : headerNote,
                             'orgrefs'    : dict_orgrefs,
                             'personrefs' : dict_personrefs }
         
