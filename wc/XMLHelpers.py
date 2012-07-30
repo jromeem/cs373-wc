@@ -6,7 +6,6 @@ import logging
 
 from google.appengine.api.labs import taskqueue 
 
->>>>>>> queue
 from google.appengine.ext import db
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
