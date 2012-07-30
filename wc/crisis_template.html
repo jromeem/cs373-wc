@@ -25,19 +25,22 @@
 					<div id="templatePageInfo">
 						<table class="templateTable">
 							<tr><td class="sectionTitle"><h3>INFO</h3></td></tr>
-							<tr><td>Location</td><td>{{ x.location_region }} {{ x.location_city }}
-								{% ifnotequal x.location_city "" %}
-									{% ifnotequal x.location_country "" %}
-										,
-									{% endifnotequal %}
-								{% endifnotequal %} {{ x.location_country }}</td></tr>
+							<tr><td>Location</td><td>{% ifnotequal x.location_region 'None' %}
+								{{ x.location_region }}
+								{% endifnotequal %}
+								{% ifnotequal x.location_city 'None' %}
+								 {{ x.location_city }}
+								{% endifnotequal %}
+								{% ifnotequal x.location_country 'None' %}
+								 {{ x.location_country }}
+								{% endifnotequal %}</td></tr>
 							<tr><td>Date and Time</td>
 								<td>
-									{% ifnotequal x.date_year 0 %}
-										{{ x.date_time }} 
+									{% ifnotequal x.date_time 'None' %}
+										{{ x.date_time }}
 									{% endifnotequal %}
-									{% ifnotequal x.date_year 0 %}
-										{% ifnotequal x.date_day 0 %}
+									{% ifnotequal x.date_year 'None' %}
+										{% ifnotequal x.date_day 'None' %}
 											{{ x.date_month }}/{{ x.date_day }}/{{ x.date_year }}
 										{% else %}
 											{{ x.date_year }}

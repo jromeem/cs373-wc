@@ -1,4 +1,4 @@
-import cgi, os, sys, re
+import cgi, os, sys, re, random
 import cgitb; cgitb.enable()
 import logging
 """
@@ -71,7 +71,9 @@ class MainPage(webapp.RequestHandler):
     def get(self):
         headerNote = " - Import Antigravity"
         #: test documentation for images
-        images = db.GqlQuery("SELECT link_url, link_parent FROM Link WHERE link_type='primaryImage'").run(limit=20)
+        images = db.GqlQuery("SELECT link_url, link_parent FROM Link WHERE link_type='primaryImage'").run(limit=25)
+        images = list(images)
+        random.shuffle(images)
         crises = getID(db.GqlQuery("SELECT elemid FROM Crisis"))
         orgs = getID(db.GqlQuery("SELECT elemid FROM Organization"))
         people = getID(db.GqlQuery("SELECT elemid FROM Person"))

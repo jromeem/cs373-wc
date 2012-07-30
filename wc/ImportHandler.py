@@ -97,9 +97,13 @@ class ImportPage(webapp.RequestHandler):
                     content = form.getvalue('importfile')
                 else:
                     webfile = urllib2.urlopen(url)
+                    in_file = tempfile.TemporaryFile()
+                    
                     content = webfile.read()
+                    in_file.write(content)
+                    in_file.seek(0)
+                    logging.info("Content Read!")
                     message = 'Content from "' + url + '" was accessed successfully, '
-                    in_file = webfile
                     #self.response.headers['Content-Type'] = "text/xml; charset=utf-8"
                     #content.replace('<?xml version="1.0" encoding="UTF-8"?>', '')
                     #self.response.out.write(content)
