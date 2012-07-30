@@ -33,9 +33,9 @@ class UnitTests(unittest.TestCase):
 
     def test_mergeLinks1(self):
         xml_file = open("test/test_mergelinks1.xml", 'rb')
-        XMLHelpers.parseXML(xml_file,{'check': False, 'merge' : False})
+        XMLHelpers.parseXML2(xml_file,{'check': False, 'merge' : False})
         xml_file = open("test/test_mergelinks4.xml", 'rb')
-        XMLHelpers.parseXML(xml_file,{'check': False, 'merge' : True})
+        XMLHelpers.parseXML2(xml_file,{'check': False, 'merge' : True})
         temp = db.GqlQuery("SELECT * FROM Link")
         
         #Stuff
@@ -48,9 +48,9 @@ class UnitTests(unittest.TestCase):
 
     def test_mergeLinks2(self):
         xml_file = open("test/test_mergelinks2.xml", 'rb')
-        XMLHelpers.parseXML(xml_file,{'check': False, 'merge' : False})
+        XMLHelpers.parseXML2(xml_file,{'check': False, 'merge' : False})
         xml_file = open("test/test_mergelinks4.xml", 'rb')
-        XMLHelpers.parseXML(xml_file,{'check': False, 'merge' : True})
+        XMLHelpers.parseXML2(xml_file,{'check': False, 'merge' : True})
         temp = db.GqlQuery("SELECT * FROM Link")
         
         #Stuff
@@ -59,9 +59,9 @@ class UnitTests(unittest.TestCase):
 
     def test_mergeLinks3(self):
         xml_file = open("test/test_mergelinks3.xml", 'rb')
-        XMLHelpers.parseXML(xml_file,{'check': False, 'merge' : False})
+        XMLHelpers.parseXML2(xml_file,{'check': False, 'merge' : False})
         xml_file = open("test/test_mergelinks4.xml", 'rb')
-        XMLHelpers.parseXML(xml_file,{'check': False, 'merge' : True})
+        XMLHelpers.parseXML2(xml_file,{'check': False, 'merge' : True})
         temp = db.GqlQuery("SELECT * FROM Link")
         
         #Stuff
@@ -70,9 +70,9 @@ class UnitTests(unittest.TestCase):
 
     def test_mergeModels1(self):
         xml_file = open("test/test_mergemodels1.xml", 'rb')
-        XMLHelpers.parseXML(xml_file,{'check': False, 'merge' : False})
+        XMLHelpers.parseXML2(xml_file,{'check': False, 'merge' : False})
         xml_file = open("test/test_mergelinks4.xml", 'rb')
-        XMLHelpers.parseXML(xml_file,{'check': False, 'merge' : True})
+        XMLHelpers.parseXML2(xml_file,{'check': False, 'merge' : True})
         temp = db.GqlQuery("SELECT * FROM Link")
         
         #Stuff
@@ -81,9 +81,9 @@ class UnitTests(unittest.TestCase):
 
     def test_mergeModels2(self):
         xml_file = open("test/test_mergemodels2.xml", 'rb')
-        XMLHelpers.parseXML(xml_file,{'check': False, 'merge' : False})
+        XMLHelpers.parseXML2(xml_file,{'check': False, 'merge' : False})
         xml_file = open("test/test_mergelinks4.xml", 'rb')
-        XMLHelpers.parseXML(xml_file,{'check': False, 'merge' : True})
+        XMLHelpers.parseXML2(xml_file,{'check': False, 'merge' : True})
         temp = db.GqlQuery("SELECT * FROM Link")
         
         #Stuff
@@ -92,9 +92,9 @@ class UnitTests(unittest.TestCase):
 
     def test_mergeModels3(self):
         xml_file = open("test/test_mergemodels3.xml", 'rb')
-        XMLHelpers.parseXML(xml_file,{'check': False, 'merge' : False})
+        XMLHelpers.parseXML2(xml_file,{'check': False, 'merge' : False})
         xml_file = open("test/test_mergelinks4.xml", 'rb')
-        XMLHelpers.parseXML(xml_file,{'check': False, 'merge' : True})
+        XMLHelpers.parseXML2(xml_file,{'check': False, 'merge' : True})
         temp = db.GqlQuery("SELECT * FROM Link")
         
         #Stuff

@@ -318,6 +318,40 @@ def zdumps(obj):
   
 # in_file : file (XML-validated file)
 # parse and store the XML data in the GAE datastore
+# in_file : file (XML-validated file)
+# parse and store the XML data in the GAE datastore
+def parseXML2(in_file, flags):
+	assert(in_file is not None)
+	assert(flags is not None)
+	global check
+	global merge
+	check = flags['check']
+	merge = flags['merge']
+
+	if not merge:
+		db.delete(db.Query())
+
+	tree = ElementTree.parse(in_file)
+
+	crises = tree.findall(".//crisis")
+	people = tree.findall(".//person")
+	orgs = tree.findall(".//organization")
+
+	#build crisis list
+	for crisis in crises:
+		addCrisis(crisis)
+
+	#build person list
+	for person in people:
+		addPerson(person)
+
+	#build organization list
+	for org in orgs:
+		addOrganization(org)
+
+	check = 0
+	merge = 0
+
 def parseXML(in_file, flags):
     assert(in_file is not None)
     assert(flags is not None)
