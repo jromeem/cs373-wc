@@ -332,47 +332,32 @@ def parseXML(in_file, flags):
     crises = tree.findall(".//crisis")
     people = tree.findall(".//person")
     orgs = tree.findall(".//organization")
-
-    logging.info('***** adding task')
-
-    """
-    task = taskqueue.Task(url='/importtask', params={'crises':crises,
-                                                     'people':people,
-                                                     'orgs':orgs,
-                                                     'flags':flags}).add(queue_name='importtask')
-    """
-    
    
+    #logging.info('***** LEN CRISIS' + str(len(crises)))   
+    #logging.info('***** LEN CRISIS' + str(len(people)))  
+    #logging.info('***** LEN CRISIS' + str(len(orgs)))  
+	
     for crisis in crises:
-        carr = ['crisis',crisis]
-        pCrisis = zdumps(carr)
-        task = taskqueue.Task(url='/importtask', payload=pCrisis).add(queue_name='importtask')
-
+        if (crisis.find('.//info') is not None):
+            carr = ['crisis',crisis]
+            pCrisis = zdumps(carr)
+            task = taskqueue.Task(url='/importtask', payload=pCrisis).add(queue_name='importtask')
+            #logging.info('***** adding CRISIS task NAME: ' + str(crisis))
+		
     for person in people:
-        parr = ['person',person]
-        pPerson = zdumps(parr)
-        task = taskqueue.Task(url='/importtask', payload=pPerson).add(queue_name='importtask')
+        if (person.find('.//info') is not None):
+            parr = ['person',person]
+            pPerson = zdumps(parr)
+            task = taskqueue.Task(url='/importtask', payload=pPerson).add(queue_name='importtask')
+            #logging.info('***** adding PERSON task NAME: ' + str(person))
 		
     for org in orgs:
-        oarr = ['org',org]
-        pOrg = zdumps(oarr)
-        task = taskqueue.Task(url='/importtask', payload=pOrg).add(queue_name='importtask')
-    #pCrisis = zdumps(crises[0])
-    #task = taskqueue.Task(url='/importtask', payload=pCrisis).add(queue_name='importtask')    
+        if (org.find('.//info') is not None):
+            oarr = ['org',org]
+            pOrg = zdumps(oarr)
+            task = taskqueue.Task(url='/importtask', payload=pOrg).add(queue_name='importtask')
+            #logging.info('***** adding ORG task')    
     
-    """
-    #build crisis list
-    for crisis in crises:
-        addCrisis(crisis)
-
-    #build person list
-    for person in people:
-        addPerson(person)
-
-    #build organization list
-    for org in orgs:
-        addOrganization(org)
-    """ 
     check = 0
     merge = 0
 	

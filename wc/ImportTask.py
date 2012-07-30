@@ -8,10 +8,6 @@ import XMLHelpers
 import cPickle
 import zlib
 
-def function(x, y):
-  z = x*y
-  return z
-
 def zloads(zstr):
   return cPickle.loads(zlib.decompress(zstr))
 
@@ -24,20 +20,8 @@ class ImportTask(webapp.RequestHandler):
 	""")
   
   def post(self):
-	'''
-	x = eval(self.request.get('x'))
-	y = eval(self.request.get('y'))
 
-	typee = "***** type is," + str(type(x))
-	logging.info(typee)
-
-	string = 'Adding ' + str(x) + '*' + str(y) + ' to the Task Queue.'
-	logging.info(string)
-	z = function(x, y)
-	logging.info("***** z is " + str(z))
-	
-	'''
-	logging.info('***** starting task')
+	#logging.info('***** starting task')
 
 	
 	#crises = self.request.get('crises')
@@ -51,31 +35,9 @@ class ImportTask(webapp.RequestHandler):
 	    XMLHelpers.addOrganization(payload[1])
 	
 	
-	logging.info("AHHJDKHSKJHSJHKJKHJKHJKHJLHKLHJJLHK")
-	logging.info('***** finished task')
-	'''
-	orgs = self.request.get('orgs')
-	people = self.request.get('people')
-	flags = self.request.get('flags')	 
-	'''
-	
-'''
-	#build crisis list
-	for crisis in crises:
-		XMLHelpers.addCrisis(crisis)
+	#logging.info("AHHJDKHSKJHSJHKJKHJKHJKHJLHKLHJJLHK")
+	#logging.info('***** finished task')
 
-	#build person list
-	for person in people:
-		XMLHelpers.addPerson(person)
-
-	#build organization list
-	for org in orgs:
-		XMLHelpers.addOrganization(org)
-  
-		
-	check = 0
-	merge = 0
-'''  
     
 
 application = webapp.WSGIApplication([('/importtask', ImportTask)],
