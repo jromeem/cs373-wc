@@ -60,6 +60,12 @@ def getID(q):
 	for item in q:
 		list.append(str(item.elemid))
 	return list
+    
+class AboutPage(webapp.RequestHandler):
+    def get(self):
+        template_values = {}
+        path = os.path.join(os.path.dirname(__file__), "about.html")
+        self.response.out.write(template.render(path, template_values))
 	
 class MainPage(webapp.RequestHandler):
     def get(self):
@@ -260,6 +266,8 @@ application = webapp.WSGIApplication([('/', MainPage),
                                       ('/crises/', CrisisSplashPage),
                                       ('/people/', PeopleSplashPage),
                                       ('/organizations/', OrganizationsSplashPage),
+                                      
+                                      ('/about', AboutPage),
                                       
                                       
                                       ('/crises/(.*)/', CrisisPage),
