@@ -66,12 +66,12 @@ class MainPage(webapp.RequestHandler):
         headerNote = " - Import Antigravity"
         #: test documentation for images
         images = db.GqlQuery("SELECT link_url, link_parent FROM Link WHERE link_type='primaryImage'")
-        #crises = getID(db.GqlQuery("SELECT elemid FROM Crisis"))
-        #orgs = getID(db.GqlQuery("SELECT elemid FROM Organization"))
-        #people = getID(db.GqlQuery("SELECT elemid FROM Person"))
-        crises = getID(getCrises())
-        orgs = getID(getOrgs())
-        people = getID(getPeople())
+        crises = getID(db.GqlQuery("SELECT elemid FROM Crisis"))
+        orgs = getID(db.GqlQuery("SELECT elemid FROM Organization"))
+        people = getID(db.GqlQuery("SELECT elemid FROM Person"))
+        #crises = getID(getCrises())
+        #orgs = getID(getOrgs())
+        #people = getID(getPeople())
         
         template_values={'page_name': 'World Crises',
         				 'team_name': 'IMPORT ANTIGRAVITY',
