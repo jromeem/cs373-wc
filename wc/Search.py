@@ -55,7 +55,7 @@ class SearchResults(webapp.RequestHandler):
                     link_string += elemid + '">' + title + '</a>'
                     for s in search_list :
                         pattern = re.compile(s, re.IGNORECASE)
-                        target_string = pattern.sub('<b><FONT style="BACKGROUND-COLOR: yellow">'+s+'</FONT></b>', target_string)
+                        target_string = pattern.sub('<span class="highlight">'+s+'</span>', target_string)
                     snippet = '...' + target_string + '...'
                     
                     snippet = snippet.replace('\.\.\...', '...')
