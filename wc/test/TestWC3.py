@@ -58,45 +58,80 @@ class UnitTests(unittest.TestCase):
         db.delete(db.Query())
 
     def test_mergeLinks3(self):
-        xml_file = open("test/test_mergelinks3.xml", 'rb')
+        xml_file = open("test/test_mergelinks1.xml", 'rb')
         XMLHelpers.parseXML2(xml_file,{'check': False, 'merge' : False})
-        xml_file = open("test/test_mergelinks4.xml", 'rb')
+        xml_file = open("test/test_mergelinks1.xml", 'rb')
         XMLHelpers.parseXML2(xml_file,{'check': False, 'merge' : True})
         temp = db.GqlQuery("SELECT * FROM Link")
         
-        #Stuff
+        for i in temp:
+            if i.link_type == "image":
+                self.assert_(i.link_url == "")
+                break
 
         db.delete(db.Query())
 
     def test_mergeModels1(self):
         xml_file = open("test/test_mergemodels1.xml", 'rb')
         XMLHelpers.parseXML2(xml_file,{'check': False, 'merge' : False})
-        xml_file = open("test/test_mergelinks4.xml", 'rb')
-        XMLHelpers.parseXML2(xml_file,{'check': False, 'merge' : True})
-        temp = db.GqlQuery("SELECT * FROM Link")
+        temp = db.GqlQuery("SELECT * FROM Crisis")
+
+        before_merge = ''
+        for c in temp:
+            before_merge = c.info_resources
         
-        #Stuff
+        xml_file = open("test/test_mergelinks1.xml", 'rb')
+        XMLHelpers.parseXML2(xml_file,{'check': False, 'merge' : True})
+        temp = db.GqlQuery("SELECT * FROM Crisis")
+
+        after_merge = ''
+        for c in temp:
+            after_merge = c.info_resources
+
+        self.assert_(before_merge == after_merge)
 
         db.delete(db.Query())
 
     def test_mergeModels2(self):
-        xml_file = open("test/test_mergemodels2.xml", 'rb')
+        xml_file = open("test/test_mergemodels1.xml", 'rb')
         XMLHelpers.parseXML2(xml_file,{'check': False, 'merge' : False})
-        xml_file = open("test/test_mergelinks4.xml", 'rb')
-        XMLHelpers.parseXML2(xml_file,{'check': False, 'merge' : True})
-        temp = db.GqlQuery("SELECT * FROM Link")
+        temp = db.GqlQuery("SELECT * FROM Crisis")
+
+        before_merge = ''
+        for c in temp:
+            before_merge = c.info_resources
+            break
         
-        #Stuff
+        xml_file = open("test/test_mergelinks2.xml", 'rb')
+        XMLHelpers.parseXML2(xml_file,{'check': False, 'merge' : False})
+        temp = db.GqlQuery("SELECT * FROM Crisis")
+
+        after_merge = ''
+        for c in temp:
+            after_merge = c.info_resources
+            break
+
+        self.assert_(before_merge != after_merge)
 
         db.delete(db.Query())
 
     def test_mergeModels3(self):
         xml_file = open("test/test_mergemodels3.xml", 'rb')
         XMLHelpers.parseXML2(xml_file,{'check': False, 'merge' : False})
-        xml_file = open("test/test_mergelinks4.xml", 'rb')
-        XMLHelpers.parseXML2(xml_file,{'check': False, 'merge' : True})
-        temp = db.GqlQuery("SELECT * FROM Link")
+        temp = db.GqlQuery("SELECT * FROM Crisis")
+
+        before_merge = ''
+        for c in temp:
+            before_merge = c.info_resources
         
-        #Stuff
+        xml_file = open("test/test_mergelinks4.xml", 'rb')
+        XMLHelpers.parseXML2(xml_file,{'check': False, 'merge' : False})
+        temp = db.GqlQuery("SELECT * FROM Crisis")
+
+        after_merge = ''
+        for c in temp:
+            after_merge = c.info_resources
+
+        self.assert_(before_merge != after_merge)
 
         db.delete(db.Query())
