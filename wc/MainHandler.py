@@ -65,7 +65,7 @@ class MainPage(webapp.RequestHandler):
     def get(self):
         headerNote = " - Import Antigravity"
         #: test documentation for images
-        images = db.GqlQuery("SELECT link_url, link_parent FROM Link WHERE link_type='primaryImage'")
+        images = db.GqlQuery("SELECT link_url, link_parent FROM Link WHERE link_type='primaryImage'").run(limit=20)
         crises = getID(db.GqlQuery("SELECT elemid FROM Crisis"))
         orgs = getID(db.GqlQuery("SELECT elemid FROM Organization"))
         people = getID(db.GqlQuery("SELECT elemid FROM Person"))
