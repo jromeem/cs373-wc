@@ -1,14 +1,6 @@
 import cgi, os, sys, re, random
 import cgitb; cgitb.enable()
 import logging
-"""
-sys.path.append('/home/joe/Downloads/google_appengine/google')
-sys.path.append('/home/joe/Downloads/google_appengine/google/appengine')
-sys.path.append('/home/joe/Downloads/google_appengine/google/appengine/ext')
-sys.path.append('/home/joe/Downloads/google_appengine/google/appengine/ext/webapp')
-from google import appengine
-from google.appengine import ext
-"""
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 template.register_template_library('django.contrib.humanize.templatetags.humanize')
@@ -56,18 +48,21 @@ def link_values(template_values, link):
     template_values['isNotEmpty_misc'] = misc_links != []
 
 def getID(q):
+    """Takes an iterable set of query results and returns a list of elemids"""
 	list = []
 	for item in q:
 		list.append(str(item.elemid))
 	return list
     
 class AboutPage(webapp.RequestHandler):
+    """Displays the About page"""
     def get(self):
         template_values = {}
         path = os.path.join(os.path.dirname(__file__), "about.html")
         self.response.out.write(template.render(path, template_values))
 	
 class MainPage(webapp.RequestHandler):
+    """Displays the Home page"""
     def get(self):
         headerNote = " - Import Antigravity"
         #: test documentation for images
@@ -95,6 +90,7 @@ class MainPage(webapp.RequestHandler):
 
 
 class CrisisPage(webapp.RequestHandler):
+    """Displays a templated page for a specific Crisis"""
     def get(self, crisis_id):
         assert(crisis_id is not None)
         crisis_query = "SELECT * FROM Crisis WHERE elemid='" + crisis_id + "'"
@@ -137,6 +133,7 @@ class CrisisPage(webapp.RequestHandler):
         self.response.out.write(template.render(path, template_values))     
 
 class OrganizationPage(webapp.RequestHandler):
+    """Displays a templated page for a specific Organization"""
     def get(self, org_id):
         assert(org_id is not None)
         
@@ -176,6 +173,7 @@ class OrganizationPage(webapp.RequestHandler):
         self.response.out.write(template.render(path, template_values))
         
 class PersonPage(webapp.RequestHandler):
+    """Displays a templated page for a specific Person"""
     def get(self, person_id):
         assert(person_id is not None)
         
@@ -210,6 +208,7 @@ class PersonPage(webapp.RequestHandler):
         self.response.out.write(template.render(path, template_values))  
         
 class CrisisSplashPage(webapp.RequestHandler):
+    """Displays a templated splash page for the list of Crises"""
     def get(self):
         q = db.GqlQuery("SELECT elemid, name FROM Crisis")
         allImages = db.GqlQuery("SELECT * FROM Link WHERE link_type='primaryImage' ORDER BY link_url")
@@ -227,6 +226,7 @@ class CrisisSplashPage(webapp.RequestHandler):
         self.response.out.write(template.render(path, template_values))
 
 class OrganizationsSplashPage(webapp.RequestHandler):
+    """Displays a templated splash page for the list of Organizations"""
     def get(self):
         q = db.GqlQuery("SELECT elemid, name FROM Organization")
         allImages = db.GqlQuery("SELECT * FROM Link WHERE link_type='primaryImage' ORDER BY link_url")
@@ -244,6 +244,7 @@ class OrganizationsSplashPage(webapp.RequestHandler):
         self.response.out.write(template.render(path, template_values))
 
 class PeopleSplashPage(webapp.RequestHandler):
+    """Displays a templated splash page for the list of People"""
     def get(self):
         q = db.GqlQuery("SELECT elemid, name FROM Person")
         allImages = db.GqlQuery("SELECT * FROM Link WHERE link_type='primaryImage' ORDER BY link_url")
