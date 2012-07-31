@@ -14,4 +14,9 @@ $('a').not('.lightview').click(function(){
 	$('html').fadeOut(200);
 	$('#fadeContent').fadeOut(800);
 });
+$('img').each(function(){
+	$(this).error(function(){
+		$(this).remove();
+	});
+});
 });
