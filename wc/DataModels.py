@@ -4,6 +4,7 @@ from google.appengine.ext import db
 from google.appengine.api import memcache
 import logging
 class Link(db.Model):
+    """Link Model Class"""
 
     link_parent = db.StringProperty()
     link_type = db.StringProperty()
@@ -17,6 +18,7 @@ class Link(db.Model):
         return False
 
 class Person(db.Model):
+    """Person Model Class"""
     elemid = db.StringProperty()
     
     name = db.StringProperty()
@@ -38,10 +40,11 @@ class Person(db.Model):
     misc = db.StringProperty()
     
     def attrs(self):
-	  for attr, value in self.__dict__.iteritems():
-		yield attr, value
+      for attr, value in self.__dict__.iteritems():
+        yield attr, value
             
 class Crisis(db.Model):
+    """Crisis Model Class"""
     elemid = db.StringProperty()
 
     name = db.StringProperty()
@@ -78,10 +81,11 @@ class Crisis(db.Model):
     personrefs = db.ListProperty(str)
     
     def attrs(self):
-	  for attr, value in self.__dict__.iteritems():
-		yield attr, value
+      for attr, value in self.__dict__.iteritems():
+        yield attr, value
     
 class Organization(db.Model):
+    """Organization Model Class"""
     elemid = db.StringProperty()
     
     name = db.StringProperty()
@@ -108,11 +112,11 @@ class Organization(db.Model):
     misc = db.StringProperty()
 
     def attrs(self):
-	  for attr, value in self.__dict__.iteritems():
-		yield attr, value
+      for attr, value in self.__dict__.iteritems():
+        yield attr, value
 
 def getPeople(args = {}, limit = 0):
-    """returns a list of all Person objects matching the key:value pairs supplied in args"""
+    """Returns a list of all Person objects matching the key:value pairs supplied in args"""
     plist = [] 
     people = memcache.get("people")
     if people is  None:
@@ -130,7 +134,7 @@ def getPeople(args = {}, limit = 0):
     return plist
 
 def getCrises(args = {}, limit = 0):
-    """returns a list of all Crisis objects matching the key:value pairs supplied in args"""
+    """Returns a list of all Crisis objects matching the key:value pairs supplied in args"""
     logging.info("CALLED getCrisis!")
     clist = []
     crises = memcache.get("crises")
@@ -150,7 +154,7 @@ def getCrises(args = {}, limit = 0):
     return clist
 
 def getOrgs(args = {}, limit = 0):
-    """returns a list of all Organization objects matching the key:value pairs supplied in args"""
+    """Returns a list of all Organization objects matching the key:value pairs supplied in args"""
     olist = []
     orgs = memcache.get("orgs")
     if orgs is None:

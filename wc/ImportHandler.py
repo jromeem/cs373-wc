@@ -22,8 +22,9 @@ from google.appengine.api.labs import taskqueue
 f = open('wc.xsd', 'rb')
 schema = f.read()
 class ImportPage(webapp.RequestHandler):
- 
+    """Displays the dynamic Import page"""
     def get(self):
+        """HTTP GET method"""
         self.response.out.write("""
         <html>
             <head>
@@ -54,7 +55,8 @@ class ImportPage(webapp.RequestHandler):
           </body>
         </html>""")
             
-    def post(self): 
+    def post(self):
+        """HTTP POST method"""
         import logging        
         form = cgi.FieldStorage()
         file_item = form['importfile']
