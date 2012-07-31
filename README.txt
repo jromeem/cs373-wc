@@ -6,7 +6,7 @@ Last Name: Peacock
 EID: jhp667
 E-mail: j.peacock@utexas.edu
 Estimated number of hours: 20
-Actual    number of hours: ~23
+Actual    number of hours: ~28
 
 Turnin CS Username: jromeem
 GitHub ID: jromeem
@@ -17,35 +17,35 @@ Group Member First Name: Michael
 Group Member Last Name: Pace
 Group Member EID: msp684
 Group Member E-mail: mpace1027@gmail.com
-Group Member Rating: very good
+Group Member Rating: excellent
 Group Member Point Adjustment:
 
 Group Member First Name: Harrison
 Group Member Last Name: He
 Group Member EID: hh7735 
 Group Member E-mail: harrisonhe824@gmail.com
-Group Member Rating: very good
+Group Member Rating: excellent
 Group Member Point Adjustment:
 
 Group Member First Name: Andy
 Group Member Last Name: Hsu
 Group Member EID: ah28348
 Group Member E-mail: andyhsu@utexas.edu
-Group Member Rating: very good
+Group Member Rating: excellent
 Group Member Point Adjustment:
 
 Group Member First Name: Jerome
 Group Member Last Name: Martinez
 Group Member EID: jm49674
-Group Member E-mail: j.peacock@utexas.edu
-Group Member Rating: very good
+Group Member E-mail: jerome.e.martinez@gmail.com
+Group Member Rating: excellent
 Group Member Point Adjustment:
 
 Group Member First Name: Justin
 Group Member Last Name: Salazar
 Group Member EID: jrs3597
 Group Member E-mail: jrsalazar89@gmail.com
-Group Member Rating: very good
+Group Member Rating: excellent
 Group Member Point Adjustment:
 
 Comments:
