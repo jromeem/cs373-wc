@@ -21,9 +21,17 @@
     
 <tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
 <td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="xml.etree.ElementTree.html">xml.etree.ElementTree</a><br>
-</td><td width="25%" valign=top><a href="google.appengine.ext.db.html">google.appengine.ext.db</a><br>
+<a href="cPickle.html">cPickle</a><br>
+<a href="google.appengine.ext.db.html">google.appengine.ext.db</a><br>
+</td><td width="25%" valign=top><a href="httplib.html">httplib</a><br>
+<a href="logging.html">logging</a><br>
+<a href="google.appengine.api.labs.taskqueue.html">google.appengine.api.labs.taskqueue</a><br>
+</td><td width="25%" valign=top><a href="google.appengine.api.urlfetch.html">google.appengine.api.urlfetch</a><br>
+<a href="urllib.html">urllib</a><br>
+<a href="urlparse.html">urlparse</a><br>
 </td><td width="25%" valign=top><a href="google.appengine.ext.webapp.html">google.appengine.ext.webapp</a><br>
-</td><td width="25%" valign=top><a href="minixsv.pyxsval.html">minixsv.pyxsval</a><br>
+<a href="minixsv.pyxsval.html">minixsv.pyxsval</a><br>
+<a href="zlib.html">zlib</a><br>
 </td></tr></table></td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#eeaa77">
@@ -31,28 +39,36 @@
 <font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
     
 <tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><dl><dt><a name="-addCrisis"><strong>addCrisis</strong></a>(crisis)</dt><dd><tt>#adds&nbsp;a&nbsp;crisis&nbsp;to&nbsp;the&nbsp;list,&nbsp;where&nbsp;crisis&nbsp;is&nbsp;an&nbsp;element&nbsp;tree</tt></dd></dl>
- <dl><dt><a name="-addOrganization"><strong>addOrganization</strong></a>(org)</dt><dd><tt>#adds&nbsp;an&nbsp;organization&nbsp;to&nbsp;the&nbsp;list,&nbsp;where&nbsp;org&nbsp;is&nbsp;an&nbsp;element&nbsp;tree</tt></dd></dl>
- <dl><dt><a name="-addPerson"><strong>addPerson</strong></a>(person)</dt><dd><tt>#adds&nbsp;a&nbsp;person&nbsp;to&nbsp;the&nbsp;list,&nbsp;where&nbsp;person&nbsp;is&nbsp;an&nbsp;element&nbsp;tree</tt></dd></dl>
- <dl><dt><a name="-buildCrisis"><strong>buildCrisis</strong></a>(crisis, c)</dt><dd><tt>#&nbsp;fills&nbsp;a&nbsp;crisis&nbsp;subtree,&nbsp;where&nbsp;crisis&nbsp;is&nbsp;the&nbsp;root&nbsp;element,&nbsp;and&nbsp;c&nbsp;is&nbsp;a&nbsp;Crisis&nbsp;object</tt></dd></dl>
- <dl><dt><a name="-buildOrganization"><strong>buildOrganization</strong></a>(organization, o)</dt><dd><tt>#&nbsp;fills&nbsp;an&nbsp;organization&nbsp;subtree,&nbsp;where&nbsp;organization&nbsp;is&nbsp;the&nbsp;root&nbsp;element,&nbsp;and&nbsp;o&nbsp;is&nbsp;an&nbsp;Organization&nbsp;object</tt></dd></dl>
- <dl><dt><a name="-buildPerson"><strong>buildPerson</strong></a>(person, p)</dt><dd><tt>#&nbsp;fills&nbsp;a&nbsp;person&nbsp;subtree,&nbsp;where&nbsp;person&nbsp;is&nbsp;the&nbsp;root&nbsp;element,&nbsp;and&nbsp;p&nbsp;is&nbsp;a&nbsp;person&nbsp;object</tt></dd></dl>
- <dl><dt><a name="-buildXML"><strong>buildXML</strong></a>(worldCrises)</dt><dd><tt>#&nbsp;main&nbsp;function&nbsp;that&nbsp;builds&nbsp;xml</tt></dd></dl>
- <dl><dt><a name="-exportLinks"><strong>exportLinks</strong></a>(c, ref)</dt><dd><tt>############################<br>
-#&nbsp;EXPORT&nbsp;HANDLER&nbsp;FUNCTIONS&nbsp;#<br>
-############################<br>
-#gets&nbsp;links&nbsp;for&nbsp;a&nbsp;crisis&nbsp;from&nbsp;the&nbsp;list&nbsp;and&nbsp;adds&nbsp;them&nbsp;to&nbsp;the&nbsp;element&nbsp;tree</tt></dd></dl>
- <dl><dt><a name="-grabLinks"><strong>grabLinks</strong></a>(crisis)</dt><dd><tt>#&nbsp;used&nbsp;for&nbsp;creating&nbsp;the&nbsp;list&nbsp;of&nbsp;links&nbsp;for&nbsp;a&nbsp;given&nbsp;crisis/ppl/org<br>
-#&nbsp;crisis&nbsp;:&nbsp;Elementtree&nbsp;object</tt></dd></dl>
- <dl><dt><a name="-parseXML"><strong>parseXML</strong></a>(in_file)</dt><dd><tt>#&nbsp;in_file&nbsp;:&nbsp;file&nbsp;(XML-validated&nbsp;file)<br>
-#&nbsp;parse&nbsp;and&nbsp;store&nbsp;the&nbsp;XML&nbsp;data&nbsp;in&nbsp;the&nbsp;GAE&nbsp;datastore</tt></dd></dl>
- <dl><dt><a name="-validXML"><strong>validXML</strong></a>(xml_instance, xml_schema_filename)</dt><dd><tt>############################<br>
-#&nbsp;IMPORT&nbsp;HANDLER&nbsp;FUNCTIONS&nbsp;#<br>
-############################<br>
-#&nbsp;xml_instance&nbsp;:&nbsp;string<br>
-#&nbsp;a&nbsp;string&nbsp;contains&nbsp;the&nbsp;contents&nbsp;of&nbsp;an&nbsp;xml&nbsp;file<br>
-#<br>
-#&nbsp;xml_schema_filename&nbsp;:&nbsp;string<br>
-#&nbsp;the&nbsp;file&nbsp;name&nbsp;of&nbsp;the&nbsp;xml_schema&nbsp;in&nbsp;the&nbsp;project&nbsp;directory</tt></dd></dl>
-</td></tr></table>
+<td width="100%"><dl><dt><a name="-addCrisis"><strong>addCrisis</strong></a>(crisis)</dt><dd><tt>Adds&nbsp;a&nbsp;new&nbsp;Crisis&nbsp;to&nbsp;the&nbsp;datastore,&nbsp;where&nbsp;crisis&nbsp;is&nbsp;an&nbsp;ElementTree</tt></dd></dl>
+ <dl><dt><a name="-addOrganization"><strong>addOrganization</strong></a>(org)</dt><dd><tt>Adds&nbsp;an&nbsp;Organization&nbsp;to&nbsp;the&nbsp;list,&nbsp;where&nbsp;org&nbsp;is&nbsp;an&nbsp;ElementTree</tt></dd></dl>
+ <dl><dt><a name="-addPerson"><strong>addPerson</strong></a>(person)</dt><dd><tt>Adds&nbsp;a&nbsp;Person&nbsp;to&nbsp;the&nbsp;list,&nbsp;where&nbsp;person&nbsp;is&nbsp;an&nbsp;ElementTree</tt></dd></dl>
+ <dl><dt><a name="-buildCrisis"><strong>buildCrisis</strong></a>(crisis, c)</dt><dd><tt>Fills&nbsp;a&nbsp;Crisis&nbsp;subtree,&nbsp;where&nbsp;crisis&nbsp;is&nbsp;the&nbsp;root&nbsp;element,&nbsp;and&nbsp;c&nbsp;is&nbsp;a&nbsp;Crisis&nbsp;object</tt></dd></dl>
+ <dl><dt><a name="-buildOrganization"><strong>buildOrganization</strong></a>(organization, o)</dt><dd><tt>Fills&nbsp;an&nbsp;organization&nbsp;subtree,&nbsp;where&nbsp;organization&nbsp;is&nbsp;the&nbsp;root&nbsp;element,&nbsp;and&nbsp;o&nbsp;is&nbsp;an&nbsp;Organization&nbsp;object</tt></dd></dl>
+ <dl><dt><a name="-buildPerson"><strong>buildPerson</strong></a>(person, p)</dt><dd><tt>Fills&nbsp;a&nbsp;Person&nbsp;subtree,&nbsp;where&nbsp;person&nbsp;is&nbsp;the&nbsp;root&nbsp;element,&nbsp;and&nbsp;p&nbsp;is&nbsp;a&nbsp;person&nbsp;object</tt></dd></dl>
+ <dl><dt><a name="-buildXML"><strong>buildXML</strong></a>(worldCrises)</dt><dd><tt>Main&nbsp;export&nbsp;function.&nbsp;Takes&nbsp;an&nbsp;ElementTree&nbsp;root&nbsp;and&nbsp;fills&nbsp;it,&nbsp;then&nbsp;returns&nbsp;the&nbsp;generated&nbsp;XML</tt></dd></dl>
+ <dl><dt><a name="-check_url"><strong>check_url</strong></a>(url)</dt><dd><tt>Check&nbsp;if&nbsp;a&nbsp;URL&nbsp;exists&nbsp;without&nbsp;downloading&nbsp;the&nbsp;whole&nbsp;file.<br>
+We&nbsp;only&nbsp;check&nbsp;the&nbsp;URL&nbsp;header.</tt></dd></dl>
+ <dl><dt><a name="-exportLinks"><strong>exportLinks</strong></a>(c, ref)</dt><dd><tt>Gets&nbsp;links&nbsp;for&nbsp;Crisis&nbsp;c&nbsp;from&nbsp;the&nbsp;list&nbsp;and&nbsp;adds&nbsp;them&nbsp;to&nbsp;the&nbsp;element&nbsp;tree&nbsp;subtree&nbsp;ref</tt></dd></dl>
+ <dl><dt><a name="-get_server_status_code"><strong>get_server_status_code</strong></a>(url)</dt><dd><tt>Download&nbsp;just&nbsp;the&nbsp;header&nbsp;of&nbsp;a&nbsp;URL&nbsp;and<br>
+return&nbsp;the&nbsp;server's&nbsp;status&nbsp;code.</tt></dd></dl>
+ <dl><dt><a name="-grabLinks"><strong>grabLinks</strong></a>(crisis)</dt><dd><tt>Takes&nbsp;an&nbsp;ElementTree&nbsp;for&nbsp;a&nbsp;specific&nbsp;entity,&nbsp;and&nbsp;adds&nbsp;all&nbsp;associated&nbsp;links&nbsp;to&nbsp;the&nbsp;datastore</tt></dd></dl>
+ <dl><dt><a name="-mergeLinks"><strong>mergeLinks</strong></a>(newmodel, oldmodel, newlinks)</dt><dd><tt>Merges&nbsp;links&nbsp;in&nbsp;newlinks&nbsp;into&nbsp;the&nbsp;pre-existing&nbsp;model</tt></dd></dl>
+ <dl><dt><a name="-mergeModels"><strong>mergeModels</strong></a>(newmodel, oldmodel)</dt><dd><tt>Merges&nbsp;data&nbsp;from&nbsp;two&nbsp;models&nbsp;of&nbsp;the&nbsp;same&nbsp;type</tt></dd></dl>
+ <dl><dt><a name="-parseXML"><strong>parseXML</strong></a>(in_file, flags)</dt><dd><tt>New&nbsp;implementation&nbsp;using&nbsp;task&nbsp;queue<br>
+Parses&nbsp;xml&nbsp;file&nbsp;in_file&nbsp;and&nbsp;stores&nbsp;created&nbsp;entities&nbsp;in&nbsp;the&nbsp;Datastore.</tt></dd></dl>
+ <dl><dt><a name="-parseXML2"><strong>parseXML2</strong></a>(in_file, flags)</dt><dd><tt>Old&nbsp;implementation&nbsp;of&nbsp;parseXML&nbsp;used&nbsp;for&nbsp;testing&nbsp;purposes.<br>
+Parses&nbsp;and&nbsp;stores&nbsp;the&nbsp;XML&nbsp;data&nbsp;in&nbsp;the&nbsp;GAE&nbsp;datastore.<br>
+in_file&nbsp;:&nbsp;file&nbsp;(XML-validated&nbsp;file)</tt></dd></dl>
+ <dl><dt><a name="-validXML"><strong>validXML</strong></a>(xml_instance, xml_schema_filename)</dt><dd><tt>Validates&nbsp;an&nbsp;instance&nbsp;against&nbsp;the&nbsp;provided&nbsp;schema.&nbsp;&nbsp;Returns&nbsp;True&nbsp;if&nbsp;valid,&nbsp;else&nbsp;False</tt></dd></dl>
+ <dl><dt><a name="-zdumps"><strong>zdumps</strong></a>(obj)</dt></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>__warningregistry__</strong> = {('google.appengine.api.labs.taskqueue is deprecated, please use google.appengine.api.taskqueue', &lt;type 'exceptions.DeprecationWarning'&gt;, 7): True}<br>
+<strong>check</strong> = 0<br>
+<strong>merge</strong> = 0</td></tr></table>
 </body></html>
