@@ -61,7 +61,7 @@ class SearchResults(webapp.RequestHandler):
                     snippet = snippet.replace('\.\.\...', '...')
                     snippet = snippet.replace('.\.\.\.', '...')
                     snippet = snippet.replace('\\u', '')
-                    snippet = snippet.replace('\\n', '')
+                    snippet = snippet.replace('\\n', '<br />')
                     snippet = snippet.replace('\\t', '')
 
                     result = [link_string, '<p>' + snippet + '</p>']

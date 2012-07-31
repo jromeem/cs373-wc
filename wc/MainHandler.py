@@ -66,7 +66,7 @@ class MainPage(webapp.RequestHandler):
     def get(self):
         headerNote = " - Import Antigravity"
         #: test documentation for images
-        images = db.GqlQuery("SELECT link_url, link_parent FROM Link WHERE link_type='primaryImage'").run(limit=25)
+        images = db.GqlQuery("SELECT link_url, link_parent FROM Link WHERE link_type='primaryImage'").run(limit=20)
         images = list(images)
         random.shuffle(images)
         crises = getID(db.GqlQuery("SELECT elemid FROM Crisis"))
@@ -191,8 +191,8 @@ class PersonPage(webapp.RequestHandler):
         for org in query:
                     org_references[org_ref] = org.name
 
-            for crisis_ref in p.crisisrefs:
-                query2 = db.GqlQuery("SELECT * FROM Crisis WHERE elemid='" + crisis_ref + "'")
+        for crisis_ref in p.crisisrefs:
+            query2 = db.GqlQuery("SELECT * FROM Crisis WHERE elemid='" + crisis_ref + "'")
         for crisis in query2:
             crisis_references[crisis_ref] = crisis.name
 
