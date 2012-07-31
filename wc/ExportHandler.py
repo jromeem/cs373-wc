@@ -14,7 +14,9 @@ from XMLHelpers import buildXML
 ##################
 #exports current data to an xml string
 class ExportPage(webapp.RequestHandler):
+	"""Displays the Export page"""
     def get(self):
+    	"""HTTP GET method"""
         worldCrises = ElementTree.Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
 
         xml_out = buildXML(worldCrises)

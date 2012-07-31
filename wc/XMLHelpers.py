@@ -45,6 +45,7 @@ merge = 0
 # xml_schema_filename : string
 # the file name of the xml_schema in the project directory
 def validXML (xml_instance, xml_schema_filename):
+    """Validates an instance against the provided schema.  Returns True if valid, else False"""
     assert(xml_instance is not None)
     assert(xml_schema_filename is not None)
     
@@ -80,6 +81,7 @@ def check_url(url):
     return get_server_status_code(url) in good_codes
 
 def mergeLinks(newmodel, oldmodel, newlinks):
+    """Merges links in newlinks into the pre-existing model"""
     oldlinks = db.GqlQuery("SELECT * FROM Link WHERE link_parent='" + oldmodel.elemid + "'")
     for link in newlinks:
         if not link in oldlinks:
@@ -87,6 +89,7 @@ def mergeLinks(newmodel, oldmodel, newlinks):
             link.put() 
 
 def mergeModels(newmodel, oldmodel):
+    """Merges data from two models of the same type"""
     logging.info("MERGEMODELS CALLED!")
     #try:
     logging.info("TRYING")
@@ -107,9 +110,8 @@ def mergeModels(newmodel, oldmodel):
     logging.info("STOPITER")
     return oldmodel
 
-# used for creating the list of links for a given crisis/ppl/org
-# crisis : Elementtree object
 def grabLinks(crisis):
+    """Takes an ElementTree for a specific entity, and adds all associated links to the datastore"""
     assert(crisis is not None)
     links = []
     imgvid_tags = ["primaryImage","image"]
@@ -157,10 +159,9 @@ def grabLinks(crisis):
                 links.append(new_link)
     return links
     
-#adds a crisis to the list, where crisis is an element tree
-def addCrisis(crisis):
 
-    
+def addCrisis(crisis):
+    """Adds a new Crisis to the datastore, where crisis is an ElementTree"""
     assert(crisis is not None)
     if (crisis.find('.//info') is not None):
         info = crisis.find('.//info')
@@ -219,8 +220,9 @@ def addCrisis(crisis):
                 link.put()
         
     
-#adds a person to the list, where person is an element tree
+
 def addPerson(person):
+    """Adds a Person to the list, where person is an ElementTree"""
     assert(person is not None)
     
     if (person.find('.//info') is not None):
@@ -259,8 +261,9 @@ def addPerson(person):
                 link.put()
         
         
-#adds an organization to the list, where org is an element tree
+
 def addOrganization(org):
+    """Adds an Organization to the list, where org is an ElementTree"""
     assert (org is not None)    
     
     if org.find('.//info') is not None:
@@ -313,43 +316,46 @@ def addOrganization(org):
 def zdumps(obj):
   return zlib.compress(cPickle.dumps(obj,cPickle.HIGHEST_PROTOCOL),9)
   
-# in_file : file (XML-validated file)
-# parse and store the XML data in the GAE datastore
-# in_file : file (XML-validated file)
-# parse and store the XML data in the GAE datastore
 def parseXML2(in_file, flags):
-	assert(in_file is not None)
-	assert(flags is not None)
-	global check
-	global merge
-	check = flags['check']
-	merge = flags['merge']
+    """Old implementation of parseXML used for testing purposes.
+    Parses and stores the XML data in the GAE datastore.
+    in_file : file (XML-validated file)"""
 
-	if not merge:
-		db.delete(db.Query())
+    assert(in_file is not None)
+    assert(flags is not None)
+    global check
+    global merge
+    check = flags['check']
+    merge = flags['merge']
 
-	tree = ElementTree.parse(in_file)
+    if not merge:
+        db.delete(db.Query())
 
-	crises = tree.findall(".//crisis")
-	people = tree.findall(".//person")
-	orgs = tree.findall(".//organization")
+    tree = ElementTree.parse(in_file)
 
-	#build crisis list
-	for crisis in crises:
-		addCrisis(crisis)
+    crises = tree.findall(".//crisis")
+    people = tree.findall(".//person")
+    orgs = tree.findall(".//organization")
 
-	#build person list
-	for person in people:
-		addPerson(person)
+    #build crisis list
+    for crisis in crises:
+        addCrisis(crisis)
 
-	#build organization list
-	for org in orgs:
-		addOrganization(org)
+    #build person list
+    for person in people:
+        addPerson(person)
 
-	check = 0
-	merge = 0
+    #build organization list
+    for org in orgs:
+        addOrganization(org)
+
+    check = 0
+    merge = 0
 
 def parseXML(in_file, flags):
+    """New implementation using task queue
+    Parses xml file in_file and stores created entities in the Datastore."""
+
     assert(in_file is not None)
     assert(flags is not None)
     global check
@@ -369,21 +375,21 @@ def parseXML(in_file, flags):
     #logging.info('***** LEN CRISIS' + str(len(crises)))   
     #logging.info('***** LEN CRISIS' + str(len(people)))  
     #logging.info('***** LEN CRISIS' + str(len(orgs)))  
-	
+    
     for crisis in crises:
         if (crisis.find('.//info') is not None):
             carr = ['crisis',crisis]
             pCrisis = zdumps(carr)
             task = taskqueue.Task(url='/importtask', payload=pCrisis).add(queue_name='importtask')
             #logging.info('***** adding CRISIS task NAME: ' + str(crisis))
-		
+        
     for person in people:
         if (person.find('.//info') is not None):
             parr = ['person',person]
             pPerson = zdumps(parr)
             task = taskqueue.Task(url='/importtask', payload=pPerson).add(queue_name='importtask')
             #logging.info('***** adding PERSON task NAME: ' + str(person))
-		
+        
     for org in orgs:
         if (org.find('.//info') is not None):
             oarr = ['org',org]
@@ -393,12 +399,14 @@ def parseXML(in_file, flags):
     
     check = 0
     merge = 0
-	
+    
 ############################
 # EXPORT HANDLER FUNCTIONS #
 ############################
-#gets links for a crisis from the list and adds them to the element tree
+
 def exportLinks(c, ref):
+    """Gets links for Crisis c from the list and adds them to the element tree subtree ref"""
+
     assert(c is not None)
     assert(ref is not None)
 
@@ -418,8 +426,10 @@ def exportLinks(c, ref):
                 description.text = l.description
 
 
-# fills a crisis subtree, where crisis is the root element, and c is a Crisis object
+
 def buildCrisis(crisis, c):
+    """Fills a Crisis subtree, where crisis is the root element, and c is a Crisis object"""
+
     assert(crisis is not None)
     assert(c is not None)
 
@@ -490,8 +500,9 @@ def buildCrisis(crisis, c):
     for personref in c.personrefs:
         person = ElementTree.SubElement(crisis, "person", {"idref" : personref})
 
-# fills an organization subtree, where organization is the root element, and o is an Organization object
+
 def buildOrganization(organization, o):
+    """Fills an organization subtree, where organization is the root element, and o is an Organization object"""
     assert(organization is not None)
     assert(o is not None)    
     
@@ -541,8 +552,9 @@ def buildOrganization(organization, o):
     for personref in o.personrefs:
         person = ElementTree.SubElement(organization, "person", {"idref" : personref})
 
-# fills a person subtree, where person is the root element, and p is a person object
+
 def buildPerson(person, p):
+    """Fills a Person subtree, where person is the root element, and p is a person object"""
     assert(person is not None)
     assert(p is not None)
     
@@ -581,8 +593,8 @@ def buildPerson(person, p):
     for orgref in p.orgrefs:
         org = ElementTree.SubElement(person, "org", {"idref" : orgref})
 
-# main function that builds xml
 def buildXML(worldCrises):
+    """Main export function. Takes an ElementTree root and fills it, then returns the generated XML"""
     assert(worldCrises is not None)
     
     #build sub-trees for each crisis

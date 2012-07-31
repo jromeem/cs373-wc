@@ -49,10 +49,10 @@ def link_values(template_values, link):
 
 def getID(q):
     """Takes an iterable set of query results and returns a list of elemids"""
-	list = []
-	for item in q:
-		list.append(str(item.elemid))
-	return list
+    list = []
+    for item in q:
+        list.append(str(item.elemid))
+    return list
     
 class AboutPage(webapp.RequestHandler):
     """Displays the About page"""
@@ -60,7 +60,7 @@ class AboutPage(webapp.RequestHandler):
         template_values = {}
         path = os.path.join(os.path.dirname(__file__), "about.html")
         self.response.out.write(template.render(path, template_values))
-	
+    
 class MainPage(webapp.RequestHandler):
     """Displays the Home page"""
     def get(self):
@@ -77,13 +77,13 @@ class MainPage(webapp.RequestHandler):
         #people = getID(getPeople())
         
         template_values={'page_name': 'World Crises',
-        				 'team_name': 'IMPORT ANTIGRAVITY',
-        				 'team_members': ['Joe Peacock', 'Andy Hsu','Harrison He','Jerome Martinez','Michael Pace','Justin Salazar',], 
-        				 'images' : images, 
-        				 'headerNote': headerNote,
-        				 'crises' : (crises),
-        				 'orgs' : (orgs),
-        				 'people' : (people)}
+                         'team_name': 'IMPORT ANTIGRAVITY',
+                         'team_members': ['Joe Peacock', 'Andy Hsu','Harrison He','Jerome Martinez','Michael Pace','Justin Salazar',], 
+                         'images' : images, 
+                         'headerNote': headerNote,
+                         'crises' : (crises),
+                         'orgs' : (orgs),
+                         'people' : (people)}
         
         path = os.path.join(os.path.dirname(__file__), "index.html")
         self.response.out.write(template.render(path, template_values))
@@ -188,13 +188,13 @@ class PersonPage(webapp.RequestHandler):
         for p in person:
             for org_ref in p.orgrefs:
                 query = db.GqlQuery("SELECT * FROM Organization WHERE elemid='" + org_ref + "'")
-		for org in query:
+        for org in query:
                     org_references[org_ref] = org.name
 
             for crisis_ref in p.crisisrefs:
                 query2 = db.GqlQuery("SELECT * FROM Crisis WHERE elemid='" + crisis_ref + "'")
-		for crisis in query2:
-		    crisis_references[crisis_ref] = crisis.name
+        for crisis in query2:
+            crisis_references[crisis_ref] = crisis.name
 
         template_values = { 'person': person,
                             'link'  : link,
