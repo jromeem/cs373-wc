@@ -189,7 +189,7 @@ class PersonPage(webapp.RequestHandler):
             for org_ref in p.orgrefs:
                 query = db.GqlQuery("SELECT * FROM Organization WHERE elemid='" + org_ref + "'")
         for org in query:
-                    org_references[org_ref] = org.name
+            org_references[org_ref] = org.name
 
             for crisis_ref in p.crisisrefs:
                 query2 = db.GqlQuery("SELECT * FROM Crisis WHERE elemid='" + crisis_ref + "'")
