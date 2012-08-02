@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.9.0/build/reset/reset-min.css">
+		<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Monoton">
+		<style>
+			.ital					{ font-style:italic; }
+			#content				{ position:relative; margin:0 auto; top:90px; left:-45px; width:800px; }
+			#menu					{ position:absolute; right:0; }
+			#menu li:hover			{ cursor:pointer; }
+			.mouseimg				{ position:absolute; }
+			
+			a						{ color:black; }
+			*:not('a')				{ cursor:default; }
+			body					{ font-family:'Monoton', sans-serif; font-size:20px; }
+		</style>
+		<script src="js/fadeStuff.js"></script>
+	</head>
+	<body>
+		<ul>
+			<li class="ital">import antigravity</li>
+			<li>go <a href="/">home</a></li>
+		</ul>
+		<div id="content">
+			<ul id="menu">
+				<li id="red">joe peacock</li>
+				<li id="cyan">andy hsu</li>
+				<li id="green">harrison he</li>
+				<li id="purple">jerome martinez</li>
+				<li id="black">michael pace</li>
+				<li id="blue">justin salazar</li>			
+			</ul>
+		</div>
+		<canvas id="myCanvas" width="1200" height="600" style="border:1px solid #c3c3c3;">
+			Your browser does not support the HTML5 canvas tag.
+		</canvas>
+		<script type="text/javascript">
+			window.onload = function(){
+				var color = 'black';
+				var c=document.getElementById("myCanvas");
+				var ctx=c.getContext("2d");
+				var content = document.getElementById('content');
+				
+				c.width = window.innerWidth;
+				c.height = window.innerHeight - 37;
+				
+				window.onresize = function(){
+					var menu = document.getElementById('menu');
+					c.width = window.innerWidth;
+					c.height = window.innerHeight - 37;
+				}
+				
+				onmousemove = function(){
+					// clear canvas for next frame
+					ctx.clearRect(0, 0, c.width, c.height);
+					// diagonal lines
+					for (var i = -c.width*2; i <= c.width*2; i += 400){
+						ctx.strokeStyle = color;
+					    ctx.beginPath();
+					    ctx.moveTo(0,0);
+					    ctx.lineTo(window.event.clientX, window.innerHeight - window.event.clientY+i);
+					    ctx.stroke();
+					    ctx.beginPath();
+					    ctx.moveTo(0,window.innerHeight);
+					    ctx.lineTo(window.event.clientX, window.innerHeight - window.event.clientY+i);
+					    ctx.stroke();
+					    makestatic(Math.random()*window.innerWidth, Math.random()*window.innerHeight);
+					}
+					blockdrawer.drawblocks();
+				}
+				
+				document.onmousedown = function(b){
+					if (b.srcElement.parentElement.id === "menu")
+						color = b.srcElement.id;
+				}
+				
+				var makestatic = function(x, y){
+					ctx.fillStyle = color;
+					for(var i = 0; i < 10; i++)
+						ctx.fillRect(x, y, 10, 2);
+				}
+				
+				var blockdrawer = new Object({
+					y:0,
+					// block width, height
+					dimension:50,
+					// draw incremental drift blocks
+					drawblocks: function(){
+						this.y += 10;
+						if(this.y >= window.innerHeight - this.dimension) this.y = 0;
+						ctx.fillStyle = color;
+						ctx.fillRect(window.innerWidth-this.dimension*3, this.y, this.dimension, this.dimension);
+						ctx.fillRect(window.innerWidth-this.dimension*2, this.y/2, this.dimension, this.dimension);
+						ctx.fillRect(window.innerWidth-this.dimension, this.y/4, this.dimension, this.dimension);
+						ctx.fillRect(window.innerWidth-this.dimension*4, this.y/2, this.dimension, this.dimension);
+						ctx.fillRect(window.innerWidth-this.dimension*5, this.y/4, this.dimension, this.dimension);
+						
+						ctx.fillRect(window.innerWidth-this.dimension*3, window.innerHeight-this.y, this.dimension, this.dimension);
+						ctx.fillRect(window.innerWidth-this.dimension*2, window.innerHeight-this.y/2, this.dimension, this.dimension);
+						ctx.fillRect(window.innerWidth-this.dimension, window.innerHeight-this.y/4, this.dimension, this.dimension);
+						ctx.fillRect(window.innerWidth-this.dimension*4, window.innerHeight-this.y/2, this.dimension, this.dimension);
+						ctx.fillRect(window.innerWidth-this.dimension*5, window.innerHeight-this.y/4, this.dimension, this.dimension);
+					}
+				});
+			}
+		</script>
+	</body>
+</html>
+
