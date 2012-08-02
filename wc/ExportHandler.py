@@ -16,7 +16,7 @@ class ExportPage(webapp.RequestHandler):
     """Displays the Export page"""
     def get(self):
         """HTTP GET method"""
-        worldCrises = ElementTree.Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance", "xsi:noNamespaceSchemaLocation" : "wc.xsd"})
+        worldCrises = ElementTree.Element("worldCrises", {"xmlns:xsi" : "http://www.w3.org/2001/XMLSchema-instance"})
 
         xml_out = buildXML(worldCrises)
         
