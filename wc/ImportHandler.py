@@ -98,10 +98,10 @@ class ImportPage(webapp.RequestHandler):
                     message = 'The file "' + file_name + '" was uploaded successfully, '
                     content = form.getvalue('importfile')
                 else:
-                    webfile = urllib2.urlopen(url)
+                    webfile = urlfetch.fetch(url, deadline=60)
                     in_file = tempfile.TemporaryFile()
                     
-                    content = webfile.read()
+                    content = webfile.content
                     in_file.write(content)
                     in_file.seek(0)
                     logging.info("Content Read!")
